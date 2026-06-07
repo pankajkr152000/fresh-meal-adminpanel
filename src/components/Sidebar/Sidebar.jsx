@@ -1,5 +1,5 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
+import ROUTES from "../../constants/RouteConstants";
 const Sidebar = () => {
   return (
     <div
@@ -16,17 +16,17 @@ const Sidebar = () => {
         </a>
         <Link
           className="list-group-item list-group-item-action list-group-item-light p-3"
-          to="/add-food">
+          to={ROUTES.ADD_FOOD}>
           Add Food
         </Link>
         <Link
           className="list-group-item list-group-item-action list-group-item-light p-3"
-          to="/all-foods">
+          to={ROUTES.FETCH_ALL_FOODS}>
           All Foods
         </Link>
         <Link
           className="list-group-item list-group-item-action list-group-item-light p-3"
-          to="/orders">
+          to={ROUTES.FETCH_ALL_ORDERS}>
           All Orders
         </Link>
         <a
@@ -41,7 +41,7 @@ const Sidebar = () => {
         </a>
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default Sidebar;

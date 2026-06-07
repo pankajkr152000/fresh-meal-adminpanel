@@ -1,5 +1,3 @@
-import React from 'react';
-
 const Menubar = () => {
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light border-bottom">

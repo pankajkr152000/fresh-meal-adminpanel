@@ -1,6 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 import Menubar from "./components/Menubar/Menubar";
 import Sidebar from "./components/Sidebar/Sidebar";
+import ROUTES from "./constants/RouteConstants";
 import AddFood from "./pages/AddFood/AddFood";
 import FoodList from "./pages/FoodList/FoodList";
 import Orders from "./pages/Orders/Orders";
@@ -21,19 +22,19 @@ const App = () => {
           <Routes>
             {/* <Route path="/" element={<Dashboard />} /> */}
             <Route
-              path="/add-food"
+              path={ROUTES.ADD_FOOD}
               element={<AddFood />}
             />
             <Route
-              path="/all-foods"
+              path={ROUTES.FETCH_ALL_FOODS}
               element={<FoodList />}
             />
             <Route
-              path="/orders"
+              path={ROUTES.FETCH_ALL_ORDERS}
               element={<Orders />}
             />
             <Route
-              path="/"
+              path={ROUTES.HOME}
               element={<FoodList />}
             />
           </Routes>

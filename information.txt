@@ -1,0 +1,6 @@
+The general rule is:
+
+RouteConstants → Routing and navigation.
+ApiConstants → Service layer.
+MessageConstants → Toasts, alerts, validation messages.
+AppConstants → Configuration, enums, storage keys, limits.
