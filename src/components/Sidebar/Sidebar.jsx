@@ -1,12 +1,23 @@
 import { Link } from "react-router-dom";
+import { assets } from "../../assets/assets";
 import ROUTES from "../../constants/RouteConstants";
-const Sidebar = ({getSidebarVisible}) => {
+import "./sidebarStyle.css";
+const Sidebar = ({ getSidebarVisible }) => {
   return (
     <div
-      className={`border-end ${getSidebarVisible ? '' : 'd-none'}`}
+      className={`border-end ${getSidebarVisible ? "" : "d-none"}`}
       id="sidebar-wrapper">
-      <div className="sidebar-heading border-bottom">
-        Start Bootstrap
+      <div className="sidebar-heading border-bottom d-flex align-items-center ">
+        <Link
+          to={ROUTES.HOME}
+          className="d-flex align-items-center gap-3 text-decoration-none text-reset"
+        >
+          <img
+            src={assets.brandLogo}
+            alt="Logo"
+          />
+          <span>Admin Meal</span>
+        </Link>
       </div>
       <div className="list-group list-group-flush">
         <a
