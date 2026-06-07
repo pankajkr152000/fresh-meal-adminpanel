@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { initializeTheme } from "../../utils/themeChangeScriptButton";
 
-const Menubar = () => {
+const Menubar = ({toggleSidebar}) => {
 
   useEffect(() => {
     initializeTheme();
@@ -12,8 +12,10 @@ const Menubar = () => {
       <div className="container-fluid">
         <button
           className="btn btn-primary"
-          id="sidebarToggle">
-          Toggle Menu
+          id="sidebarToggle"
+          onClick={toggleSidebar}>
+          <i className="bi bi-list"></i>
+          {/* Toggle Menu */}
         </button>
         <button
           className="navbar-toggler"

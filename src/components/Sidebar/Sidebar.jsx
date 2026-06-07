@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom";
 import ROUTES from "../../constants/RouteConstants";
-const Sidebar = () => {
+const Sidebar = ({getSidebarVisible}) => {
   return (
     <div
-      className="border-end"
+      className={`border-end ${getSidebarVisible ? '' : 'd-none'}`}
       id="sidebar-wrapper">
       <div className="sidebar-heading border-bottom">
         Start Bootstrap

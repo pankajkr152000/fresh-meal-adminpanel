@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import Menubar from "./components/Menubar/Menubar";
 import Sidebar from "./components/Sidebar/Sidebar";
@@ -7,16 +8,23 @@ import FoodList from "./pages/FoodList/FoodList";
 import Orders from "./pages/Orders/Orders";
 
 const App = () => {
+  // toggle Menu button script
+  const [getSidebarVisible, setSidebarVisible] = useState(true);
+
+  const toggleSidebar = () => {
+    setSidebarVisible(!getSidebarVisible);
+  };
+
   return (
     <div
       className="d-flex"
       id="wrapper">
       {/* Sidebar */}
-      <Sidebar />
+      <Sidebar getSidebarVisible={getSidebarVisible} />
       {/* Page content wrapper*/}
       <div id="page-content-wrapper">
         {/* Top navigation*/}
-        <Menubar />
+        <Menubar toggleSidebar={toggleSidebar} />
         {/* Page content*/}
         <div className="container-fluid">
           <Routes>
