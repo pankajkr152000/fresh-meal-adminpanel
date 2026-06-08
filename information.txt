@@ -4,3 +4,55 @@ RouteConstants → Routing and navigation.
 ApiConstants → Service layer.
 MessageConstants → Toasts, alerts, validation messages.
 AppConstants → Configuration, enums, storage keys, limits.
+
+
+/**
+ * TODO:
+ *
+ * 1. Replace alerts with Toast notifications.
+ * 2. Add react-hook-form.
+ * 3. Add Yup/Zod validation.
+ * 4. Add image size validation.
+ * 5. Add image type validation.
+ * 6. Add API error handling utility.
+ * 7. Add loading spinner component.
+ * 8. Add success redirect to Food List page.
+ */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
