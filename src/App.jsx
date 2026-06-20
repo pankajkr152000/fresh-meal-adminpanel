@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Route, Routes } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
 import Menubar from "./components/Menubar/Menubar";
 import Sidebar from "./components/Sidebar/Sidebar";
 import ROUTES from "./constants/RouteConstants";
@@ -25,6 +26,8 @@ const App = () => {
       <div id="page-content-wrapper">
         {/* Top navigation*/}
         <Menubar toggleSidebar={toggleSidebar} />
+        {/* Toast alert message */}
+        <ToastContainer />
         {/* Page content*/}
         <div className="container-fluid">
           <Routes>

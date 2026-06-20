@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import FoodMetadataService from "../../services/FoodMetadataService";
 import FoodService from "../../services/FoodService";
 
@@ -162,8 +163,8 @@ const AddFood = () => {
       }
 
       await FoodService.addFood(formData);
-
-      alert("Food Added Successfully");
+      //alert("Food Added Successfully");
+      toast.success("Food Added Successfully");
 
       handleReset();
     } catch (error) {
@@ -174,6 +175,7 @@ const AddFood = () => {
 
         console.log("Response:", error.response.data);
       }
+      toast.error("Failed to add food");
       console.error("Failed to add food", error);
     } finally {
       setLoading(false);
