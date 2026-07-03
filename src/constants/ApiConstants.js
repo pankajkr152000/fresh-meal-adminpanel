@@ -10,7 +10,7 @@ export const API = {
     FOOD_METADATA: `${BASE_URL}/api/foods/foodCategoryMetadata`,
     ADD_FOOD: `${BASE_URL}/api/foods/add`,
     CREATE: `${BASE_URL}/api/foods/add`,
-    GET_ALL: "/api/v1/foods",
+    GET_ALL_FOODS: `${BASE_URL}/api/foods/readAllFoods`,
     GET_BY_ID: (id) => `/api/v1/foods/${id}`,
     UPDATE: (id) => `/api/v1/foods/${id}`,
     DELETE: (id) => `/api/v1/foods/${id}`,

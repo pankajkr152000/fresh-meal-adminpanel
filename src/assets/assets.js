@@ -1,12 +1,11 @@
-import logo from './freshmeal_logo.png';
-import parcel from './parcel.png';
-import upload from './upload.png';
-import brandLogo from './freshmealBrandLogo.png';
+import logo from "./images/freshmeal_logo.png";
+import brandLogo from "./images/freshmealBrandLogo.png";
+import parcel from "./images/parcel.png";
+import upload from "./images/upload.png";
 
 export const assets = {
-    logo,
-    parcel,
-    upload,
-    brandLogo
-
+  logo,
+  parcel,
+  upload,
+  brandLogo,
 };

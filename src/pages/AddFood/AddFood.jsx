@@ -272,9 +272,9 @@ const AddFood = () => {
 
                   {foodCategories.map((category) => (
                     <option
-                      key={category}
-                      value={category}>
-                      {category}
+                      key={category.value}
+                      value={category.value}>
+                      {category.label}
                     </option>
                   ))}
                 </select>
@@ -294,9 +294,9 @@ const AddFood = () => {
 
                   {dietCategories.map((category) => (
                     <option
-                      key={category}
-                      value={category}>
-                      {category}
+                      key={category.value}
+                      value={category.value}>
+                      {category.label}
                     </option>
                   ))}
                 </select>
@@ -317,9 +317,9 @@ const AddFood = () => {
 
                 {cuisineCategories.map((cuisine) => (
                   <option
-                    key={cuisine}
-                    value={cuisine}>
-                    {cuisine}
+                    key={cuisine.value}
+                    value={cuisine.value}>
+                    {cuisine.label}
                   </option>
                 ))}
               </select>
