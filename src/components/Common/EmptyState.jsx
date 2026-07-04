@@ -1,16 +1,14 @@
-import { FaHamburger } from "react-icons/fa";
-
-const EmptyState = () => {
+const EmptyState = ({
+  title = "No Foods Found",
+  message = "There are no food items available.",
+}) => {
   return (
     <div className="text-center py-5">
-      <FaHamburger
-        size={70}
-        className="text-secondary mb-3"
-      />
+      <div style={{ fontSize: "70px" }}>🍽️</div>
 
-      <h4>No Foods Found</h4>
+      <h4>{title}</h4>
 
-      <p className="text-muted">There are no food items available.</p>
+      <p className="text-muted">{message}</p>
     </div>
   );
 };

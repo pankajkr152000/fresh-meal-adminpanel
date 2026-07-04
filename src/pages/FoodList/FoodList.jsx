@@ -1,14 +1,20 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 import FoodService from "../../services/FoodService";
 
 import EmptyState from "../../components/Common/EmptyState";
 import ErrorAlert from "../../components/Common/ErrorAlert";
 import LoadingSpinner from "../../components/Common/LoadingSpinner";
+import FoodSearch from "../../components/Food/FoodSearch";
 import FoodTable from "../../components/Food/FoodTable";
+import useDebounce from "../../hooks/useDebounce";
 
 const FoodList = () => {
   const [foods, setFoods] = useState([]);
+
+  const [searchText, setSearchText] = useState("");
+
+  const debouncedSearch = useDebounce(searchText, 400);
 
   const [loading, setLoading] = useState(true);
 
@@ -36,6 +42,18 @@ const FoodList = () => {
     }
   }, []);
 
+  const filteredFoods = useMemo(() => {
+    if (!debouncedSearch.trim()) {
+      return foods;
+    }
+
+    const keyword = debouncedSearch.toLowerCase();
+
+    return foods.filter((food) =>
+      food.foodName?.toLowerCase().includes(keyword),
+    );
+  }, [foods, debouncedSearch]);
+
   useEffect(() => {
     const controller = new AbortController();
 
@@ -59,7 +77,21 @@ const FoodList = () => {
   }
 
   if (!foods.length) {
-    return <EmptyState />;
+    <FoodSearch
+      value={searchText}
+      onChange={setSearchText}
+    />;
+
+    {
+      filteredFoods.length === 0 ? (
+        <EmptyState
+          title="No matching foods"
+          message="Try a different search keyword."
+        />
+      ) : (
+        <FoodTable foods={filteredFoods} />
+      );
+    }
   }
 
   return (
@@ -70,7 +102,12 @@ const FoodList = () => {
         </div>
 
         <div className="card-body">
-          <FoodTable foods={foods} />
+          <FoodSearch
+            value={searchText}
+            onChange={setSearchText}
+          />
+
+          <FoodTable foods={filteredFoods} />
         </div>
       </div>
     </div>
