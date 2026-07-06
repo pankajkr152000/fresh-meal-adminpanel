@@ -34,6 +34,12 @@ const FoodService = {
     });
     return response.data;
   },
+  updateFoodStatus: async (id, status) => {
+    const response = await apiClient.put(API.FOOD.UPDATE_FOOD_STATUS(id), {
+      status,
+    });
+    return response.data;
+  },
 };
 
 export default FoodService;

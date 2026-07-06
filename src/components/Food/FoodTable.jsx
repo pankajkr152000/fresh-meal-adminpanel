@@ -1,6 +1,57 @@
-import { getFoodImage, handleImageError } from "../../utils/ImageUtils";
+/**
+ * -----------------------------------------------------------------------------
+ * Component: FoodTable
+ * -----------------------------------------------------------------------------
+ * Purpose:
+ * Displays the list of food items in a responsive Bootstrap table.
+ *
+ * Responsibilities:
+ * - Render food image with fallback placeholder.
+ * - Display essential food information.
+ * - Show availability status using Bootstrap badges.
+ *
+ * Design Decision:
+ * The table intentionally displays only the most important columns for
+ * administrators. Additional fields like cuisineCategory and dietCategory are
+ * intentionally hidden to keep the table compact and readable.
+ *
+ * NOTE:
+ * Hidden fields are still available in the underlying food data and are used by
+ * the filter components (FoodFilters). A field does NOT need to be displayed in
+ * the table to participate in searching, filtering, sorting, or future exports.
+ *
+ * Example:
+ * Backend Response
+ * ----------------
+ * {
+ *   foodName: "Paneer Butter Masala",
+ *   foodCategory: "MAIN_COURSE",
+ *   cuisineCategory: "INDIAN",
+ *   dietCategory: "VEG"
+ * }
+ *
+ * UI Table
+ * --------
+ * ✔ Food Name
+ * ✔ Price
+ * ✔ Category
+ * ✘ Cuisine (Hidden)
+ * ✘ Diet (Hidden)
+ *
+ * Filter Panel
+ * ------------
+ * ✔ Cuisine Filter uses cuisineCategory
+ * ✔ Diet Filter uses dietCategory
+ *
+ * This separation improves readability while preserving filtering capability.
+ * -----------------------------------------------------------------------------
+ */
 
-const FoodTable = ({ foods }) => {
+import { getFoodImage, handleImageError } from "../../utils/ImageUtils";
+import FoodStatusBadge from "./FoodStatusBadge";
+import FoodStatusDropdown from "./FoodStatusDropDown";
+
+const FoodTable = ({ foods, onStatusChange = () => {} }) => {
   return (
     <div className="table-responsive">
       <table className="table table-hover align-middle">
@@ -9,8 +60,9 @@ const FoodTable = ({ foods }) => {
             <th>Image</th>
             <th>Name</th>
             <th>Description</th>
-            <th>Price</th>
             <th>Category</th>
+            <th>Cuisine</th>
+            <th>Price</th>
             <th>Availability</th>
           </tr>
         </thead>
@@ -33,16 +85,23 @@ const FoodTable = ({ foods }) => {
 
               <td>{food.description}</td>
 
-              <td>₹ {food.price}</td>
-
               <td>{food.foodCategory}</td>
 
+              <td>{food.cuisineCategory}</td>
+
+              <td>₹ {food.price}</td>
+
               <td>
-                {food.available ? (
-                  <span className="badge bg-success">Available</span>
-                ) : (
-                  <span className="badge bg-danger">Out Of Stock</span>
-                )}
+                <FoodStatusBadge status={food.status} />
+
+                <div className="mt-2">
+                  <FoodStatusDropdown
+                    currentStatus={food.status}
+                    onStatusChange={(newStatus) => {
+                      onStatusChange(food, newStatus);
+                    }}
+                  />
+                </div>
               </td>
             </tr>
           ))}
