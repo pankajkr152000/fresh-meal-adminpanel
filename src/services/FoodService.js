@@ -34,8 +34,13 @@ const FoodService = {
     });
     return response.data;
   },
+  /**
+   * Updates only the lifecycle status of a food item.
+   *
+   * PATCH /api/admin/foods/{foodId}/status
+   */
   updateFoodStatus: async (id, status) => {
-    const response = await apiClient.put(API.FOOD.UPDATE_FOOD_STATUS(id), {
+    const response = await apiClient.patch(API.FOOD.UPDATE_FOOD_STATUS(id), {
       status,
     });
     return response.data;

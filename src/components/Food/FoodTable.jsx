@@ -1,57 +1,31 @@
 /**
  * -----------------------------------------------------------------------------
- * Component: FoodTable
+ * Component : FoodTable
  * -----------------------------------------------------------------------------
- * Purpose:
- * Displays the list of food items in a responsive Bootstrap table.
  *
- * Responsibilities:
- * - Render food image with fallback placeholder.
- * - Display essential food information.
- * - Show availability status using Bootstrap badges.
+ * Purpose
+ * -------
+ * Displays the list of food items.
  *
- * Design Decision:
- * The table intentionally displays only the most important columns for
- * administrators. Additional fields like cuisineCategory and dietCategory are
- * intentionally hidden to keep the table compact and readable.
- *
- * NOTE:
- * Hidden fields are still available in the underlying food data and are used by
- * the filter components (FoodFilters). A field does NOT need to be displayed in
- * the table to participate in searching, filtering, sorting, or future exports.
- *
- * Example:
- * Backend Response
+ * Responsibilities
  * ----------------
- * {
- *   foodName: "Paneer Butter Masala",
- *   foodCategory: "MAIN_COURSE",
- *   cuisineCategory: "INDIAN",
- *   dietCategory: "VEG"
- * }
+ * • Render food details.
+ * • Display current food status.
+ * • Render only backend-allowed status transitions.
+ * • Notify parent when user selects a new status.
  *
- * UI Table
- * --------
- * ✔ Food Name
- * ✔ Price
- * ✔ Category
- * ✘ Cuisine (Hidden)
- * ✘ Diet (Hidden)
- *
- * Filter Panel
- * ------------
- * ✔ Cuisine Filter uses cuisineCategory
- * ✔ Diet Filter uses dietCategory
- *
- * This separation improves readability while preserving filtering capability.
+ * Notes
+ * -----
+ * This component intentionally contains NO business logic.
+ * It never calls APIs or updates state directly.
  * -----------------------------------------------------------------------------
  */
 
 import { getFoodImage, handleImageError } from "../../utils/ImageUtils";
 import FoodStatusBadge from "./FoodStatusBadge";
-import FoodStatusDropdown from "./FoodStatusDropDown";
+import FoodStatusDropdown from "./status/FoodStatusDropDown";
 
-const FoodTable = ({ foods, onStatusChange = () => {} }) => {
+const FoodTable = ({ foods = [], onStatusChange = () => {} }) => {
   return (
     <div className="table-responsive">
       <table className="table table-hover align-middle">
@@ -63,7 +37,7 @@ const FoodTable = ({ foods, onStatusChange = () => {} }) => {
             <th>Category</th>
             <th>Cuisine</th>
             <th>Price</th>
-            <th>Availability</th>
+            <th style={{ width: "240px" }}>Availability</th>
           </tr>
         </thead>
 
@@ -74,8 +48,8 @@ const FoodTable = ({ foods, onStatusChange = () => {} }) => {
                 <img
                   src={getFoodImage(food.imageUrl)}
                   onError={handleImageError}
-                  width="70"
-                  height="70"
+                  width={70}
+                  height={70}
                   className="rounded object-fit-cover"
                   alt={food.foodName}
                 />
@@ -87,19 +61,20 @@ const FoodTable = ({ foods, onStatusChange = () => {} }) => {
 
               <td>{food.foodCategory}</td>
 
-              <td>{food.cuisineCategory}</td>
+              <td>{food.cuisineType}</td>
 
               <td>₹ {food.price}</td>
 
               <td>
-                <FoodStatusBadge status={food.status} />
+                <FoodStatusBadge status={food.foodStatus} />
 
                 <div className="mt-2">
                   <FoodStatusDropdown
-                    currentStatus={food.status}
-                    onStatusChange={(newStatus) => {
-                      onStatusChange(food, newStatus);
-                    }}
+                    currentStatus={food.foodStatus}
+                    allowedStatuses={food.allowedStatuses ?? []}
+                    onStatusChange={(newStatus) =>
+                      onStatusChange(food, newStatus)
+                    }
                   />
                 </div>
               </td>
