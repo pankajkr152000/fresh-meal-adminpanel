@@ -31,6 +31,13 @@ const FilterSelect = ({
   placeholder,
   onChange,
 }) => {
+  console.log("Inside FilterSelect Component");
+  console.log("================================");
+  console.log("Filter:", label);
+  console.log("Options:", options);
+  console.log("Is Array:", Array.isArray(options));
+  console.log("Length:", options?.length);
+  console.log("================================");
   return (
     <div className="col-md-3">
       <label

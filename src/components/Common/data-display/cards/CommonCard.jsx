@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 import LoadingSpinner from "../../feedback/LoadingSpinner";
 
+console.log("Inside CommonCard Component");
 /**
  * -----------------------------------------------------------------------------
  * Component : CommonCard
@@ -38,6 +39,7 @@ const CommonCard = ({
   bordered = false,
   shadow = "shadow-sm",
 }) => {
+  console.log("Inside CommonCard Component");
   return (
     <div
       className={[

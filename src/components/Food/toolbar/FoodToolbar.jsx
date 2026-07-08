@@ -4,6 +4,7 @@ import { memo } from "react";
 import FoodFilters from "./FoodFilters";
 import FoodSearch from "./FoodSearch";
 
+console.log("Inside FoodToolbar Component");
 /**
  * =============================================================================
  * Component : FoodToolbar
@@ -34,6 +35,7 @@ const FoodToolbar = ({
   onFilterChange,
   onClearFilters,
 }) => {
+  console.log("Inside FoodToolbar Component");
   return (
     <div className="mb-4">
       <FoodSearch
@@ -64,7 +66,7 @@ FoodToolbar.propTypes = {
    */
   filters: PropTypes.shape({
     foodCategory: PropTypes.string,
-    cuisineCategory: PropTypes.string,
+    cuisineType: PropTypes.string,
     dietCategory: PropTypes.string,
     status: PropTypes.string,
   }).isRequired,

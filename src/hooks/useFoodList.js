@@ -39,7 +39,7 @@ Rendering is delegated to presentation components.
  */
 const DEFAULT_FILTERS = Object.freeze({
   foodCategory: "",
-  cuisineCategory: "",
+  cuisineType: "",
   dietCategory: "",
   status: "",
 });
@@ -132,6 +132,7 @@ const useFoodList = () => {
       }
 
       setFoods(response.data ?? []);
+      console.log("Foods:", response.data);
     } catch (err) {
       if (err.name !== "CanceledError") {
         setError(err.message || "Unable to load food items.");
@@ -171,7 +172,7 @@ const useFoodList = () => {
 
   const cuisines = useMemo(() => {
     return [
-      ...new Set(foods.map((food) => food.cuisineCategory).filter(Boolean)),
+      ...new Set(foods.map((food) => food.cuisineType).filter(Boolean)),
     ].sort();
   }, [foods]);
 
@@ -249,8 +250,7 @@ const useFoodList = () => {
         !filters.foodCategory || food.foodCategory === filters.foodCategory;
 
       const matchesCuisine =
-        !filters.cuisineCategory ||
-        food.cuisineCategory === filters.cuisineCategory;
+        !filters.cuisineType || food.cuisineType === filters.cuisineType;
 
       const matchesDiet =
         !filters.dietCategory || food.dietCategory === filters.dietCategory;

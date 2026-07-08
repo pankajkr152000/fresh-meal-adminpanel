@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 import CommonCard from "./CommonCard";
 
+console.log("Inside StatisticsCard Component");
 /**
  * -----------------------------------------------------------------------------
  * Component : StatisticsCard
@@ -33,6 +34,8 @@ const StatisticsCard = ({
   loading = false,
   onClick,
 }) => {
+  console.log("Inside CommonCard Component");
+
   const clickable = typeof onClick === "function";
 
   return (

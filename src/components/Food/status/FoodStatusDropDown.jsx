@@ -1,9 +1,12 @@
+console.log("Inside FoodStatusDropDown Component");
+
 const FoodStatusDropdown = ({
   currentStatus,
   allowedStatuses = [],
   onStatusChange,
   disabled = false,
 }) => {
+  console.log("Inside FoodStatusDropDown Component");
   const handleChange = (event) => {
     const value = event.target.value;
     if (!value) return;

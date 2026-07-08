@@ -1,5 +1,6 @@
 import PropTypes from "prop-types";
 
+console.log("Inside pagination Component");
 /**
  * -----------------------------------------------------------------------------
  * Component : Pagination
@@ -29,6 +30,7 @@ const Pagination = ({
   pageSize,
   onPageChange,
 }) => {
+  console.log("Inside pagination Component");
   if (totalPages <= 1) {
     return null;
   }

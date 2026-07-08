@@ -7,6 +7,7 @@ import { TablePagination } from "../../components/common/data-display/tables";
 
 import useFoodList from "../../hooks/useFoodList";
 
+console.log("******** ENTERPRISE FOODLIST ********");
 /**
  * =============================================================================
  * Page : FoodList
@@ -103,6 +104,13 @@ const FoodList = () => {
       onPageSizeChange={changePageSize}
     />
   );
+
+  console.log({
+    categories,
+    cuisines,
+    diets,
+    statuses,
+  });
 
   return (
     <>

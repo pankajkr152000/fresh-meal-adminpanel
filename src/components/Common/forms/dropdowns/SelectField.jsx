@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 import { memo } from "react";
 
+console.log("Inside SelectField Component");
 /**
  * =============================================================================
  * Component : SelectField
@@ -39,6 +40,7 @@ const SelectField = ({
   getOptionLabel = (option) => option,
   getOptionValue = (option) => option,
 }) => {
+  console.log("Inside SelectField Component");
   return (
     <div className={className}>
       {label && (

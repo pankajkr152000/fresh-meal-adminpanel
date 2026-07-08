@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 import { memo } from "react";
 
+console.log("Inside SearchBox Component");
 /**
  * =============================================================================
  * Component : SearchBox
@@ -33,6 +34,7 @@ const SearchBox = ({
   disabled = false,
   className = "",
 }) => {
+  console.log("Inside SearchBox Component");
   /**
    * Handles search input changes.
    */

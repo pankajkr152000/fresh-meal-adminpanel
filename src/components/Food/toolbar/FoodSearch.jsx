@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 import { memo } from "react";
 
+console.log("Inside FoodSearch Component");
 /**
  * =============================================================================
  * Component : FoodSearch
@@ -27,6 +28,7 @@ const FoodSearch = ({
   onChange,
   placeholder = "Search food by name...",
 }) => {
+  console.log("Inside FoodSearch Component");
   /**
    * Handles search input changes.
    */

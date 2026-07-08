@@ -1,5 +1,6 @@
 import PropTypes from "prop-types";
 
+console.log("Inside StatusConfirmationmodal Component");
 /**
  * -----------------------------------------------------------------------------
  * Component : StatusConfirmationModal
@@ -31,6 +32,7 @@ const StatusConfirmationModal = ({
   onCancel,
   onConfirm,
 }) => {
+  console.log("Inside StatusConfirmationModal Component");
   if (!show || !food) {
     return null;
   }

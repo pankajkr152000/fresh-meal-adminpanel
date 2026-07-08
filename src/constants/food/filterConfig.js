@@ -22,7 +22,7 @@ export const FOOD_FILTERS = Object.freeze([
 
   {
     id: "cuisine-category",
-    name: "cuisineCategory",
+    name: "cuisineType",
     label: "Cuisine",
     placeholder: "All Cuisines",
     optionsKey: "cuisines",

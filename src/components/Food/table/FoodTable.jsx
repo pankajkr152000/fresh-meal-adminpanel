@@ -5,6 +5,7 @@ import DataTable from "../../common/data-display/tables/DataTable";
 
 import FoodTableRow from "./FoodTableRow";
 
+console.log("Inside FoodTable Component");
 /**
  * -----------------------------------------------------------------------------
  * Component : FoodTable
@@ -47,6 +48,7 @@ const FoodTable = ({
   // ✅ NEW
   retryAction,
 }) => {
+  console.log("Inside FoodTable Component");
   return (
     <DataTable
       columns={FOOD_COLUMNS}

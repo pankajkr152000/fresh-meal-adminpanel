@@ -3,6 +3,7 @@ import { memo } from "react";
 
 import FilterSelect from "./FilterSelect";
 
+console.log("Imported FilterSelect:", FilterSelect);
 /**
  * =============================================================================
  * Component : FilterPanel
@@ -33,6 +34,13 @@ const FilterPanel = ({
   onClear,
   clearButtonText = "Clear Filters",
 }) => {
+  console.log("Inside FilterPanel Component");
+  console.log("FilterPanel Component Loaded with config", config);
+  console.log("Options Object:", options);
+
+  config.forEach((filter) => {
+    console.log(filter.label, filter.optionsKey, options[filter.optionsKey]);
+  });
   return (
     <div className="row g-3 align-items-end">
       {config.map((filter) => (

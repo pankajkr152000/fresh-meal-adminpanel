@@ -6,6 +6,7 @@ import LoadingSpinner from "../../feedback/LoadingSpinner";
 
 import TableHeader from "./TableHeader";
 
+console.log("Inside Datatable Compoenent");
 /**
  * -----------------------------------------------------------------------------
  * Component : DataTable
@@ -53,6 +54,7 @@ const DataTable = ({
 
   tableClassName = "table table-hover align-middle mb-0",
 }) => {
+  console.log("Inside Datatable Compoenent");
   // ==========================================================================
   // Loading State
   // ==========================================================================

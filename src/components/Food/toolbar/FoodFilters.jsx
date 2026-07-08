@@ -4,6 +4,7 @@ import { FOOD_FILTERS } from "../../../constants/food";
 
 import { FilterPanel } from "../../common/forms/filters";
 
+console.log("Imported FilterPanel:", FilterPanel);
 /**
  * =============================================================================
  * Component : FoodFilters
@@ -28,28 +29,19 @@ import { FilterPanel } from "../../common/forms/filters";
 const FoodFilters = ({
   filters,
 
-  categories,
-
-  cuisines,
-
-  diets,
-
-  statuses,
+  options,
 
   onChange,
 
   onClear,
 }) => {
+  console.log("Inside FoodFilters Component");
+  console.log("FoodFilters Component loaded with filters:", filters);
   return (
     <FilterPanel
       config={FOOD_FILTERS}
       filters={filters}
-      options={{
-        categories,
-        cuisines,
-        diets,
-        statuses,
-      }}
+      options={options}
       onChange={onChange}
       onClear={onClear}
     />
@@ -59,13 +51,12 @@ const FoodFilters = ({
 FoodFilters.propTypes = {
   filters: PropTypes.object.isRequired,
 
-  categories: PropTypes.arrayOf(PropTypes.string).isRequired,
-
-  cuisines: PropTypes.arrayOf(PropTypes.string).isRequired,
-
-  diets: PropTypes.arrayOf(PropTypes.string).isRequired,
-
-  statuses: PropTypes.arrayOf(PropTypes.string).isRequired,
+  options: PropTypes.shape({
+    categories: PropTypes.arrayOf(PropTypes.string).isRequired,
+    cuisines: PropTypes.arrayOf(PropTypes.string).isRequired,
+    diets: PropTypes.arrayOf(PropTypes.string).isRequired,
+    statuses: PropTypes.arrayOf(PropTypes.string).isRequired,
+  }).isRequired,
 
   onChange: PropTypes.func.isRequired,
 

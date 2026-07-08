@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 import { memo } from "react";
 
+console.log("Inside TableSkeleton Component");
 /**
  * =============================================================================
  * Component : TableSkeleton
@@ -25,6 +26,7 @@ import { memo } from "react";
  */
 
 const TableSkeleton = ({ rows = 5, columns = 6 }) => {
+  console.log("Inside TableSkeleton Component");
   return (
     <div className="table-responsive">
       <table className="table align-middle">

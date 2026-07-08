@@ -3,6 +3,7 @@ import { memo } from "react";
 
 import { PrimaryButton } from "../forms/buttons";
 
+console.log("Inside ConfirmationModal Compoenent");
 /**
  * =============================================================================
  * Component : ConfirmationModal
@@ -38,6 +39,7 @@ const ConfirmationModal = ({
   onCancel,
   children,
 }) => {
+  console.log("Inside ConfirmationModal Compoenent");
   if (!show) {
     return null;
   }

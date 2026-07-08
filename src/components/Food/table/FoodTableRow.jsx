@@ -5,6 +5,7 @@ import { getFoodImage, handleImageError } from "../../../utils/ImageUtils";
 import FoodStatusBadge from "../status/FoodStatusBadge";
 import FoodStatusDropdown from "../status/FoodStatusDropdown";
 
+console.log("Inside FoodTableRow Component");
 /**
  * -----------------------------------------------------------------------------
  * Component : FoodTableRow
@@ -29,6 +30,7 @@ import FoodStatusDropdown from "../status/FoodStatusDropdown";
  */
 
 const FoodTableRow = ({ food, onStatusChange }) => {
+  console.log("Inside FoodTableRow Component");
   return (
     <tr>
       <td className="text-center">
@@ -48,7 +50,7 @@ const FoodTableRow = ({ food, onStatusChange }) => {
 
       <td>{food.foodCategory}</td>
 
-      <td>{food.cuisineCategory}</td>
+      <td>{food.cuisineType}</td>
 
       <td className="text-end">₹ {food.price}</td>
 
