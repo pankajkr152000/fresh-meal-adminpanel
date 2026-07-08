@@ -3,10 +3,6 @@ import StatusConfirmationModal from "../../components/food/status/StatusConfirma
 import FoodTable from "../../components/food/table/FoodTable";
 import FoodToolbar from "../../components/food/toolbar/FoodToolbar";
 
-import EmptyState from "../../components/common/feedback/EmptyState";
-import ErrorAlert from "../../components/common/feedback/ErrorAlert";
-import LoadingSpinner from "../../components/common/feedback/LoadingSpinner";
-
 import { TablePagination } from "../../components/common/data-display/tables";
 
 import useFoodList from "../../hooks/useFoodList";
@@ -36,7 +32,6 @@ const FoodList = () => {
   const {
     // Data
     pagedFoods,
-    filteredFoods,
 
     // Request State
     loading,
@@ -80,6 +75,8 @@ const FoodList = () => {
     confirmStatusChange,
 
     // API
+
+    // retry
     retryLoadingFoods,
   } = useFoodList();
 
@@ -107,19 +104,6 @@ const FoodList = () => {
     />
   );
 
-  if (loading) {
-    return <LoadingSpinner />;
-  }
-
-  if (error) {
-    return (
-      <ErrorAlert
-        message={error}
-        onRetry={retryLoadingFoods}
-      />
-    );
-  }
-
   return (
     <>
       <FoodStatistics statistics={statistics} />
@@ -134,14 +118,9 @@ const FoodList = () => {
         sortDirection={sort.direction}
         onSort={changeSort}
         onStatusChange={selectStatus}
+        // ✅ NEW
+        retryAction={retryLoadingFoods}
       />
-
-      {!loading && filteredFoods.length === 0 && (
-        <EmptyState
-          title="No Foods Found"
-          message="No food items match the current search or filters."
-        />
-      )}
 
       <StatusConfirmationModal
         show={showStatusModal}

@@ -2,8 +2,8 @@
 
 export const ROUTES = {
   HOME: "/",
-  ADD_FOOD: "/add-food",
-  FETCH_ALL_FOODS: "/all-foods",
+  ADD_FOOD: "/api/foods/add",
+  FETCH_ALL_FOODS: "/api/foods/readAllFoods",
   FETCH_ALL_ORDERS: "/orders",
 };
 

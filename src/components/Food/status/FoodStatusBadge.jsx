@@ -1,4 +1,4 @@
-import { getStatusBadgeClass } from "../../utils/FoodStatusUtils";
+import { getStatusBadgeClass } from "../../../utils/FoodStatusUtils";
 
 /**
  * ============================================================================

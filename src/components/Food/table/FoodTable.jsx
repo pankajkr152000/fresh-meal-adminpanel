@@ -20,6 +20,7 @@ import FoodTableRow from "./FoodTableRow";
  * • Supply food row renderer.
  * • Forward sorting, pagination and toolbar.
  * • Forward food action callbacks.
+ * • Forward retry callback.
  *
  * Notes
  * -----
@@ -42,6 +43,9 @@ const FoodTable = ({
   onSort,
 
   onStatusChange,
+
+  // ✅ NEW
+  retryAction,
 }) => {
   return (
     <DataTable
@@ -55,6 +59,8 @@ const FoodTable = ({
       sortField={sortField}
       sortDirection={sortDirection}
       onSort={onSort}
+      // ✅ NEW
+      retryAction={retryAction}
       renderRow={(food) => (
         <FoodTableRow
           key={food.id}
@@ -84,6 +90,9 @@ FoodTable.propTypes = {
   onSort: PropTypes.func,
 
   onStatusChange: PropTypes.func.isRequired,
+
+  // ✅ NEW
+  retryAction: PropTypes.func,
 };
 
 export default FoodTable;

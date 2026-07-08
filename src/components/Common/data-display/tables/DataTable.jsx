@@ -1,8 +1,8 @@
 import PropTypes from "prop-types";
 
-import ErrorAlert from "../../feedback/alerts/ErrorAlert";
-import LoadingSpinner from "../../feedback/loaders/LoadingSpinner";
-import EmptyState from "../empty-state/EmptyState";
+import EmptyState from "../../feedback/EmptyState";
+import ErrorAlert from "../../feedback/ErrorAlert";
+import LoadingSpinner from "../../feedback/LoadingSpinner";
 
 import TableHeader from "./TableHeader";
 
@@ -49,22 +49,61 @@ const DataTable = ({
   sortDirection,
   onSort,
 
+  retryAction,
+
   tableClassName = "table table-hover align-middle mb-0",
 }) => {
+  // ==========================================================================
+  // Loading State
+  // ==========================================================================
+
   if (loading) {
-    return <LoadingSpinner />;
+    return (
+      <>
+        {toolbar}
+
+        <LoadingSpinner />
+
+        {footer}
+      </>
+    );
   }
+
+  // ==========================================================================
+  // Error State
+  // ==========================================================================
 
   if (error) {
-    return <ErrorAlert message={error} />;
+    return (
+      <>
+        {toolbar}
+
+        <ErrorAlert
+          message={error}
+          onRetry={retryAction}
+        />
+
+        {footer}
+      </>
+    );
   }
 
-  if (!data.length) {
+  // ==========================================================================
+  // Empty State
+  // ==========================================================================
+
+  if (data.length === 0) {
     return (
-      <EmptyState
-        title="No Records Found"
-        message="There is no data available."
-      />
+      <>
+        {toolbar}
+
+        <EmptyState
+          title="No Records Found"
+          message="Try changing your search or filters."
+        />
+
+        {footer}
+      </>
     );
   }
 
@@ -102,6 +141,8 @@ DataTable.propTypes = {
   loading: PropTypes.bool,
 
   error: PropTypes.string,
+
+  retryAction: PropTypes.func,
 
   toolbar: PropTypes.node,
 

@@ -4,8 +4,8 @@ import { ToastContainer } from "react-toastify";
 import Menubar from "./components/Menubar/Menubar";
 import Sidebar from "./components/Sidebar/Sidebar";
 import ROUTES from "./constants/RouteConstants";
-import AddFood from "./pages/AddFood/AddFood";
-import FoodList from "./pages/FoodList/FoodList";
+import AddFood from "./pages/Food/AddFood";
+import FoodList from "./pages/Food/FoodList";
 import Orders from "./pages/Orders/Orders";
 
 const App = () => {

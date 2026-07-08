@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import LoadingSpinner from "../loaders/LoadingSpinner";
+import LoadingSpinner from "../../feedback/LoadingSpinner";
 
 /**
  * -----------------------------------------------------------------------------
