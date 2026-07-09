@@ -10,18 +10,50 @@
  * ============================================================================
  */
 
+// export const FOOD_STATUS = {
+//   AVAILABLE: "Available",
+
+//   OUT_OF_STOCK: "Out of Stock",
+
+//   DISABLED: "Disabled",
+
+//   COMING_SOON: "Coming Soon",
+
+//   SEASONAL: "Seasonal",
+
+//   DISCONTINUED: "Discontinued",
+// };
+
 export const FOOD_STATUS = {
-  AVAILABLE: "AVAILABLE",
+  AVAILABLE: {
+    label: "Available",
+    value: "AVAILABLE",
+  },
 
-  OUT_OF_STOCK: "OUT OF STOCK",
+  OUT_OF_STOCK: {
+    label: "Out of Stock",
+    value: "OUT_OF_STOCK",
+  },
 
-  DISABLED: "DISABLED",
+  DISABLED: {
+    label: "Disabled",
+    value: "DISABLED",
+  },
 
-  COMING_SOON: "COMING SOON",
+  COMING_SOON: {
+    label: "Coming Soon",
+    value: "COMING_SOON",
+  },
 
-  SEASONAL: "SEASONAL",
+  SEASONAL: {
+    label: "Seasonal",
+    value: "SEASONAL",
+  },
 
-  DISCONTINUED: "DISCONTINUED",
+  DISCONTINUED: {
+    label: "Discontinued",
+    value: "DISCONTINUED",
+  },
 };
 
 export const FOOD_STATUS_OPTIONS = Object.values(FOOD_STATUS);

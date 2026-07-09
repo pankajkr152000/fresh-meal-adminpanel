@@ -8,6 +8,7 @@ import { TablePagination } from "../../components/common/data-display/tables";
 import useFoodList from "../../hooks/useFoodList";
 
 console.log("******** ENTERPRISE FOODLIST ********");
+
 /**
  * =============================================================================
  * Page : FoodList
@@ -15,57 +16,81 @@ console.log("******** ENTERPRISE FOODLIST ********");
  *
  * Purpose
  * -------
- * Composition root for the Food Management module.
+ * Serves as the composition root for the Food Management module.
  *
  * Responsibilities
  * ----------------
- * • Compose Food components.
- * • Connect UI to useFoodList.
- * • Handle page-level rendering.
+ * • Compose all food-related UI components.
+ * • Connect the presentation layer with the useFoodList hook.
+ * • Pass data and callbacks to child components.
+ * • Render page-level dialogs and layouts.
  *
  * Notes
  * -----
- * No business logic belongs here.
+ * • This component intentionally contains no business logic.
+ * • All state management and API interactions are delegated to useFoodList.
+ * • Status transitions are performed using DisplayOptionResponse objects.
+ *
+ * @author Pankaj Kumar
+ * @since 1.0
  * =============================================================================
  */
 
 const FoodList = () => {
   const {
-    // Data
+    // -------------------------------------------------------------------------
+    // Food Data
+    // -------------------------------------------------------------------------
     pagedFoods,
 
+    // -------------------------------------------------------------------------
     // Request State
+    // -------------------------------------------------------------------------
     loading,
     error,
 
+    // -------------------------------------------------------------------------
     // Search
+    // -------------------------------------------------------------------------
     search,
     changeSearch,
 
+    // -------------------------------------------------------------------------
     // Filters
+    // -------------------------------------------------------------------------
     filters,
     changeFilter,
     clearFilters,
 
+    // -------------------------------------------------------------------------
     // Sorting
+    // -------------------------------------------------------------------------
     sort,
     changeSort,
 
+    // -------------------------------------------------------------------------
     // Pagination
+    // -------------------------------------------------------------------------
     paginationInfo,
     changePage,
     changePageSize,
 
+    // -------------------------------------------------------------------------
     // Statistics
+    // -------------------------------------------------------------------------
     statistics,
 
+    // -------------------------------------------------------------------------
     // Metadata
+    // -------------------------------------------------------------------------
     categories,
     cuisines,
     diets,
     statuses,
 
-    // Status Dialog
+    // -------------------------------------------------------------------------
+    // Status Update
+    // -------------------------------------------------------------------------
     showStatusModal,
     selectedFood,
     selectedStatus,
@@ -75,12 +100,15 @@ const FoodList = () => {
     cancelStatusChange,
     confirmStatusChange,
 
-    // API
-
-    // retry
+    // -------------------------------------------------------------------------
+    // Retry
+    // -------------------------------------------------------------------------
     retryLoadingFoods,
   } = useFoodList();
 
+  /**
+   * Toolbar displayed above the food table.
+   */
   const toolbar = (
     <FoodToolbar
       search={search}
@@ -97,6 +125,9 @@ const FoodList = () => {
     />
   );
 
+  /**
+   * Table pagination component.
+   */
   const pagination = (
     <TablePagination
       pagination={paginationInfo}
@@ -104,13 +135,6 @@ const FoodList = () => {
       onPageSizeChange={changePageSize}
     />
   );
-
-  console.log({
-    categories,
-    cuisines,
-    diets,
-    statuses,
-  });
 
   return (
     <>
@@ -126,7 +150,6 @@ const FoodList = () => {
         sortDirection={sort.direction}
         onSort={changeSort}
         onStatusChange={selectStatus}
-        // ✅ NEW
         retryAction={retryLoadingFoods}
       />
 
@@ -134,7 +157,11 @@ const FoodList = () => {
         show={showStatusModal}
         food={selectedFood}
         previousStatus={selectedFood?.foodStatus}
-        nextStatus={selectedStatus}
+        /*
+         * selectedStatus is now a DisplayOptionResponse.
+         * The modal only needs the display label.
+         */
+        nextStatus={selectedStatus?.label}
         loading={statusUpdating}
         onCancel={cancelStatusChange}
         onConfirm={confirmStatusChange}

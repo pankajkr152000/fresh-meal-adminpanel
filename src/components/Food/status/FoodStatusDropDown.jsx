@@ -1,17 +1,58 @@
-console.log("Inside FoodStatusDropDown Component");
+/**
+ * =============================================================================
+ * Component : FoodStatusDropdown
+ * =============================================================================
+ *
+ * Purpose
+ * -------
+ * Renders the list of valid food status transitions.
+ *
+ * Responsibilities
+ * ----------------
+ * • Display only backend-allowed status transitions.
+ * • Convert the selected value into its corresponding display option.
+ * • Notify the parent component with the selected display option.
+ *
+ * Notes
+ * -----
+ * • This component contains no business logic.
+ * • Status transition validation is performed by the backend.
+ * * • The parent component is responsible for persisting the selected status.
+ * =============================================================================
+ */
+
+import { findOptionByValue } from "../../utils/DisplayOptionUtils";
+
+console.log("Inside FoodStatusDropdown Component");
 
 const FoodStatusDropdown = ({
-  currentStatus,
   allowedStatuses = [],
   onStatusChange,
   disabled = false,
 }) => {
-  console.log("Inside FoodStatusDropDown Component");
+  /**
+   * Handles status selection.
+   *
+   * Converts the selected value back into the corresponding
+   * DisplayOptionResponse before notifying the parent.
+   */
   const handleChange = (event) => {
     const value = event.target.value;
-    if (!value) return;
-    onStatusChange(value);
-    event.target.value = ""; // reset the visual select immediately
+
+    if (!value) {
+      return;
+    }
+
+    const selectedStatus = findOptionByValue(allowedStatuses, value);
+
+    if (!selectedStatus) {
+      return;
+    }
+
+    onStatusChange(selectedStatus);
+
+    // Reset dropdown after selection.
+    event.target.value = "";
   };
 
   return (
@@ -21,11 +62,12 @@ const FoodStatusDropdown = ({
       disabled={disabled || allowedStatuses.length === 0}
       onChange={handleChange}>
       <option value="">Change Status</option>
+
       {allowedStatuses.map((status) => (
         <option
-          key={status}
-          value={status}>
-          {status.replaceAll("_", " ")}
+          key={status.value}
+          value={status.value}>
+          {status.label}
         </option>
       ))}
     </select>
