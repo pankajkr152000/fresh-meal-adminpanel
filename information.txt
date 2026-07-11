@@ -1,0 +1,683 @@
+The general rule is:
+
+RouteConstants → Routing and navigation.
+ApiConstants → Service layer.
+MessageConstants → Toasts, alerts, validation messages.
+AppConstants → Configuration, enums, storage keys, limits.
+
+
+/**
+ * TODO:
+ *
+ * 1. Replace alerts with Toast notifications.
+ * 2. Add react-hook-form.
+ * 3. Add Yup/Zod validation.
+ * 4. Add image size validation.
+ * 5. Add image type validation.
+ * 6. Add API error handling utility.
+ * 7. Add loading spinner component.
+ * 8. Add success redirect to Food List page.
+ */
+
+
+
+src
+│
+├── assets
+│   └── images
+│       └── food-placeholder.png
+│
+├── components
+│   ├── Common
+│   │     ├── LoadingSpinner.jsx
+│   │     ├── ErrorAlert.jsx
+│   │     └── EmptyState.jsx
+│   │
+│   └── Food
+│         └── FoodTable.jsx
+│
+├── pages
+│      └── FoodList
+│             └── FoodList.jsx
+│
+├── services
+│      ├── ApiClient.js
+│      └── FoodService.js
+│
+└── utils
+       └── ImageUtils.js
+
+
+
+src
+│
+├── api
+│   └── apiClient.js
+│
+├── assets
+│   ├── icons
+│   └── images
+│
+├── components
+│   │
+│   ├── common
+│   │   │
+│   │   ├── alerts
+│   │   │     ErrorAlert.jsx
+│   │   │
+│   │   ├── badges
+│   │   │
+│   │   ├── buttons
+│   │   │
+│   │   ├── cards
+│   │   │     CommonCard.jsx
+│   │   │     StatisticsCard.jsx
+│   │   │
+│   │   ├── empty
+│   │   │     EmptyState.jsx
+│   │   │
+│   │   ├── forms
+│   │   │
+│   │   ├── layout
+│   │   │     PageHeader.jsx
+│   │   │
+│   │   ├── loaders
+│   │   │     LoadingSpinner.jsx
+│   │   │
+│   │   ├── modals
+│   │   │     ConfirmationModal.jsx
+│   │   │
+│   │   ├── pagination
+│   │   │     Pagination.jsx
+│   │   │
+│   │   ├── search
+│   │   │     SearchBox.jsx
+│   │   │
+│   │   └── tables
+│   │         TableContainer.jsx
+│   │         GenericTable.jsx
+│   │         TableHeader.jsx
+│   │         TablePagination.jsx
+│   │
+│   └── food
+│       │
+│       ├── statistics
+│       ├── toolbar
+│       ├── table
+│       ├── status
+│       └── modal
+│
+├── hooks
+├── layouts
+├── pages
+├── services
+├── utils
+└── constants
+
+
+
+food
+│
+├── modal
+│      StatusConfirmationModal.jsx
+│
+├── statistics
+│      FoodStatistics.jsx
+│
+├── status
+│      FoodStatusBadge.jsx
+│      FoodStatusDropdown.jsx
+│
+├── table
+│      FoodTable.jsx
+│      FoodTableHeader.jsx
+│      FoodTableRow.jsx
+│      FoodTableActions.jsx
+│
+└── toolbar
+       FoodToolbar.jsx
+       FoodFilters.jsx
+       FoodSearch.jsx
+
+
+
+src
+│
+├── api
+│   ├── apiClient.js
+│   └── index.js
+│
+├── assets
+│   ├── icons
+│   ├── images
+│   └── styles
+│
+├── components
+│   │
+│   ├── common
+│   │   │
+│   │   ├── data-display
+│   │   │   │
+│   │   │   ├── badges
+│   │   │   ├── cards
+│   │   │   ├── empty-state
+│   │   │   ├── pagination
+│   │   │   └── tables
+│   │   │
+│   │   ├── feedback
+│   │   │   ├── alerts
+│   │   │   ├── loaders
+│   │   │   └── skeletons
+│   │   │
+│   │   ├── forms
+│   │   │   ├── buttons
+│   │   │   ├── dropdowns
+│   │   │   ├── inputs
+│   │   │   └── search
+│   │   │
+│   │   ├── layout
+│   │   │
+│   │   └── overlay
+│   │       ├── dialogs
+│   │       ├── modals
+│   │       └── tooltips
+│   │
+│   ├── food
+│   ├── restaurant
+│   ├── category
+│   ├── offer
+│   ├── order
+│   └── user
+│
+├── constants
+│
+├── hooks
+│
+├── layouts
+│
+├── pages
+│
+├── routes
+│
+├── services
+│
+├── utils
+│
+└── App.jsx
+
+
+
+src
+│
+├── api
+│   ├── apiClient.js
+│   └── index.js
+│
+├── assets
+│   ├── images
+│   ├── icons
+│   └── styles
+│
+├── components
+│   │
+│   ├── common
+│   │   │
+│   │   ├── data-display
+│   │   │   ├── badges
+│   │   │   ├── cards
+│   │   │   ├── empty-state
+│   │   │   ├── pagination
+│   │   │   └── tables
+│   │   │
+│   │   ├── feedback
+│   │   │   ├── alerts
+│   │   │   ├── loaders
+│   │   │   └── skeletons
+│   │   │
+│   │   ├── forms
+│   │   │   ├── buttons
+│   │   │   ├── dropdowns
+│   │   │   ├── inputs
+│   │   │   └── search
+│   │   │
+│   │   ├── layout
+│   │   │
+│   │   └── overlay
+│   │       ├── dialogs
+│   │       ├── modals
+│   │       └── tooltips
+│   │
+│   ├── food
+│   ├── restaurant
+│   ├── category
+│   ├── offer
+│   ├── order
+│   └── user
+│
+├── constants
+│   ├── food
+│   ├── restaurant
+│   ├── order
+│   └── ...
+│
+├── hooks
+├── layouts
+├── pages
+├── routes
+├── services
+├── utils
+└── App.jsx
+
+
+src
+│
+├── api
+│   ├── apiClient.js
+│   └── index.js
+│
+├── assets
+│   ├── icons
+│   │   ├── SortAscending.jsx
+│   │   ├── SortDescending.jsx
+│   │   ├── SortNeutral.jsx
+│   │   └── index.js
+│   │
+│   ├── images
+│   │   ├── food-placeholder.png
+│   │   ├── restaurant-placeholder.png
+│   │   ├── category-placeholder.png
+│   │   ├── offer-placeholder.png
+│   │   └── ...
+│   │
+│   └── styles
+│       ├── variables.css
+│       ├── utilities.css
+│       └── global.css
+│
+├── components
+│   │
+│   ├── common
+│   │   │
+│   │   ├── data-display
+│   │   │   │
+│   │   │   ├── badges
+│   │   │   │   ├── Badge.jsx
+│   │   │   │   └── index.js
+│   │   │   │
+│   │   │   ├── cards
+│   │   │   │   ├── CommonCard.jsx
+│   │   │   │   ├── StatisticsCard.jsx
+│   │   │   │   └── index.js
+│   │   │   │
+│   │   │   ├── empty-state
+│   │   │   │   ├── EmptyState.jsx
+│   │   │   │   └── index.js
+│   │   │   │
+│   │   │   ├── pagination
+│   │   │   │   ├── Pagination.jsx
+│   │   │   │   └── index.js
+│   │   │   │
+│   │   │   └── tables
+│   │   │       ├── DataTable.jsx
+│   │   │       ├── TableHeader.jsx
+│   │   │       └── index.js
+│   │   │
+│   │   ├── feedback
+│   │   │   │
+│   │   │   ├── alerts
+│   │   │   │   ├── ErrorAlert.jsx
+│   │   │   │   └── index.js
+│   │   │   │
+│   │   │   ├── loaders
+│   │   │   │   ├── LoadingSpinner.jsx
+│   │   │   │   └── index.js
+│   │   │   │
+│   │   │   └── skeletons
+│   │   │       ├── TableSkeleton.jsx
+│   │   │       └── index.js
+│   │   │
+│   │   ├── forms
+│   │   │   │
+│   │   │   ├── buttons
+│   │   │   │   ├── PrimaryButton.jsx
+│   │   │   │   └── index.js
+│   │   │   │
+│   │   │   ├── dropdowns
+│   │   │   │   ├── SelectField.jsx
+│   │   │   │   └── index.js
+│   │   │   │
+│   │   │   ├── inputs
+│   │   │   │   ├── TextInput.jsx
+│   │   │   │   └── index.js
+│   │   │   │
+│   │   │   └── search
+│   │   │       ├── SearchBox.jsx
+│   │   │       └── index.js
+│   │   │
+│   │   ├── layout
+│   │   │   ├── PageHeader.jsx
+│   │   │   ├── PageLayout.jsx
+│   │   │   └── index.js
+│   │   │
+│   │   └── overlay
+│   │       │
+│   │       ├── dialogs
+│   │       │   └── index.js
+│   │       │
+│   │       ├── modals
+│   │       │   ├── ConfirmationModal.jsx
+│   │       │   └── index.js
+│   │       │
+│   │       └── tooltips
+│   │           └── index.js
+│   │
+│   ├── food
+│   │   │
+│   │   ├── statistics
+│   │   │   ├── FoodStatistics.jsx
+│   │   │   └── index.js
+│   │   │
+│   │   ├── status
+│   │   │   ├── FoodStatusBadge.jsx
+│   │   │   ├── FoodStatusDropdown.jsx
+│   │   │   ├── StatusConfirmationModal.jsx
+│   │   │   └── index.js
+│   │   │
+│   │   ├── table
+│   │   │   ├── FoodTable.jsx
+│   │   │   ├── FoodTableRow.jsx
+│   │   │   └── index.js
+│   │   │
+│   │   └── toolbar
+│   │       ├── FoodToolbar.jsx
+│   │       ├── FoodSearch.jsx
+│   │       ├── FoodFilters.jsx
+│   │       └── index.js
+│   │
+│   ├── restaurant
+│   │
+│   ├── category
+│   │
+│   ├── offer
+│   │
+│   ├── order
+│   │
+│   └── user
+│
+├── constants
+│   │
+│   ├── food
+│   │   ├── columns.js
+│   │   ├── defaults.js
+│   │   ├── filters.js
+│   │   ├── status.js
+│   │   ├── validation.js
+│   │   └── index.js
+│   │
+│   ├── restaurant
+│   │
+│   ├── order
+│   │
+│   └── index.js
+│
+├── hooks
+│   ├── useDebounce.js
+│   ├── useFoodList.js
+│   └── index.js
+│
+├── layouts
+│   ├── AdminLayout.jsx
+│   ├── AuthLayout.jsx
+│   └── index.js
+│
+├── pages
+│   │
+│   ├── Dashboard
+│   │   └── Dashboard.jsx
+│   │
+│   ├── Food
+│   │   ├── FoodList.jsx
+│   │   ├── AddFood.jsx
+│   │   ├── EditFood.jsx
+│   │   └── index.js
+│   │
+│   ├── Restaurant
+│   │
+│   ├── Category
+│   │
+│   ├── Orders
+│   │
+│   └── Users
+│
+├── routes
+│   ├── AppRoutes.jsx
+│   └── ProtectedRoute.jsx
+│
+├── services
+│   ├── FoodService.js
+│   ├── RestaurantService.js
+│   ├── CategoryService.js
+│   ├── OrderService.js
+│   └── index.js
+│
+├── utils
+│   ├── ImageUtils.js
+│   ├── DateUtils.js
+│   ├── CurrencyUtils.js
+│   ├── ValidationUtils.js
+│   └── index.js
+│
+├── App.jsx
+├── main.jsx
+└── index.css
+
+=========================================================================
+                     keep track
+=========================================================================
+
+src
+│
+├── api
+│   ├── apiClient.js                                 ✅
+│   └── index.js                                     ⬜
+│
+├── assets
+│   │
+│   ├── icons
+│   │   ├── SortAscending.jsx                        ⬜
+│   │   ├── SortDescending.jsx                       ⬜
+│   │   ├── SortNeutral.jsx                          ⬜
+│   │   └── index.js                                 ⬜
+│   │
+│   ├── images
+│   │   ├── food-placeholder.png                     ✅
+│   │   └── ...
+│   │
+│   └── styles
+│       ├── global.css                               ✅
+│       ├── utilities.css                            ⬜
+│       └── variables.css                            ⬜
+│
+├── components
+│   │
+│   ├── common
+│   │   │
+│   │   ├── layout
+│   │   │   ├── PageHeader.jsx                       ✅
+│   │   │   ├── PageLayout.jsx                       ✅
+│   │   │   └── index.js                             ⬜
+│   │   │
+│   │   ├── feedback
+│   │   │   ├── ErrorAlert.jsx                       ✅
+│   │   │   ├── LoadingSpinner.jsx                   ✅
+│   │   │   ├── EmptyState.jsx                       ✅
+│   │   │   └── index.js                             ⬜
+│   │   │
+│   │   ├── data-display
+│   │   │   │
+│   │   │   ├── badges
+│   │   │   │   ├── Badge.jsx                        ⬜
+│   │   │   │   └── index.js                         ⬜
+│   │   │   │
+│   │   │   ├── cards
+│   │   │   │   ├── CommonCard.jsx                   ✅
+│   │   │   │   ├── StatisticsCard.jsx               ✅
+│   │   │   │   └── index.js                         ⬜
+│   │   │   │
+│   │   │   ├── tables
+│   │   │   │   ├── DataTable.jsx                    ✅
+│   │   │   │   ├── TableHeader.jsx                  ✅
+│   │   │   │   └── index.js                         ⬜
+│   │   │   │
+│   │   │   ├── pagination
+│   │   │   │   ├── Pagination.jsx                   ✅
+│   │   │   │   └── index.js                         ⬜
+│   │   │   │
+│   │   │   └── skeletons
+│   │   │       ├── TableSkeleton.jsx                ⬜
+│   │   │       └── index.js                         ⬜
+│   │   │
+│   │   ├── forms
+│   │   │   │
+│   │   │   ├── filters
+│   │   │   │   ├── FilterSelect.jsx                 ✅
+│   │   │   │   ├── FilterPanel.jsx                  ✅
+│   │   │   │   └── index.js                         ✅
+│   │   │   │
+│   │   │   ├── buttons
+│   │   │   │   ├── PrimaryButton.jsx                ⬜
+│   │   │   │   └── index.js                         ⬜
+│   │   │   │
+│   │   │   ├── inputs
+│   │   │   │   ├── TextInput.jsx                    ⬜
+│   │   │   │   └── index.js                         ⬜
+│   │   │   │
+│   │   │   ├── search
+│   │   │   │   ├── SearchBox.jsx                    ⬜
+│   │   │   │   └── index.js                         ⬜
+│   │   │   │
+│   │   │   └── dropdowns
+│   │   │       ├── SelectField.jsx                  ⬜
+│   │   │       └── index.js                         ⬜
+│   │   │
+│   │   └── overlay
+│   │       ├── ConfirmationModal.jsx                ⬜
+│   │       └── index.js                             ⬜
+│   │
+│   ├── food
+│   │   │
+│   │   ├── table
+│   │   │   ├── FoodTable.jsx                        ✅
+│   │   │   ├── FoodTableRow.jsx                     ✅
+│   │   │   └── index.js                             ⬜
+│   │   │
+│   │   ├── toolbar
+│   │   │   ├── FoodSearch.jsx                       ✅
+│   │   │   ├── FoodFilters.jsx                      ✅
+│   │   │   ├── FoodToolbar.jsx                      ⬜
+│   │   │   └── index.js                             ✅
+│   │   │
+│   │   ├── statistics
+│   │   │   ├── FoodStatistics.jsx                   ⬜
+│   │   │   └── index.js                             ⬜
+│   │   │
+│   │   ├── status
+│   │   │   ├── FoodStatusBadge.jsx                  ✅
+│   │   │   ├── FoodStatusDropdown.jsx               ✅
+│   │   │   ├── StatusConfirmationModal.jsx          ✅
+│   │   │   └── index.js                             ⬜
+│   │   │
+│   │   └── index.js                                 ⬜
+│   │
+│   ├── restaurant                                   ⬜
+│   ├── orders                                       ⬜
+│   ├── users                                        ⬜
+│   ├── category                                     ⬜
+│   └── offers                                       ⬜
+│
+├── constants
+│   │
+│   ├── food
+│   │   ├── columns.js                               ✅
+│   │   ├── filterConfig.js                          ✅
+│   │   ├── defaults.js                              ⬜
+│   │   ├── status.js                                ⬜
+│   │   ├── validation.js                            ⬜
+│   │   └── index.js                                 ✅
+│   │
+│   └── index.js                                     ⬜
+│
+├── hooks
+│   ├── useDebounce.js                               ✅
+│   ├── useFoodList.js                               🚧
+│   └── index.js                                     ⬜
+│
+├── layouts
+│   ├── AdminLayout.jsx                              ✅
+│   ├── AuthLayout.jsx                               ⬜
+│   └── index.js                                     ⬜
+│
+├── pages
+│   │
+│   ├── Dashboard
+│   │   └── Dashboard.jsx                            ⬜
+│   │
+│   ├── Food
+│   │   ├── FoodList.jsx                             🚧
+│   │   ├── AddFood.jsx                              ✅
+│   │   ├── EditFood.jsx                             ⬜
+│   │   └── index.js                                 ⬜
+│   │
+│   ├── Restaurant                                   ⬜
+│   ├── Orders                                       ⬜
+│   ├── Users                                        ⬜
+│   └── Category                                     ⬜
+│
+├── routes
+│   ├── AppRoutes.jsx                                ✅
+│   └── ProtectedRoute.jsx                           ⬜
+│
+├── services
+│   ├── FoodService.js                               ✅
+│   ├── RestaurantService.js                         ⬜
+│   ├── OrderService.js                              ⬜
+│   ├── CategoryService.js                           ⬜
+│   └── index.js                                     ⬜
+│
+├── utils
+│   ├── ImageUtils.js                                ✅
+│   ├── FoodStatusUtils.js                           ✅
+│   ├── CurrencyUtils.js                             ⬜
+│   ├── DateUtils.js                                 ⬜
+│   ├── ValidationUtils.js                           ⬜
+│   └── index.js                                     ⬜
+│
+├── App.jsx                                          ✅
+├── main.jsx                                         ✅
+└── index.css                                        ✅
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
