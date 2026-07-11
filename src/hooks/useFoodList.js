@@ -161,34 +161,6 @@ const useFoodList = () => {
   }, [loadFoods]);
 
   // ===========================================================================
-  // Derived Metadata
-  // ===========================================================================
-
-  const categories = useMemo(() => {
-    return [
-      ...new Set(foods.map((food) => food.foodCategory).filter(Boolean)),
-    ].sort();
-  }, [foods]);
-
-  const cuisines = useMemo(() => {
-    return [
-      ...new Set(foods.map((food) => food.cuisineType).filter(Boolean)),
-    ].sort();
-  }, [foods]);
-
-  const diets = useMemo(() => {
-    return [
-      ...new Set(foods.map((food) => food.dietCategory).filter(Boolean)),
-    ].sort();
-  }, [foods]);
-
-  const statuses = useMemo(() => {
-    return [
-      ...new Set(foods.map((food) => food.foodStatus).filter(Boolean)),
-    ].sort();
-  }, [foods]);
-
-  // ===========================================================================
   // Lifecycle
   // ===========================================================================
 
@@ -247,16 +219,18 @@ const useFoodList = () => {
         food.foodName?.toLowerCase().includes(debouncedSearch.toLowerCase());
 
       const matchesCategory =
-        !filters.foodCategory || food.foodCategory === filters.foodCategory;
+        !filters.foodCategory ||
+        food.foodCategory.value === filters.foodCategory;
 
       const matchesCuisine =
-        !filters.cuisineType || food.cuisineType === filters.cuisineType;
+        !filters.cuisineType || food.cuisineType.value === filters.cuisineType;
 
       const matchesDiet =
-        !filters.dietCategory || food.dietCategory === filters.dietCategory;
+        !filters.dietCategory ||
+        food.dietCategory.value === filters.dietCategory;
 
       const matchesStatus =
-        !filters.status || food.foodStatus === filters.status;
+        !filters.status || food.foodStatus.value === filters.status;
 
       return (
         matchesSearch &&
@@ -294,6 +268,17 @@ const useFoodList = () => {
   // Sorted Foods
   // ===========================================================================
 
+  // ===========================================================================
+  // Helpers
+  // ===========================================================================
+
+  const resolveSortValue = useCallback((value) => {
+    if (value && typeof value === "object" && "label" in value) {
+      return value.label;
+    }
+
+    return value;
+  }, []);
   const sortedFoods = useMemo(() => {
     const sorted = [...filteredFoods];
 
@@ -301,8 +286,10 @@ const useFoodList = () => {
       if (!(sort.field in left)) {
         return 0;
       }
-      const leftValue = left[sort.field];
-      const rightValue = right[sort.field];
+
+      const leftValue = resolveSortValue(left[sort.field]);
+
+      const rightValue = resolveSortValue(right[sort.field]);
 
       if (leftValue == null && rightValue == null) {
         return 0;
@@ -335,7 +322,7 @@ const useFoodList = () => {
     });
 
     return sorted;
-  }, [filteredFoods, sort]);
+  }, [filteredFoods, resolveSortValue, sort.direction, sort.field]);
 
   // ===========================================================================
   // Pagination Actions
@@ -413,7 +400,7 @@ const useFoodList = () => {
       (summary, food) => {
         summary.total += 1;
 
-        switch (food.foodStatus) {
+        switch (food.foodStatus?.value) {
           case "AVAILABLE":
             summary.available += 1;
             break;
@@ -484,7 +471,7 @@ const useFoodList = () => {
    * Opens the confirmation dialog for a status change.
    */
   const selectStatus = useCallback((food, newStatus) => {
-    if (food.foodStatus === newStatus) {
+    if (food.foodStatus?.value === newStatus?.value) {
       return;
     }
 
@@ -633,12 +620,6 @@ const useFoodList = () => {
     cancelStatusChange,
 
     confirmStatusChange,
-
-    // Metadata
-    categories,
-    cuisines,
-    diets,
-    statuses,
 
     // API
     refreshFoods,

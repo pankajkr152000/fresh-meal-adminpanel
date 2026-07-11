@@ -6,8 +6,7 @@ import FoodToolbar from "../../components/food/toolbar/FoodToolbar";
 import { TablePagination } from "../../components/common/data-display/tables";
 
 import useFoodList from "../../hooks/useFoodList";
-
-console.log("******** ENTERPRISE FOODLIST ********");
+import useFoodMetadata from "../../hooks/useFoodMetadata";
 
 /**
  * =============================================================================
@@ -20,16 +19,16 @@ console.log("******** ENTERPRISE FOODLIST ********");
  *
  * Responsibilities
  * ----------------
- * • Compose all food-related UI components.
- * • Connect the presentation layer with the useFoodList hook.
- * • Pass data and callbacks to child components.
- * • Render page-level dialogs and layouts.
+ * • Compose food-related presentation components.
+ * • Connect business hooks with the UI layer.
+ * • Delegate food operations to useFoodList.
+ * • Delegate metadata loading to useFoodMetadata.
  *
  * Notes
  * -----
- * • This component intentionally contains no business logic.
- * • All state management and API interactions are delegated to useFoodList.
- * • Status transitions are performed using DisplayOptionResponse objects.
+ * • Contains no business logic.
+ * • Coordinates independent hooks responsible for
+ *   food management and metadata management.
  *
  * @author Pankaj Kumar
  * @since 1.0
@@ -37,60 +36,40 @@ console.log("******** ENTERPRISE FOODLIST ********");
  */
 
 const FoodList = () => {
+  // ===========================================================================
+  // Food Management
+  // ===========================================================================
+
   const {
-    // -------------------------------------------------------------------------
     // Food Data
-    // -------------------------------------------------------------------------
     pagedFoods,
 
-    // -------------------------------------------------------------------------
     // Request State
-    // -------------------------------------------------------------------------
     loading,
     error,
 
-    // -------------------------------------------------------------------------
     // Search
-    // -------------------------------------------------------------------------
     search,
     changeSearch,
 
-    // -------------------------------------------------------------------------
     // Filters
-    // -------------------------------------------------------------------------
     filters,
     changeFilter,
     clearFilters,
 
-    // -------------------------------------------------------------------------
     // Sorting
-    // -------------------------------------------------------------------------
     sort,
     changeSort,
 
-    // -------------------------------------------------------------------------
     // Pagination
-    // -------------------------------------------------------------------------
     paginationInfo,
     changePage,
     changePageSize,
 
-    // -------------------------------------------------------------------------
     // Statistics
-    // -------------------------------------------------------------------------
     statistics,
 
-    // -------------------------------------------------------------------------
-    // Metadata
-    // -------------------------------------------------------------------------
-    categories,
-    cuisines,
-    diets,
-    statuses,
-
-    // -------------------------------------------------------------------------
     // Status Update
-    // -------------------------------------------------------------------------
     showStatusModal,
     selectedFood,
     selectedStatus,
@@ -100,34 +79,52 @@ const FoodList = () => {
     cancelStatusChange,
     confirmStatusChange,
 
-    // -------------------------------------------------------------------------
     // Retry
-    // -------------------------------------------------------------------------
     retryLoadingFoods,
   } = useFoodList();
 
-  /**
-   * Toolbar displayed above the food table.
-   */
+  // ===========================================================================
+  // Metadata
+  // ===========================================================================
+
+  // const {
+  //   metadata,
+
+  //   loading: metadataLoading,
+
+  //   error: metadataError,
+
+  //   retryLoadingMetadata,
+  // } = useFoodMetadata();
+  const {
+    foodMetadata,
+
+    loading: metadataLoading,
+
+    error: metadataError,
+
+    retryLoadingMetadata,
+  } = useFoodMetadata();
+
+  // ===========================================================================
+  // Toolbar
+  // ===========================================================================
+
   const toolbar = (
     <FoodToolbar
       search={search}
       filters={filters}
-      options={{
-        categories,
-        cuisines,
-        diets,
-        statuses,
-      }}
+      options={foodMetadata}
       onSearchChange={changeSearch}
       onFilterChange={changeFilter}
       onClearFilters={clearFilters}
     />
   );
 
-  /**
-   * Table pagination component.
-   */
+  // ===========================================================================
+  // Pagination
+  // ===========================================================================
+
   const pagination = (
     <TablePagination
       pagination={paginationInfo}
@@ -142,25 +139,21 @@ const FoodList = () => {
 
       <FoodTable
         foods={pagedFoods}
-        loading={loading}
-        error={error}
+        loading={loading || metadataLoading}
+        error={error || metadataError}
         toolbar={toolbar}
         pagination={pagination}
         sortField={sort.field}
         sortDirection={sort.direction}
         onSort={changeSort}
         onStatusChange={selectStatus}
-        retryAction={retryLoadingFoods}
+        retryAction={error ? retryLoadingFoods : retryLoadingMetadata}
       />
 
       <StatusConfirmationModal
         show={showStatusModal}
         food={selectedFood}
         previousStatus={selectedFood?.foodStatus}
-        /*
-         * selectedStatus is now a DisplayOptionResponse.
-         * The modal only needs the display label.
-         */
         nextStatus={selectedStatus?.label}
         loading={statusUpdating}
         onCancel={cancelStatusChange}

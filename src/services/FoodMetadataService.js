@@ -1,30 +1,44 @@
-import axios from "axios";
+import apiClient from "../api/apiClient";
 import API from "../constants/ApiConstants";
 
 /**
- * Food Metadata Service.
+ * =============================================================================
+ * Service : FoodMetadataService
+ * =============================================================================
  *
- * Responsibilities:
- * - Load food-related metadata.
- * - Populate dropdowns dynamically.
+ * Purpose
+ * -------
+ * Provides access to food-related metadata required by the frontend.
+ *
+ * Responsibilities
+ * ----------------
+ * • Retrieve food metadata from the backend.
+ * • Expose metadata for UI components.
+ *
+ * Notes
+ * -----
+ * This service performs no business logic.
+ * It only communicates with backend APIs.
  *
  * Metadata includes:
- * - Food Categories
- * - Diet Categories
- * - Cuisine Types
+ * • Food Categories
+ * • Diet Categories
+ * • Cuisine Categories
+ * • Group Categories
+ * • Food Statuses
+ * =============================================================================
  */
+
 const FoodMetadataService = {
   /**
-   * Fetches metadata required by food forms.
-   * {FOOD_METADATA: `${BASE_URL}/api/foods/foodCategoryMetadata`}
-   * @returns {Promise<Object>}
+   * Retrieves food metadata.
+   *
+   * @returns {Promise<Object>} Food metadata response.
    */
-  getMetadata: async () => {
-    console.log("Calling URL:", API.FOOD.FOOD_METADATA);
-
-    const response = await axios.get(API.FOOD.FOOD_METADATA);
-
-    console.log("Metadata Response:", response.data);
+  async getMetadata(signal) {
+    const response = await apiClient.get(API.FOOD.FOOD_METADATA, {
+      signal,
+    });
 
     return response.data;
   },

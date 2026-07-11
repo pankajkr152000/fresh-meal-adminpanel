@@ -1,6 +1,8 @@
 import PropTypes from "prop-types";
 import { memo } from "react";
 
+import displayOptionPropType from "../../../../prop-types/displayOptionPropType";
+
 /**
  * =============================================================================
  * Component : FilterSelect
@@ -19,7 +21,12 @@ import { memo } from "react";
  *
  * Notes
  * -----
- * This component intentionally contains no business logic.
+ * • This component intentionally contains no business logic.
+ * • Options are expected to be DisplayOptionResponse objects received from the
+ *   backend.
+ *
+ * @author Pankaj Kumar
+ * @since 1.0
  * =============================================================================
  */
 
@@ -31,13 +38,6 @@ const FilterSelect = ({
   placeholder,
   onChange,
 }) => {
-  console.log("Inside FilterSelect Component");
-  console.log("================================");
-  console.log("Filter:", label);
-  console.log("Options:", options);
-  console.log("Is Array:", Array.isArray(options));
-  console.log("Length:", options?.length);
-  console.log("================================");
   return (
     <div className="col-md-3">
       <label
@@ -56,9 +56,9 @@ const FilterSelect = ({
 
         {options.map((option) => (
           <option
-            key={option}
-            value={option}>
-            {option}
+            key={option.value}
+            value={option.value}>
+            {option.label}
           </option>
         ))}
       </select>
@@ -67,16 +67,34 @@ const FilterSelect = ({
 };
 
 FilterSelect.propTypes = {
+  /**
+   * Field label.
+   */
   label: PropTypes.string.isRequired,
 
+  /**
+   * Form field name.
+   */
   name: PropTypes.string.isRequired,
 
+  /**
+   * Selected value.
+   */
   value: PropTypes.string.isRequired,
 
-  options: PropTypes.arrayOf(PropTypes.string).isRequired,
+  /**
+   * Available options.
+   */
+  options: PropTypes.arrayOf(displayOptionPropType).isRequired,
 
+  /**
+   * Placeholder text.
+   */
   placeholder: PropTypes.string.isRequired,
 
+  /**
+   * Change handler.
+   */
   onChange: PropTypes.func.isRequired,
 };
 

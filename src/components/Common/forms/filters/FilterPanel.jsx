@@ -3,7 +3,6 @@ import { memo } from "react";
 
 import FilterSelect from "./FilterSelect";
 
-console.log("Imported FilterSelect:", FilterSelect);
 /**
  * =============================================================================
  * Component : FilterPanel
@@ -11,18 +10,23 @@ console.log("Imported FilterSelect:", FilterSelect);
  *
  * Purpose
  * -------
- * Generic filter panel capable of rendering any collection of filters based on
+ * Renders a reusable collection of filter controls based on the supplied
  * configuration.
  *
  * Responsibilities
  * ----------------
- * • Render configured filter controls.
- * • Render Clear Filters button.
- * • Delegate filter changes to parent.
+ * • Render filter dropdowns.
+ * • Render the "Clear Filters" action.
+ * • Delegate user interactions to the parent component.
  *
  * Notes
  * -----
- * This component intentionally contains no business logic.
+ * • This component is completely generic.
+ * • It has no knowledge of Food, Orders, Restaurants, or any domain model.
+ * • Filter options are provided dynamically using the configuration object.
+ *
+ * @author Pankaj Kumar
+ * @since 1.0
  * =============================================================================
  */
 
@@ -34,13 +38,6 @@ const FilterPanel = ({
   onClear,
   clearButtonText = "Clear Filters",
 }) => {
-  console.log("Inside FilterPanel Component");
-  console.log("FilterPanel Component Loaded with config", config);
-  console.log("Options Object:", options);
-
-  config.forEach((filter) => {
-    console.log(filter.label, filter.optionsKey, options[filter.optionsKey]);
-  });
   return (
     <div className="row g-3 align-items-end">
       {config.map((filter) => (
@@ -49,7 +46,7 @@ const FilterPanel = ({
           label={filter.label}
           name={filter.name}
           value={filters[filter.name] ?? ""}
-          options={options[filter.optionsKey] ?? []}
+          options={options?.[filter.optionsKey] ?? []}
           placeholder={filter.placeholder}
           onChange={onChange}
         />
@@ -68,26 +65,41 @@ const FilterPanel = ({
 };
 
 FilterPanel.propTypes = {
+  /**
+   * Filter configuration.
+   */
   config: PropTypes.arrayOf(
     PropTypes.shape({
       name: PropTypes.string.isRequired,
-
       label: PropTypes.string.isRequired,
-
       placeholder: PropTypes.string.isRequired,
-
       optionsKey: PropTypes.string.isRequired,
     }),
   ).isRequired,
 
+  /**
+   * Current filter values.
+   */
   filters: PropTypes.object.isRequired,
 
+  /**
+   * Available filter options keyed by configuration.
+   */
   options: PropTypes.object.isRequired,
 
+  /**
+   * Invoked when a filter value changes.
+   */
   onChange: PropTypes.func.isRequired,
 
+  /**
+   * Clears all active filters.
+   */
   onClear: PropTypes.func.isRequired,
 
+  /**
+   * Text displayed on the clear button.
+   */
   clearButtonText: PropTypes.string,
 };
 

@@ -4,7 +4,6 @@ import { memo } from "react";
 import FoodFilters from "./FoodFilters";
 import FoodSearch from "./FoodSearch";
 
-console.log("Inside FoodToolbar Component");
 /**
  * =============================================================================
  * Component : FoodToolbar
@@ -18,12 +17,11 @@ console.log("Inside FoodToolbar Component");
  * ----------------
  * • Render the search section.
  * • Render the filter section.
- * • Arrange toolbar components.
+ * • Delegate user interactions to the parent.
  *
  * Notes
  * -----
  * This component intentionally contains no business logic.
- * Searching, filtering and state management are delegated to the parent.
  * =============================================================================
  */
 
@@ -35,7 +33,6 @@ const FoodToolbar = ({
   onFilterChange,
   onClearFilters,
 }) => {
-  console.log("Inside FoodToolbar Component");
   return (
     <div className="mb-4">
       <FoodSearch
@@ -55,6 +52,11 @@ const FoodToolbar = ({
   );
 };
 
+const displayOptionType = PropTypes.shape({
+  label: PropTypes.string.isRequired,
+  value: PropTypes.string.isRequired,
+});
+
 FoodToolbar.propTypes = {
   /**
    * Current search value.
@@ -72,13 +74,18 @@ FoodToolbar.propTypes = {
   }).isRequired,
 
   /**
-   * Dropdown options.
+   * Metadata received from backend.
    */
   options: PropTypes.shape({
-    categories: PropTypes.arrayOf(PropTypes.string).isRequired,
-    cuisines: PropTypes.arrayOf(PropTypes.string).isRequired,
-    diets: PropTypes.arrayOf(PropTypes.string).isRequired,
-    statuses: PropTypes.arrayOf(PropTypes.string).isRequired,
+    foodCategories: PropTypes.arrayOf(displayOptionType).isRequired,
+
+    cuisineCategories: PropTypes.arrayOf(displayOptionType).isRequired,
+
+    dietCategories: PropTypes.arrayOf(displayOptionType).isRequired,
+
+    groupCategories: PropTypes.arrayOf(displayOptionType).isRequired,
+
+    foodStatuses: PropTypes.arrayOf(displayOptionType).isRequired,
   }).isRequired,
 
   /**

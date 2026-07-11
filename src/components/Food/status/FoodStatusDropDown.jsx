@@ -21,7 +21,7 @@
  * =============================================================================
  */
 
-import { findOptionByValue } from "../../utils/DisplayOptionUtils";
+import { findOptionByValue } from "../../../utils/DisplayOptionUtils";
 
 console.log("Inside FoodStatusDropdown Component");
 

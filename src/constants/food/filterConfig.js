@@ -7,6 +7,13 @@
  *
  * This configuration is consumed by the generic FilterPanel component.
  *
+ * Notes
+ * -----
+ * The `optionsKey` values must match the metadata response returned by the
+ * backend (FoodMetadataResponse).
+ *
+ * @author Pankaj Kumar
+ * @since 1.0
  * =============================================================================
  */
 
@@ -16,7 +23,7 @@ export const FOOD_FILTERS = Object.freeze([
     name: "foodCategory",
     label: "Food Category",
     placeholder: "All Categories",
-    optionsKey: "categories",
+    optionsKey: "foodCategories",
     colSize: 3,
   },
 
@@ -25,7 +32,7 @@ export const FOOD_FILTERS = Object.freeze([
     name: "cuisineType",
     label: "Cuisine",
     placeholder: "All Cuisines",
-    optionsKey: "cuisines",
+    optionsKey: "cuisineCategories",
     colSize: 3,
   },
 
@@ -34,7 +41,7 @@ export const FOOD_FILTERS = Object.freeze([
     name: "dietCategory",
     label: "Diet",
     placeholder: "All Diets",
-    optionsKey: "diets",
+    optionsKey: "dietCategories",
     colSize: 3,
   },
 
@@ -42,8 +49,8 @@ export const FOOD_FILTERS = Object.freeze([
     id: "food-status",
     name: "status",
     label: "Status",
-    placeholder: "All Status",
-    optionsKey: "statuses",
+    placeholder: "All Statuses",
+    optionsKey: "foodStatuses",
     colSize: 3,
   },
 ]);
