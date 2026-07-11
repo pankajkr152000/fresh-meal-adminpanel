@@ -1,4 +1,5 @@
 import PropTypes from "prop-types";
+import displayOptionPropType from "../../../prop-types/displayOptionPropType";
 
 console.log("Inside StatusConfirmationmodal Component");
 /**
@@ -69,7 +70,7 @@ const StatusConfirmationModal = ({
                   <div>
                     <small className="text-muted d-block">Current Status</small>
 
-                    <strong>{previousStatus}</strong>
+                    <strong>{previousStatus?.label}</strong>
                   </div>
 
                   <div className="align-self-center fs-4">→</div>
@@ -77,7 +78,7 @@ const StatusConfirmationModal = ({
                   <div>
                     <small className="text-muted d-block">New Status</small>
 
-                    <strong>{nextStatus}</strong>
+                    <strong>{nextStatus?.label}</strong>
                   </div>
                 </div>
               </div>
@@ -120,8 +121,8 @@ const StatusConfirmationModal = ({
 StatusConfirmationModal.propTypes = {
   show: PropTypes.bool.isRequired,
   food: PropTypes.object,
-  previousStatus: PropTypes.string,
-  nextStatus: PropTypes.string,
+  previousStatus: displayOptionPropType,
+  nextStatus: displayOptionPropType,
   loading: PropTypes.bool,
   onCancel: PropTypes.func.isRequired,
   onConfirm: PropTypes.func.isRequired,

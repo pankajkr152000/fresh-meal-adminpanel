@@ -154,7 +154,7 @@ const FoodList = () => {
         show={showStatusModal}
         food={selectedFood}
         previousStatus={selectedFood?.foodStatus}
-        nextStatus={selectedStatus?.label}
+        nextStatus={selectedStatus}
         loading={statusUpdating}
         onCancel={cancelStatusChange}
         onConfirm={confirmStatusChange}

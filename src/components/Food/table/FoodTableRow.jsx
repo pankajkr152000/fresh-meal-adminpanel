@@ -54,16 +54,17 @@ const FoodTableRow = ({ food, onStatusChange }) => {
 
       <td className="text-end">₹ {food.price}</td>
 
+      {/* Status Column */}
       <td className="text-center">
-        <FoodStatusBadge status={food.foodStatus?.label} />
+        <FoodStatusBadge status={food.foodStatus} />
+      </td>
 
-        <div className="mt-2">
-          <FoodStatusDropdown
-            currentStatus={food.foodStatus?.label}
-            allowedStatuses={food.allowedStatuses?.label}
-            onStatusChange={(status) => onStatusChange(food, status)}
-          />
-        </div>
+      {/* Actions Column */}
+      <td className="text-center">
+        <FoodStatusDropdown
+          allowedStatuses={food.allowedStatuses}
+          onStatusChange={(status) => onStatusChange(food, status)}
+        />
       </td>
     </tr>
   );
