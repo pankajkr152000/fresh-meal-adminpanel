@@ -48,19 +48,19 @@ const FoodTableRow = ({ food, onStatusChange }) => {
 
       <td>{food.description}</td>
 
-      <td>{food.foodCategory}</td>
+      <td>{food.foodCategory?.label}</td>
 
-      <td>{food.cuisineType}</td>
+      <td>{food.cuisineType?.label}</td>
 
       <td className="text-end">₹ {food.price}</td>
 
       <td className="text-center">
-        <FoodStatusBadge status={food.foodStatus} />
+        <FoodStatusBadge status={food.foodStatus?.label} />
 
         <div className="mt-2">
           <FoodStatusDropdown
-            currentStatus={food.foodStatus}
-            allowedStatuses={food.allowedStatuses}
+            currentStatus={food.foodStatus?.label}
+            allowedStatuses={food.allowedStatuses?.label}
             onStatusChange={(status) => onStatusChange(food, status)}
           />
         </div>
