@@ -658,7 +658,39 @@ src
 
 
 
-
+food/
+│
+├── pages/
+│   ├── AddFood.jsx                 ✅
+│   ├── EditFood.jsx                NEW
+│   ├── FoodList.jsx                ✅
+│   └── ViewFood.jsx                NEW
+│
+├── components/
+│   ├── form/
+│   │    ├── FoodForm.jsx           NEW ⭐
+│   │    ├── FoodBasicInfo.jsx
+│   │    ├── FoodPricing.jsx
+│   │    ├── FoodCategorySection.jsx
+│   │    ├── FoodImageUpload.jsx
+│   │    └── FoodStatusSection.jsx
+│   │
+│   ├── modal/
+│   │    ├── DeleteFoodModal.jsx
+│   │    └── StatusConfirmationModal.jsx   ✅
+│   │
+│   └── table/
+│        └── FoodTable.jsx          ✅
+│
+├── hooks/
+│   ├── useFoodList.js              ✅
+│   ├── useFoodMetadata.js          ✅
+│   ├── useAddFood.js               NEW
+│   ├── useEditFood.js              NEW
+│   └── useViewFood.js              NEW
+│
+├── services/
+│   └── FoodService.js
 
 
 
