@@ -106,6 +106,17 @@ const AddFood = () => {
       [name]: value,
     }));
   };
+  /**
+   * Handles all the selected options
+   * @param {Event} selectedOptions
+   */
+  const handleFoodCategoriesChange = (selectedOptions) => {
+    setFood((previous) => ({
+      ...previous,
+
+      foodCategories: selectedOptions ?? [],
+    }));
+  };
 
   /**
    * Handles image selection.

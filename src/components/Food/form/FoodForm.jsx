@@ -1,4 +1,5 @@
 import PropTypes from "prop-types";
+import Select from "react-select/base";
 
 /**
  * =============================================================================
@@ -39,6 +40,7 @@ const FoodForm = ({
   loading,
 
   onChange,
+  onFoodCategoriesChange,
   onImageChange,
   onSubmit,
   onReset,
@@ -104,24 +106,18 @@ const FoodForm = ({
         </div>
 
         <div className="col-md-4 mb-3">
-          <label className="form-label">Food Category</label>
+          <label className="form-label">Food Categories</label>
 
-          <select
-            name="foodCategory"
-            className="form-select"
-            value={food.foodCategory}
-            onChange={onChange}
-            required>
-            <option value="">Select Food Category</option>
-
-            {metadata.foodCategories.map((category) => (
-              <option
-                key={category.value}
-                value={category.value}>
-                {category.label}
-              </option>
-            ))}
-          </select>
+          <Select
+            isMulti
+            name="foodCategories"
+            options={metadata.foodCategories}
+            value={food.foodCategories}
+            onChange={onFoodCategoriesChange}
+            placeholder="Select Food Categories"
+            closeMenuOnSelect={false}
+            hideSelectedOptions={false}
+          />
         </div>
 
         <div className="col-md-4 mb-3">
