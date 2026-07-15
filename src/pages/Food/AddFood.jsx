@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import FoodForm from "../../components/Food/form/FoodForm";
 import FoodMetadataService from "../../services/FoodMetadataService";
 import FoodService from "../../services/FoodService";
 
@@ -211,168 +212,22 @@ const AddFood = () => {
         </div>
 
         <div className="card-body">
-          <form onSubmit={handleSubmit}>
-            {/* Food Name */}
-            <div className="mb-3">
-              <label className="form-label">Food Name</label>
-
-              <input
-                type="text"
-                name="foodName"
-                className="form-control"
-                value={food.foodName}
-                onChange={handleChange}
-                placeholder="Enter food name"
-                required
-              />
-            </div>
-
-            {/* Description */}
-            <div className="mb-3">
-              <label className="form-label">Description</label>
-
-              <textarea
-                rows="4"
-                name="description"
-                className="form-control"
-                value={food.description}
-                onChange={handleChange}
-                placeholder="Enter food description"
-              />
-            </div>
-
-            <div className="row">
-              {/* Price */}
-              <div className="col-md-4 mb-3">
-                <label className="form-label">Price (₹)</label>
-
-                <input
-                  type="number"
-                  min="0"
-                  step="0.01"
-                  name="price"
-                  className="form-control"
-                  value={food.price}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-
-              {/* Food Category */}
-              <div className="col-md-4 mb-3">
-                <label className="form-label">Food Category</label>
-
-                <select
-                  name="foodCategory"
-                  className="form-select"
-                  value={food.foodCategory}
-                  onChange={handleChange}
-                  required>
-                  <option value="">Select Food Category</option>
-
-                  {foodCategories.map((category) => (
-                    <option
-                      key={category.value}
-                      value={category.value}>
-                      {category.label}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              {/* Diet Category */}
-              <div className="col-md-4 mb-3">
-                <label className="form-label">Diet Category</label>
-
-                <select
-                  name="dietCategory"
-                  className="form-select"
-                  value={food.dietCategory}
-                  onChange={handleChange}
-                  required>
-                  <option value="">Select Diet Category</option>
-
-                  {dietCategories.map((category) => (
-                    <option
-                      key={category.value}
-                      value={category.value}>
-                      {category.label}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </div>
-
-            {/* Cuisine Type */}
-            <div className="mb-3">
-              <label className="form-label">Cuisine Type</label>
-
-              <select
-                name="cuisineType"
-                className="form-select"
-                value={food.cuisineType}
-                onChange={handleChange}
-                required>
-                <option value="">Select Cuisine Type</option>
-
-                {cuisineCategories.map((cuisine) => (
-                  <option
-                    key={cuisine.value}
-                    value={cuisine.value}>
-                    {cuisine.label}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            {/* Image Upload */}
-            <div className="mb-3">
-              <label className="form-label">Food Image</label>
-
-              <input
-                type="file"
-                accept="image/*"
-                className="form-control"
-                onChange={handleImageChange}
-              />
-            </div>
-
-            {/* Image Preview */}
-            {preview && (
-              <div className="mb-3">
-                <img
-                  src={preview}
-                  alt="Food Preview"
-                  className="img-thumbnail"
-                  style={{
-                    width: "200px",
-                    height: "200px",
-                    objectFit: "cover",
-                  }}
-                />
-              </div>
-            )}
-
-            {/* Buttons */}
-            <div className="d-flex gap-2">
-              <button
-                type="submit"
-                disabled={loading}
-                className="btn btn-primary">
-                <i className="bi bi-check-circle me-2"></i>
-
-                {loading ? "Saving..." : "Add Food"}
-              </button>
-
-              <button
-                type="button"
-                onClick={handleReset}
-                className="btn btn-secondary">
-                <i className="bi bi-arrow-clockwise me-2"></i>
-                Reset
-              </button>
-            </div>
-          </form>
+          <FoodForm
+            food={food}
+            metadata={{
+              foodCategories,
+              dietCategories,
+              cuisineCategories,
+            }}
+            preview={preview}
+            loading={loading}
+            onChange={handleChange}
+            onImageChange={handleImageChange}
+            onSubmit={handleSubmit}
+            onReset={handleReset}
+            submitButtonText="Add Food"
+            resetButtonText="Reset"
+          />
         </div>
       </div>
     </div>
