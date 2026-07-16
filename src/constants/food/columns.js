@@ -109,6 +109,28 @@ export const FOOD_COLUMNS = Object.freeze([
   },
 
   {
+    id: "cuisine",
+
+    header: "Cuisine",
+
+    accessor: "cuisineType",
+
+    sortable: true,
+
+    filterable: true,
+
+    exportable: true,
+
+    visible: true,
+
+    width: "170px",
+
+    minWidth: "150px",
+
+    align: "start",
+  },
+
+  {
     id: "price",
 
     header: "Price",

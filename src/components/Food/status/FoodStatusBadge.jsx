@@ -12,11 +12,16 @@ import { getStatusBadgeClass } from "../../../utils/FoodStatusUtils";
  */
 
 const FoodStatusBadge = ({ status }) => {
-  const displayStatus = status ?? "UNKNOWN";
+  const displayStatus = status?.label ?? "UNKNOWN";
+
+  const badgeStatus = status?.value ?? "UNKNOWN";
 
   return (
-    <span className={`badge ${getStatusBadgeClass(displayStatus)}`}>
-      {displayStatus.replaceAll("_", " ")}
+    // <span className={`badge ${getStatusBadgeClass(displayStatus)}`}>
+    //   {displayStatus.replaceAll("_", " ")}
+    // </span>
+    <span className={`badge ${getStatusBadgeClass(badgeStatus)}`}>
+      {displayStatus}
     </span>
   );
 };

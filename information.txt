@@ -658,12 +658,85 @@ src
 
 
 
+food/
+│
+├── pages/
+│   ├── AddFood.jsx                 ✅
+│   ├── EditFood.jsx                NEW
+│   ├── FoodList.jsx                ✅
+│   └── ViewFood.jsx                NEW
+│
+├── components/
+│   ├── form/
+│   │    ├── FoodForm.jsx           NEW ⭐
+│   │    ├── FoodBasicInfo.jsx
+│   │    ├── FoodPricing.jsx
+│   │    ├── FoodCategorySection.jsx
+│   │    ├── FoodImageUpload.jsx
+│   │    └── FoodStatusSection.jsx
+│   │
+│   ├── modal/
+│   │    ├── DeleteFoodModal.jsx
+│   │    └── StatusConfirmationModal.jsx   ✅
+│   │
+│   └── table/
+│        └── FoodTable.jsx          ✅
+│
+├── hooks/
+│   ├── useFoodList.js              ✅
+│   ├── useFoodMetadata.js          ✅
+│   ├── useAddFood.js               NEW
+│   ├── useEditFood.js              NEW
+│   └── useViewFood.js              NEW
+│
+├── services/
+│   └── FoodService.js
 
 
 
 
-
-
+src/
+└── components/
+    └── common/
+        └── forms/
+            │
+            ├── input/
+            │   ├── CommonInput.jsx
+            │   └── index.js
+            │
+            ├── textarea/
+            │   ├── CommonTextarea.jsx
+            │   └── index.js
+            │
+            ├── select/
+            │   ├── CommonSelect.jsx
+            │   └── index.js
+            │
+            ├── checkbox/
+            │   ├── CommonCheckbox.jsx
+            │   └── index.js
+            │
+            ├── radio/
+            │   ├── CommonRadioGroup.jsx
+            │   └── index.js
+            │
+            ├── switch/
+            │   ├── CommonSwitch.jsx
+            │   └── index.js
+            │
+            ├── file/
+            │   ├── CommonFileUpload.jsx
+            │   └── index.js
+            │
+            ├── date/
+            │   ├── CommonDatePicker.jsx
+            │   └── index.js
+            │
+            ├── autocomplete/
+            │   ├── CommonAutocomplete.jsx
+            │   └── index.js
+            │
+            └── index.js
 
 
 
