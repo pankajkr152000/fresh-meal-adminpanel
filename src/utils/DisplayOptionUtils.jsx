@@ -63,3 +63,28 @@ export const getLabelByValue = (options = [], value) =>
  */
 export const getValueByLabel = (options = [], label) =>
   findOptionByLabel(options, label)?.value ?? "";
+
+/**
+ * Converts a collection of DisplayOptionResponse
+ * into a comma-separated label string.
+ */
+export const getDisplayLabels = (options = []) => {
+  return options.map((option) => option.label).join(", ");
+};
+
+export const getDisplayLabel = (option) => option?.label ?? "";
+
+/**
+ * Returns true if a DisplayOption collection contains the given value.
+ *
+ * @param {Array} options
+ * @param {string} value
+ * @returns {boolean}
+ */
+export const containsDisplayOption = (options = [], value) => {
+  if (!value) {
+    return true;
+  }
+
+  return options.some((option) => option.value === value);
+};

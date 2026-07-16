@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import FoodService from "../services/FoodService";
+import { containsDisplayOption } from "../utils/DisplayOptionUtils";
 import useDebounce from "./useDebounce";
 
 /**
@@ -218,9 +219,10 @@ const useFoodList = () => {
         !debouncedSearch ||
         food.foodName?.toLowerCase().includes(debouncedSearch.toLowerCase());
 
-      const matchesCategory =
-        !filters.foodCategory ||
-        food.foodCategory.value === filters.foodCategory;
+      const matchesCategory = containsDisplayOption(
+        food.foodCategory,
+        filters.foodCategory,
+      );
 
       const matchesCuisine =
         !filters.cuisineType || food.cuisineType.value === filters.cuisineType;

@@ -2,6 +2,7 @@ import PropTypes from "prop-types";
 
 import { getFoodImage, handleImageError } from "../../../utils/ImageUtils";
 
+import { getDisplayLabels } from "../../../utils/DisplayOptionUtils";
 import FoodStatusBadge from "../status/FoodStatusBadge";
 import FoodStatusDropdown from "../status/FoodStatusDropdown";
 
@@ -48,7 +49,7 @@ const FoodTableRow = ({ food, onStatusChange }) => {
 
       <td>{food.description}</td>
 
-      <td>{food.foodCategory?.label}</td>
+      <td>{getDisplayLabels(food.foodCategory)}</td>
 
       <td>{food.cuisineType?.label}</td>
 
