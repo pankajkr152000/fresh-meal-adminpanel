@@ -1,1 +1,1 @@
-export { default as CommonFileUpload } from "./CommonDatePicker";
+export { default as CommonDatePicker } from "./CommonDatePicker";

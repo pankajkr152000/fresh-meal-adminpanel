@@ -1,5 +1,11 @@
 import PropTypes from "prop-types";
-import Select from "react-select/base";
+
+import {
+  CommonFileUpload,
+  CommonInput,
+  CommonSelect,
+  CommonTextarea,
+} from "../../common/forms";
 
 /**
  * =============================================================================
@@ -8,20 +14,20 @@ import Select from "react-select/base";
  *
  * Purpose
  * -------
- * Reusable form used by both Add Food and Edit Food pages.
+ * Reusable form shared by Add Food and Edit Food pages.
  *
  * Responsibilities
  * ----------------
- * • Render all food input fields.
+ * • Render food fields.
  * • Render metadata dropdowns.
- * • Render image upload and preview.
- * • Render form action buttons.
+ * • Render image upload.
+ * • Render action buttons.
  *
  * Notes
  * -----
- * • This component contains no business logic.
- * • API calls, validation, state management and submission are delegated to
- *   the parent page.
+ * • Contains no business logic.
+ * • Uses reusable common form components.
+ * • All state management belongs to the parent page / hook.
  *
  * Used By
  * -------
@@ -36,188 +42,168 @@ import Select from "react-select/base";
 const FoodForm = ({
   food,
   metadata,
+
   preview,
-  loading,
+
+  loading = false,
 
   onChange,
-  onFoodCategoriesChange,
-  onImageChange,
   onSubmit,
   onReset,
+  onRemoveImage,
 
   submitButtonText = "Save Food",
   resetButtonText = "Reset",
 }) => {
+  // ===========================================================================
+  // Food
+  // ===========================================================================
+
+  const {
+    foodName,
+    description,
+    price,
+
+    foodCategories,
+
+    dietCategory,
+
+    cuisineType,
+  } = food;
+
+  // ===========================================================================
+  // Metadata
+  // ===========================================================================
+
+  const {
+    foodCategories: categoryOptions,
+    dietCategories,
+    cuisineCategories,
+  } = metadata;
+
   return (
     <form onSubmit={onSubmit}>
-      {/* ================================================================ */}
-      {/* Food Name */}
-      {/* ================================================================ */}
-
-      <div className="mb-3">
-        <label className="form-label">Food Name</label>
-
-        <input
-          type="text"
-          name="foodName"
-          className="form-control"
-          value={food.foodName}
-          onChange={onChange}
-          placeholder="Enter food name"
-          required
-        />
-      </div>
-
-      {/* ================================================================ */}
-      {/* Description */}
-      {/* ================================================================ */}
-
-      <div className="mb-3">
-        <label className="form-label">Description</label>
-
-        <textarea
-          rows="4"
-          name="description"
-          className="form-control"
-          value={food.description}
-          onChange={onChange}
-          placeholder="Enter food description"
-        />
-      </div>
-
-      {/* ================================================================ */}
-      {/* Price + Categories */}
-      {/* ================================================================ */}
+      {/* ==================================================================== */}
+      {/* Basic Information */}
+      {/* ==================================================================== */}
 
       <div className="row">
-        <div className="col-md-4 mb-3">
-          <label className="form-label">Price (₹)</label>
-
-          <input
-            type="number"
-            min="0"
-            step="0.01"
-            name="price"
-            className="form-control"
-            value={food.price}
-            onChange={onChange}
+        <div className="col-md-8 mb-3">
+          <CommonInput
+            label="Food Name"
+            name="foodName"
+            value={foodName}
+            placeholder="Enter food name"
             required
-          />
-        </div>
-
-        <div className="col-md-4 mb-3">
-          <label className="form-label">Food Categories</label>
-
-          <Select
-            isMulti
-            name="foodCategories"
-            options={metadata.foodCategories}
-            value={food.foodCategories}
-            onChange={onFoodCategoriesChange}
-            placeholder="Select Food Categories"
-            closeMenuOnSelect={false}
-            hideSelectedOptions={false}
-          />
-        </div>
-
-        <div className="col-md-4 mb-3">
-          <label className="form-label">Diet Category</label>
-
-          <select
-            name="dietCategory"
-            className="form-select"
-            value={food.dietCategory}
             onChange={onChange}
-            required>
-            <option value="">Select Diet Category</option>
-
-            {metadata.dietCategories.map((category) => (
-              <option
-                key={category.value}
-                value={category.value}>
-                {category.label}
-              </option>
-            ))}
-          </select>
-        </div>
-      </div>
-
-      {/* ================================================================ */}
-      {/* Cuisine */}
-      {/* ================================================================ */}
-
-      <div className="mb-3">
-        <label className="form-label">Cuisine Type</label>
-
-        <select
-          name="cuisineType"
-          className="form-select"
-          value={food.cuisineType}
-          onChange={onChange}
-          required>
-          <option value="">Select Cuisine Type</option>
-
-          {metadata.cuisineCategories.map((cuisine) => (
-            <option
-              key={cuisine.value}
-              value={cuisine.value}>
-              {cuisine.label}
-            </option>
-          ))}
-        </select>
-      </div>
-
-      {/* ================================================================ */}
-      {/* Image */}
-      {/* ================================================================ */}
-
-      <div className="mb-3">
-        <label className="form-label">Food Image</label>
-
-        <input
-          type="file"
-          accept="image/*"
-          className="form-control"
-          onChange={onImageChange}
-        />
-      </div>
-
-      {preview && (
-        <div className="mb-3">
-          <img
-            src={preview}
-            alt="Food Preview"
-            className="img-thumbnail"
-            style={{
-              width: "200px",
-              height: "200px",
-              objectFit: "cover",
-            }}
           />
         </div>
-      )}
 
-      {/* ================================================================ */}
-      {/* Buttons */}
-      {/* ================================================================ */}
+        <div className="col-md-4 mb-3">
+          <CommonInput
+            label="Price (₹)"
+            name="price"
+            type="number"
+            value={price}
+            min={0}
+            step="0.01"
+            required
+            onChange={onChange}
+          />
+        </div>
+      </div>
 
-      <div className="d-flex gap-2">
-        <button
-          type="submit"
-          disabled={loading}
-          className="btn btn-primary">
-          <i className="bi bi-check-circle me-2"></i>
+      {/* ==================================================================== */}
+      {/* Categories */}
+      {/* ==================================================================== */}
 
-          {loading ? "Saving..." : submitButtonText}
-        </button>
+      <div className="row">
+        <div className="col-md-6 mb-3">
+          <CommonSelect
+            label="Food Categories"
+            name="foodCategories"
+            value={foodCategories}
+            options={categoryOptions}
+            placeholder="Select Food Categories"
+            isMulti
+            isClearable
+            closeMenuOnSelect={false}
+            onChange={onChange}
+          />
+        </div>
 
+        <div className="col-md-3 mb-3">
+          <CommonSelect
+            label="Diet Category"
+            name="dietCategory"
+            value={dietCategory}
+            options={dietCategories}
+            placeholder="Select Diet Category"
+            required
+            onChange={onChange}
+          />
+        </div>
+
+        <div className="col-md-3 mb-3">
+          <CommonSelect
+            label="Cuisine Type"
+            name="cuisineType"
+            value={cuisineType}
+            options={cuisineCategories}
+            placeholder="Select Cuisine Type"
+            required
+            onChange={onChange}
+          />
+        </div>
+      </div>
+
+      {/* ==================================================================== */}
+      {/* Description */}
+      {/* ==================================================================== */}
+
+      <CommonTextarea
+        label="Description"
+        name="description"
+        value={description}
+        rows={4}
+        placeholder="Enter food description"
+        onChange={onChange}
+      />
+
+      {/* ==================================================================== */}
+      {/* Image */}
+      {/* ==================================================================== */}
+
+      <CommonFileUpload
+        label="Food Image"
+        name="image"
+        preview={preview}
+        onChange={onChange}
+        onRemove={onRemoveImage}
+      />
+
+      {/* ==================================================================== */}
+      {/* Actions */}
+      {/* ==================================================================== */}
+
+      <div className="d-flex justify-content-end gap-2 mt-4">
         <button
           type="button"
-          onClick={onReset}
-          className="btn btn-secondary">
+          className="btn btn-outline-secondary"
+          disabled={loading}
+          onClick={onReset}>
           <i className="bi bi-arrow-clockwise me-2"></i>
 
           {resetButtonText}
+        </button>
+
+        <button
+          type="submit"
+          className="btn btn-primary"
+          disabled={loading}>
+          <i className="bi bi-check-circle me-2"></i>
+
+          {loading ? "Saving..." : submitButtonText}
         </button>
       </div>
     </form>
@@ -225,7 +211,17 @@ const FoodForm = ({
 };
 
 FoodForm.propTypes = {
-  food: PropTypes.object.isRequired,
+  food: PropTypes.shape({
+    foodName: PropTypes.string,
+    description: PropTypes.string,
+    price: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+
+    foodCategories: PropTypes.array,
+
+    dietCategory: PropTypes.object,
+
+    cuisineType: PropTypes.object,
+  }).isRequired,
 
   metadata: PropTypes.shape({
     foodCategories: PropTypes.array.isRequired,
@@ -239,11 +235,11 @@ FoodForm.propTypes = {
 
   onChange: PropTypes.func.isRequired,
 
-  onImageChange: PropTypes.func.isRequired,
-
   onSubmit: PropTypes.func.isRequired,
 
   onReset: PropTypes.func.isRequired,
+
+  onRemoveImage: PropTypes.func,
 
   submitButtonText: PropTypes.string,
 

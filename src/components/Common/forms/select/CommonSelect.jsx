@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 import { memo } from "react";
 import Select from "react-select";
+import "./CommonSelect.css";
 
 /**
  * =============================================================================
