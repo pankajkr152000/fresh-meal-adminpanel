@@ -5,6 +5,7 @@ import FoodToolbar from "../../components/food/toolbar/FoodToolbar";
 
 import { TablePagination } from "../../components/common/data-display/tables";
 
+import { useNavigate } from "react-router-dom";
 import useFoodList from "../../hooks/useFoodList";
 import useFoodMetadata from "../../hooks/useFoodMetadata";
 
@@ -36,6 +37,8 @@ import useFoodMetadata from "../../hooks/useFoodMetadata";
  */
 
 const FoodList = () => {
+  // food view
+  const navigate = useNavigate();
   // ===========================================================================
   // Food Management
   // ===========================================================================
@@ -107,6 +110,14 @@ const FoodList = () => {
   } = useFoodMetadata();
 
   // ===========================================================================
+  // Navigation
+  // ===========================================================================
+
+  const handleViewFood = (food) => {
+    navigate(`/foods/view/${food.id}`);
+  };
+
+  // ===========================================================================
   // Toolbar
   // ===========================================================================
 
@@ -147,6 +158,7 @@ const FoodList = () => {
         sortDirection={sort.direction}
         onSort={changeSort}
         onStatusChange={selectStatus}
+        onView={handleViewFood}
         retryAction={error ? retryLoadingFoods : retryLoadingMetadata}
       />
 

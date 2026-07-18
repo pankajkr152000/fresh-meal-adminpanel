@@ -14,7 +14,7 @@
 import { ArrowLeft } from "lucide-react";
 import PropTypes from "prop-types";
 
-import Button from "../../buttons/Button";
+import PrimaryButton from "../../forms/buttons/PrimaryButton";
 
 const PageDetailHeader = ({ title, subtitle, status, onBack, children }) => {
   return (
@@ -23,12 +23,12 @@ const PageDetailHeader = ({ title, subtitle, status, onBack, children }) => {
 
       <div className="d-flex justify-content-between align-items-start flex-wrap gap-3">
         <div className="d-flex align-items-start gap-3">
-          <Button
+          <PrimaryButton
             variant="outline-secondary"
             onClick={onBack}
             icon={<ArrowLeft size={18} />}>
             Back
-          </Button>
+          </PrimaryButton>
 
           <div>
             <div className="d-flex align-items-center gap-2 flex-wrap">

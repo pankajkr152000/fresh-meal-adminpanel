@@ -1,13 +1,34 @@
-export const FIELD_TYPES = Object.freeze({
+/**
+ * ============================================================================
+ * Detail Field Types
+ * ============================================================================
+ *
+ * Purpose:
+ * Defines the supported field types for detail pages.
+ *
+ * These constants are used by feature-specific detail configurations
+ * (e.g. Food, Restaurant, Customer) to describe how a field should
+ * be presented.
+ *
+ * ============================================================================
+ */
+
+export const DETAIL_FIELD_TYPES = Object.freeze({
   TEXT: "text",
 
   CURRENCY: "currency",
+
+  BOOLEAN: "boolean",
 
   BADGE: "badge",
 
   BADGE_LIST: "badge-list",
 
-  BOOLEAN: "boolean",
+  DATE: "date",
+
+  DATE_TIME: "date-time",
+
+  NUMBER: "number",
 
   CUSTOM: "custom",
 });

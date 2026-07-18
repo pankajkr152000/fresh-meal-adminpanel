@@ -1,222 +1,141 @@
-// ============================================================================
-// File: foodDetails.config.js
-// Description:
-// Configuration for the View Food page.
-//
-// This file is the single source of truth for:
-// - Detail sections
-// - Display labels
-// - Backend field mapping
-// - Rendering types
-// - Visibility
-// - Empty value handling
-//
-// NOTE:
-// Do NOT put rendering logic inside this file.
-// Rendering decisions belong to DetailValue / DetailRow components.
-// ============================================================================
+import { DETAIL_FIELD_TYPES } from "../../constants/detailFieldTypes";
 
-import { DETAIL_FIELD_TYPES } from "../detailFieldTypes";
+import { formatCurrency } from "../../utils/formatCurrency";
+import { formatDateTime } from "../../utils/formatDateTime";
 
-// ============================================================================
-// Default Field Configuration
-// ============================================================================
-
-const DEFAULT_FIELD = Object.freeze({
-  visible: true,
-  copyable: false,
-  emptyValue: "-",
-});
-
-// ============================================================================
-// Basic Information
-// ============================================================================
-
-export const BASIC_INFORMATION_FIELDS = [
-  {
-    ...DEFAULT_FIELD,
-    label: "Food Name",
-    field: "foodName",
-    type: DETAIL_FIELD_TYPES.TEXT,
-  },
-  {
-    ...DEFAULT_FIELD,
-    label: "Description",
-    field: "description",
-    type: DETAIL_FIELD_TYPES.MULTILINE_TEXT,
-  },
-  {
-    ...DEFAULT_FIELD,
-    label: "Price",
-    field: "price",
-    type: DETAIL_FIELD_TYPES.CURRENCY,
-  },
-  {
-    ...DEFAULT_FIELD,
-    label: "Availability",
-    field: "isAvailable",
-    type: DETAIL_FIELD_TYPES.BOOLEAN,
-  },
-];
-
-// ============================================================================
-// Category Information
-// ============================================================================
-
-export const CATEGORY_INFORMATION_FIELDS = [
-  {
-    ...DEFAULT_FIELD,
-    label: "Food Category",
-    field: "foodCategory",
-    type: DETAIL_FIELD_TYPES.BADGE,
-  },
-  {
-    ...DEFAULT_FIELD,
-    label: "Diet Category",
-    field: "dietCategory",
-    type: DETAIL_FIELD_TYPES.BADGE,
-  },
-  {
-    ...DEFAULT_FIELD,
-    label: "Cuisine Type",
-    field: "cuisineType",
-    type: DETAIL_FIELD_TYPES.BADGE,
-  },
-  {
-    ...DEFAULT_FIELD,
-    label: "Category Group",
-    field: "categoryGroup",
-    type: DETAIL_FIELD_TYPES.BADGE,
-  },
-];
-
-// ============================================================================
-// Status Information
-// ============================================================================
-
-export const STATUS_INFORMATION_FIELDS = [
-  {
-    ...DEFAULT_FIELD,
-    label: "Current Status",
-    field: "foodStatus",
-    type: DETAIL_FIELD_TYPES.STATUS,
-  },
-  {
-    ...DEFAULT_FIELD,
-    label: "Previous Status",
-    field: "previousStatus",
-    type: DETAIL_FIELD_TYPES.STATUS,
-  },
-  {
-    ...DEFAULT_FIELD,
-    label: "Allowed Next Statuses",
-    field: "allowedStatuses",
-    type: DETAIL_FIELD_TYPES.BADGE_LIST,
-  },
-  {
-    ...DEFAULT_FIELD,
-    label: "Last Updated",
-    field: "updatedAt",
-    type: DETAIL_FIELD_TYPES.DATETIME,
-  },
-];
-
-// ============================================================================
-// Additional Information
-// ============================================================================
-
-export const ADDITIONAL_INFORMATION_FIELDS = [
-  {
-    ...DEFAULT_FIELD,
-    label: "Image Name",
-    field: "imageName",
-    type: DETAIL_FIELD_TYPES.TEXT,
-  },
-  {
-    ...DEFAULT_FIELD,
-    label: "Food Code",
-    field: "foodCode",
-    type: DETAIL_FIELD_TYPES.TEXT,
-  },
-  {
-    ...DEFAULT_FIELD,
-    label: "Popular",
-    field: "isPopular",
-    type: DETAIL_FIELD_TYPES.BOOLEAN,
-  },
-  {
-    ...DEFAULT_FIELD,
-    label: "Spice Level",
-    field: "spiceLevel",
-    type: DETAIL_FIELD_TYPES.TEXT,
-  },
-  {
-    ...DEFAULT_FIELD,
-    label: "Preparation Time",
-    field: "preparationTime",
-    type: DETAIL_FIELD_TYPES.TEXT,
-  },
-];
-
-// ============================================================================
-// Audit Information
-// ============================================================================
-
-export const AUDIT_INFORMATION_FIELDS = [
-  {
-    ...DEFAULT_FIELD,
-    label: "Created By",
-    field: "createdBy",
-    type: DETAIL_FIELD_TYPES.TEXT,
-  },
-  {
-    ...DEFAULT_FIELD,
-    label: "Created At",
-    field: "createdAt",
-    type: DETAIL_FIELD_TYPES.DATETIME,
-  },
-  {
-    ...DEFAULT_FIELD,
-    label: "Updated By",
-    field: "updatedBy",
-    type: DETAIL_FIELD_TYPES.TEXT,
-  },
-  {
-    ...DEFAULT_FIELD,
-    label: "Updated At",
-    field: "updatedAt",
-    type: DETAIL_FIELD_TYPES.DATETIME,
-  },
-];
-
-// ============================================================================
-// View Food Sections
-// ============================================================================
+/**
+ * ============================================================================
+ * Food Detail Configuration
+ * ============================================================================
+ *
+ * Purpose:
+ * Defines the sections and fields displayed on the View Food page.
+ *
+ * ============================================================================
+ */
 
 export const FOOD_DETAIL_SECTIONS = [
   {
     id: "basic-information",
+
     title: "Basic Information",
-    fields: BASIC_INFORMATION_FIELDS,
+
+    fields: [
+      {
+        label: "Food Name",
+        key: "foodName",
+        type: DETAIL_FIELD_TYPES.TEXT,
+      },
+
+      {
+        label: "Description",
+        key: "description",
+        type: DETAIL_FIELD_TYPES.TEXT,
+      },
+
+      {
+        label: "Price",
+        key: "price",
+        type: DETAIL_FIELD_TYPES.CURRENCY,
+        formatter: formatCurrency,
+      },
+
+      {
+        label: "Availability",
+        key: "isAvailable",
+        type: DETAIL_FIELD_TYPES.BOOLEAN,
+      },
+    ],
   },
+
   {
-    id: "category-information",
+    id: "categories",
+
     title: "Categories",
-    fields: CATEGORY_INFORMATION_FIELDS,
+
+    fields: [
+      {
+        label: "Food Category",
+        key: "foodCategory.label",
+        type: DETAIL_FIELD_TYPES.BADGE,
+      },
+
+      {
+        label: "Diet Category",
+        key: "dietCategory.label",
+        type: DETAIL_FIELD_TYPES.BADGE,
+      },
+
+      {
+        label: "Cuisine Type",
+        key: "cuisineType.label",
+        type: DETAIL_FIELD_TYPES.BADGE,
+      },
+
+      {
+        label: "Category Group",
+        key: "categoryGroup.label",
+        type: DETAIL_FIELD_TYPES.BADGE,
+      },
+    ],
   },
+
   {
     id: "status-information",
+
     title: "Status Information",
-    fields: STATUS_INFORMATION_FIELDS,
+
+    fields: [
+      {
+        label: "Current Status",
+        key: "foodStatus.label",
+        type: DETAIL_FIELD_TYPES.BADGE,
+      },
+
+      {
+        label: "Previous Status",
+        key: "previousStatus.label",
+        type: DETAIL_FIELD_TYPES.BADGE,
+      },
+
+      {
+        label: "Allowed Next Statuses",
+        key: "allowedStatuses",
+        type: DETAIL_FIELD_TYPES.BADGE_LIST,
+      },
+
+      {
+        label: "Last Updated",
+        key: "updatedAt",
+        type: DETAIL_FIELD_TYPES.DATE_TIME,
+        formatter: formatDateTime,
+      },
+    ],
   },
+
   {
     id: "additional-information",
+
     title: "Additional Information",
-    fields: ADDITIONAL_INFORMATION_FIELDS,
-  },
-  {
-    id: "audit-information",
-    title: "Audit Information",
-    fields: AUDIT_INFORMATION_FIELDS,
+
+    fields: [
+      {
+        label: "Food ID",
+        key: "id",
+        type: DETAIL_FIELD_TYPES.TEXT,
+      },
+
+      {
+        label: "Image Name",
+        key: "imageName",
+        type: DETAIL_FIELD_TYPES.TEXT,
+      },
+
+      {
+        label: "Image URL",
+        key: "imageUrl",
+        type: DETAIL_FIELD_TYPES.TEXT,
+      },
+    ],
   },
 ];

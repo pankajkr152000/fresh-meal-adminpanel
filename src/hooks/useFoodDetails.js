@@ -1,5 +1,6 @@
 // ===========================================================================
 // File: useFoodDetails.js
+// File location: src/hooks/useFoodDetails.js
 // Description:
 // Custom hook responsible for loading and managing a single food entity.
 //
@@ -15,7 +16,7 @@
 // ===========================================================================
 
 import { useCallback, useEffect, useState } from "react";
-import { FoodService } from "../services";
+import FoodService from "../services/FoodService";
 
 // ===========================================================================
 // Hook

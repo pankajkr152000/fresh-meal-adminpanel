@@ -4,7 +4,7 @@ import DetailRow from "../display/DetailRow";
 import DetailSection from "../display/DetailSection";
 import DetailCard from "../layout/DetailCard";
 
-import { formatDateTime } from "../../../utils/formatDateTime";
+import { formatDateTime } from "../../../../utils/formatDateTime";
 
 /**
  * ============================================================================
