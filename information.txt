@@ -740,10 +740,98 @@ src/
 
 
 
+src/
+
+components/
+
+├── details/
+│
+├── layout/
+│   ├── DetailPage.jsx
+│   ├── DetailHeader.jsx
+│   ├── DetailGrid.jsx
+│   ├── DetailSection.jsx
+│   ├── DetailActions.jsx
+│   └── DetailCard.jsx
+│
+├── display/
+│   ├── DetailRow.jsx
+│   ├── DetailLabel.jsx
+│   ├── DetailValue.jsx
+│   ├── DetailBadge.jsx
+│   ├── DetailList.jsx
+│   ├── DetailDivider.jsx
+│   └── EmptyValue.jsx
+│
+├── media/
+│   ├── ImagePreview.jsx
+│   ├── ImagePlaceholder.jsx
+│   └── ImageViewerModal.jsx
+│
+├── audit/
+│   ├── AuditCard.jsx
+│   └── AuditRow.jsx
+│
+├── loading/
+│   └── DetailSkeleton.jsx
+│
+└── feedback/
+    └── DetailNotFound.jsx
 
 
+src/
+└── components/
+    └── common/
+        └── details/
 
+            📂 layout/
+            ├── ✅ DetailPage.jsx
+            ├── ✅ DetailContainer.jsx
+            ├── ✅ DetailGrid.jsx
+            ├── ✅ DetailColumn.jsx
+            └── ✅ DetailCard.jsx
 
+            📂 card/
+            ├── ✅ DetailHeader.jsx
+            ├── ✅ DetailBody.jsx
+            └── ✅ DetailFooter.jsx
+
+            📂 display/
+            ├── ✅ DetailSection.jsx
+            ├── ✅ DetailRow.jsx
+            ├── ✅ DetailLabel.jsx
+            ├── ✅ DetailValue.jsx
+            ├── ✅ DetailBadge.jsx
+            ├── ✅ DetailDivider.jsx
+            ├── ✅ DetailActions.jsx
+            └── ✅ EmptyValue.jsx
+
+            📂 media/
+            ├── ⬜ ImagePreview.jsx
+            ├── ⬜ ImagePlaceholder.jsx
+            └── ⬜ ImageViewerModal.jsx
+
+            📂 feedback/
+            └── ⬜ DetailNotFound.jsx
+
+            📂 loading/
+            └── ⬜ DetailSkeleton.jsx
+
+            📂 audit/
+            ├── ⬜ AuditCard.jsx
+            └── ⬜ AuditRow.jsx
+
+            📂 utils/
+            ├── ✅ buildDetailCardClass.js
+            ├── ⬜ buildImageClass.js
+            ├── ⬜ formatCurrency.js
+            ├── ⬜ formatDate.js
+            ├── ⬜ formatDateTime.js
+            ├── ⬜ formatNumber.js
+            ├── ⬜ formatFileSize.js
+            └── ⬜ index.js
+
+            📜 index.js
 
 
 
