@@ -1,22 +1,3 @@
-// ============================================================================
-// File: DetailCardRenderer.jsx
-// Description:
-// Generic renderer for detail cards.
-//
-// This component renders a complete detail card based on the supplied section
-// configuration and entity data.
-//
-// It is completely reusable across:
-//
-// - Food
-// - Restaurant
-// - Category
-// - User
-// - Offer
-// - Order
-//
-// ============================================================================
-
 import PropTypes from "prop-types";
 
 import DetailBody from "../card/DetailBody";
@@ -24,9 +5,21 @@ import DetailHeader from "../card/DetailHeader";
 import DetailCard from "../layout/DetailCard";
 import DetailRow from "./DetailRow";
 
-// ============================================================================
-// Component
-// ============================================================================
+import { getNestedValue } from "../../../../utils/DisplayOptionUtils";
+
+/**
+ * ============================================================================
+ * Generic Detail Card Renderer
+ *
+ * Renders a detail card using configuration.
+ *
+ * Supports:
+ * - Simple properties
+ * - Nested properties
+ * - Arrays
+ * - Custom formatters
+ * ============================================================================
+ */
 
 const DetailCardRenderer = ({ section, data }) => {
   if (!section) {
@@ -44,10 +37,11 @@ const DetailCardRenderer = ({ section, data }) => {
       <DetailBody>
         {visibleFields.map((field) => (
           <DetailRow
-            key={field.field}
+            key={field.key}
             label={field.label}
-            value={data?.[field.field]}
+            value={getNestedValue(data, field.key)}
             type={field.type}
+            formatter={field.formatter}
             emptyValue={field.emptyValue}
             copyable={field.copyable}
           />
@@ -59,10 +53,6 @@ const DetailCardRenderer = ({ section, data }) => {
 
 export default DetailCardRenderer;
 
-// ============================================================================
-// PropTypes
-// ============================================================================
-
 DetailCardRenderer.propTypes = {
   section: PropTypes.shape({
     title: PropTypes.string.isRequired,
@@ -71,9 +61,11 @@ DetailCardRenderer.propTypes = {
       PropTypes.shape({
         label: PropTypes.string.isRequired,
 
-        field: PropTypes.string.isRequired,
+        key: PropTypes.string.isRequired,
 
         type: PropTypes.string.isRequired,
+
+        formatter: PropTypes.func,
 
         visible: PropTypes.bool,
 

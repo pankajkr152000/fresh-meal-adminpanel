@@ -2,21 +2,54 @@ import PropTypes from "prop-types";
 
 import EmptyValue from "./EmptyValue";
 
-/**
- * ============================================================================
- * Component: DetailValue
- * ============================================================================
- */
+import { DETAIL_FIELD_TYPES } from "../../../../constants/detailFieldTypes";
 
-const DetailValue = ({ value, className = "" }) => {
-  const isEmpty = value === null || value === undefined || value === "";
+const DetailValue = ({ value, type, formatter, className = "" }) => {
+  if (value === null || value === undefined || value === "") {
+    return (
+      <div className={className}>
+        <EmptyValue />
+      </div>
+    );
+  }
 
-  return <div className={className}>{isEmpty ? <EmptyValue /> : value}</div>;
+  let displayValue = value;
+
+  // Apply formatter first
+  if (formatter) {
+    displayValue = formatter(displayValue);
+  }
+
+  // Render object {label,value}
+  if (
+    displayValue &&
+    typeof displayValue === "object" &&
+    !Array.isArray(displayValue)
+  ) {
+    displayValue = displayValue.label ?? JSON.stringify(displayValue);
+  }
+
+  // Render arrays
+  if (Array.isArray(displayValue)) {
+    displayValue = displayValue
+      .map((item) =>
+        typeof item === "object" ? (item.label ?? item.value) : item,
+      )
+      .join(", ");
+  }
+
+  // Boolean
+  if (type === DETAIL_FIELD_TYPES.BOOLEAN) {
+    displayValue = value ? "Yes" : "No";
+  }
+
+  return <div className={className}>{displayValue}</div>;
 };
 
 DetailValue.propTypes = {
-  value: PropTypes.node,
-
+  value: PropTypes.any,
+  type: PropTypes.string,
+  formatter: PropTypes.func,
   className: PropTypes.string,
 };
 

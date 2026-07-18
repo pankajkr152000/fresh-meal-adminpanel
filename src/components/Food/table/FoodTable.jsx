@@ -47,6 +47,7 @@ const FoodTable = ({
 
   // ✅ NEW
   retryAction,
+  onView,
 }) => {
   console.log("Inside FoodTable Component");
   return (
@@ -63,11 +64,13 @@ const FoodTable = ({
       onSort={onSort}
       // ✅ NEW
       retryAction={retryAction}
+      onView={onView}
       renderRow={(food) => (
         <FoodTableRow
           key={food.id}
           food={food}
           onStatusChange={onStatusChange}
+          onView={onView}
         />
       )}
     />
@@ -95,6 +98,8 @@ FoodTable.propTypes = {
 
   // ✅ NEW
   retryAction: PropTypes.func,
+  // ✅ NEW
+  onView: PropTypes.func,
 };
 
 export default FoodTable;

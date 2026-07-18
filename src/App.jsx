@@ -4,6 +4,7 @@ import { ToastContainer } from "react-toastify";
 import Menubar from "./components/Menubar/Menubar";
 import Sidebar from "./components/Sidebar/Sidebar";
 import ROUTES from "./constants/RouteConstants";
+import { ViewFood } from "./pages/Food";
 import AddFood from "./pages/Food/AddFood";
 import FoodList from "./pages/Food/FoodList";
 import Orders from "./pages/Orders/Orders";
@@ -47,6 +48,10 @@ const App = () => {
             <Route
               path={ROUTES.HOME}
               element={<FoodList />}
+            />
+            <Route
+              path={ROUTES.VIEW_FOOD}
+              element={<ViewFood />}
             />
           </Routes>
         </div>

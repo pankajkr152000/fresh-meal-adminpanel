@@ -42,7 +42,7 @@ export const FOOD_DETAIL_SECTIONS = [
 
       {
         label: "Availability",
-        key: "isAvailable",
+        key: "available",
         type: DETAIL_FIELD_TYPES.BOOLEAN,
       },
     ],
@@ -57,7 +57,7 @@ export const FOOD_DETAIL_SECTIONS = [
       {
         label: "Food Category",
         key: "foodCategory.label",
-        type: DETAIL_FIELD_TYPES.BADGE,
+        type: DETAIL_FIELD_TYPES.BADGE_LIST,
       },
 
       {
@@ -75,7 +75,7 @@ export const FOOD_DETAIL_SECTIONS = [
       {
         label: "Category Group",
         key: "categoryGroup.label",
-        type: DETAIL_FIELD_TYPES.BADGE,
+        type: DETAIL_FIELD_TYPES.BADGE_LIST,
       },
     ],
   },
@@ -94,7 +94,7 @@ export const FOOD_DETAIL_SECTIONS = [
 
       {
         label: "Previous Status",
-        key: "previousStatus.label",
+        key: "previousStatus",
         type: DETAIL_FIELD_TYPES.BADGE,
       },
 

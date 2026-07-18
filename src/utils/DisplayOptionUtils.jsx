@@ -88,3 +88,34 @@ export const containsDisplayOption = (options = [], value) => {
 
   return options.some((option) => option.value === value);
 };
+
+/**
+ * ============================================================================
+ * Returns nested value using dot notation.
+ *
+ * Supports:
+ *
+ * foodStatus.label
+ * dietCategory.label
+ *
+ * Arrays:
+ *
+ * foodCategory.label
+ * categoryGroup.label
+ *
+ * ============================================================================
+ */
+
+export const getNestedValue = (object, path) => {
+  if (!object || !path) {
+    return undefined;
+  }
+
+  return path.split(".").reduce((current, key) => {
+    if (Array.isArray(current)) {
+      return current.map((item) => item?.[key]).filter(Boolean);
+    }
+
+    return current?.[key];
+  }, object);
+};

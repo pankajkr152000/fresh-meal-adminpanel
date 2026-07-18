@@ -113,8 +113,9 @@ const FoodList = () => {
   // Navigation
   // ===========================================================================
 
-  const handleViewFood = (food) => {
-    navigate(`/foods/view/${food.id}`);
+  const handleViewFood = (foodId) => {
+    console.log("Received in handleViewFood in FoodList :", foodId);
+    navigate(`/foods/view/${foodId}`);
   };
 
   // ===========================================================================

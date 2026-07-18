@@ -47,12 +47,18 @@ const FoodService = {
   },
 
   /**
+   * Get Food By Id
    *
-   * @param {*} foodId
-   * @returns
+   * @param {string} foodId
+   * @returns {Promise<Object>}
    */
   getFoodById: async (foodId) => {
-    const response = await apiClient.get(API.FOOD.GET_FOOD_BY_ID(foodId));
+    console.log("foodId =", foodId);
+    console.log("typeof =", typeof foodId);
+    console.log("food foodid =", foodId.id);
+    const response = await apiClient.post(API.FOOD.GET_FOOD_BY_ID, {
+      foodId: foodId,
+    });
 
     return response.data;
   },
