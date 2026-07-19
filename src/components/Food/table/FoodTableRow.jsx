@@ -2,6 +2,7 @@ import PropTypes from "prop-types";
 
 import { getFoodImage, handleImageError } from "../../../utils/ImageUtils";
 
+import { getDisplayLabels } from "../../../utils/DisplayOptionUtils";
 import FoodStatusBadge from "../status/FoodStatusBadge";
 import FoodStatusDropdown from "../status/FoodStatusDropdown";
 
@@ -29,8 +30,9 @@ console.log("Inside FoodTableRow Component");
  * -----------------------------------------------------------------------------
  */
 
-const FoodTableRow = ({ food, onStatusChange }) => {
+const FoodTableRow = ({ food, onStatusChange, onView }) => {
   console.log("Inside FoodTableRow Component");
+  console.log("Food Table Row food id " + food.id);
   return (
     <tr>
       <td className="text-center">
@@ -48,7 +50,7 @@ const FoodTableRow = ({ food, onStatusChange }) => {
 
       <td>{food.description}</td>
 
-      <td>{food.foodCategory?.label}</td>
+      <td>{getDisplayLabels(food.foodCategory)}</td>
 
       <td>{food.cuisineType?.label}</td>
 
@@ -61,10 +63,24 @@ const FoodTableRow = ({ food, onStatusChange }) => {
 
       {/* Actions Column */}
       <td className="text-center">
-        <FoodStatusDropdown
-          allowedStatuses={food.allowedStatuses}
-          onStatusChange={(status) => onStatusChange(food, status)}
-        />
+        <div className="d-flex flex-column align-items-center gap-2">
+          <button
+            type="button"
+            className="btn btn-sm btn-outline-primary w-100"
+            onClick={() => {
+              console.log("Clicked Food ID:", food.id);
+              onView(food.id);
+            }}>
+            View
+          </button>
+
+          <div className="w-100">
+            <FoodStatusDropdown
+              allowedStatuses={food.allowedStatuses}
+              onStatusChange={(status) => onStatusChange(food, status)}
+            />
+          </div>
+        </div>
       </td>
     </tr>
   );
@@ -74,6 +90,8 @@ FoodTableRow.propTypes = {
   food: PropTypes.object.isRequired,
 
   onStatusChange: PropTypes.func.isRequired,
+
+  onView: PropTypes.string,
 };
 
 export default FoodTableRow;

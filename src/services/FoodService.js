@@ -4,7 +4,7 @@ import apiClient from "./ApiClient";
 
 /**
  * Food Service.
- *
+ * File location : src/services/FoodService.js
  * Responsibilities:
  * - Create food items.
  * - Update food items.
@@ -43,6 +43,23 @@ const FoodService = {
     const response = await apiClient.patch(API.FOOD.UPDATE_FOOD_STATUS(id), {
       status,
     });
+    return response.data;
+  },
+
+  /**
+   * Get Food By Id
+   *
+   * @param {string} foodId
+   * @returns {Promise<Object>}
+   */
+  getFoodById: async (foodId) => {
+    console.log("foodId =", foodId);
+    console.log("typeof =", typeof foodId);
+    console.log("food foodid =", foodId.id);
+    const response = await apiClient.post(API.FOOD.GET_FOOD_BY_ID, {
+      foodId: foodId,
+    });
+
     return response.data;
   },
 };
