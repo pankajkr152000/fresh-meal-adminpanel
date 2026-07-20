@@ -37,6 +37,7 @@ import EmptyState from "../../components/Common/details/feedback/EmptyState";
 import ErrorAlert from "../../components/Common/details/feedback/ErrorAlert";
 import LoadingSpinner from "../../components/Common/details/feedback/LoadingSpinner";
 
+import { NavigationCard } from "../../components/Food/details";
 import FoodHero from "../../components/Food/details/FoodHero";
 
 const ViewFood = () => {
@@ -58,7 +59,8 @@ const ViewFood = () => {
   // Data
   // ==========================================================================
 
-  const { food, loading, error, hasFood, refreshFood } = useFoodDetails(foodId);
+  const { food, navigation, loading, error, hasFood, refreshFood } =
+    useFoodDetails(foodId);
 
   // ==========================================================================
   // Sections
@@ -81,6 +83,12 @@ const ViewFood = () => {
 
   const handleEdit = () => {
     navigate(`/foods/edit/${food.id}`);
+  };
+
+  const handleNavigate = (id) => {
+    if (!id) return;
+
+    navigate(`/foods/view/${id}`);
   };
 
   const handleStatusChange = () => {
@@ -235,6 +243,19 @@ const ViewFood = () => {
           </DetailColumn>
         </DetailGrid>
       </DetailContainer>
+
+      {/* ================================================================ */}
+      {/* Row 4 - Navigation */}
+      {/* ================================================================ */}
+
+      <DetailGrid className="mt-1">
+        <DetailColumn>
+          <NavigationCard
+            navigation={navigation}
+            onNavigate={handleNavigate}
+          />
+        </DetailColumn>
+      </DetailGrid>
 
       {/* ================================================================ */}
       {/* Image Viewer */}

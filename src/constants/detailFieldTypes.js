@@ -28,6 +28,8 @@ export const DETAIL_FIELD_TYPES = Object.freeze({
 
   DATE_TIME: "date-time",
 
+  DAY_DATE_TIME: "day-date-time",
+
   NUMBER: "number",
 
   CUSTOM: "custom",

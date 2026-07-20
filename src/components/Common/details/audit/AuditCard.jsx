@@ -4,7 +4,10 @@ import DetailRow from "../display/DetailRow";
 import DetailSection from "../display/DetailSection";
 import DetailCard from "../layout/DetailCard";
 
-import { formatDateTime } from "../../../../utils/formatDateTime";
+import {
+  formatDateTime,
+  formatDayDateTime,
+} from "../../../../utils/formatDateTime";
 
 /**
  * ============================================================================
@@ -39,7 +42,7 @@ const AuditCard = ({
 
         <DetailRow
           label="Created At"
-          value={formatDateTime(createdAt)}
+          value={formatDayDateTime(createdAt)}
         />
 
         <DetailRow

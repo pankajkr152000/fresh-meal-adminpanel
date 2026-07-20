@@ -1,11 +1,13 @@
 // ===========================================================================
 // File: useFoodDetails.js
 // File location: src/hooks/useFoodDetails.js
+//
 // Description:
 // Custom hook responsible for loading and managing a single food entity.
 //
 // Responsibilities:
 // - Load food details
+// - Load previous / next navigation
 // - Manage loading state
 // - Manage error state
 // - Expose refresh capability
@@ -29,6 +31,8 @@ const useFoodDetails = (foodId) => {
 
   const [food, setFood] = useState(null);
 
+  const [navigation, setNavigation] = useState(null);
+
   const [loading, setLoading] = useState(true);
 
   const [error, setError] = useState(null);
@@ -40,6 +44,7 @@ const useFoodDetails = (foodId) => {
   const loadFood = useCallback(async () => {
     if (!foodId) {
       setFood(null);
+      setNavigation(null);
       setError("Food id is required.");
       setLoading(false);
       return;
@@ -51,11 +56,17 @@ const useFoodDetails = (foodId) => {
 
       const response = await FoodService.getFoodById(foodId);
 
-      setFood(response?.data ?? null);
+      // ApiResponse
+      const viewResponse = response?.data;
+
+      // EntityViewResponse
+      setFood(viewResponse?.data ?? null);
+      setNavigation(viewResponse?.navigation ?? null);
     } catch (exception) {
       console.error("Failed to load food details:", exception);
 
       setFood(null);
+      setNavigation(null);
 
       setError(
         exception?.response?.data?.message ||
@@ -90,6 +101,7 @@ const useFoodDetails = (foodId) => {
   return {
     // Data
     food,
+    navigation,
 
     // State
     loading,
