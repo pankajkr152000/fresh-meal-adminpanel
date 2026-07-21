@@ -101,6 +101,7 @@ const ViewFood = () => {
 
   const openImageViewer = () => {
     if (food?.imageUrl) {
+      console.log("Image URL under view food :" + food.imageUrl);
       setShowImageViewer(true);
     }
   };

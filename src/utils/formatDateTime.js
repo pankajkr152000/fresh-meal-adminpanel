@@ -26,16 +26,9 @@ export const formatDateTime = (value, locale = "en-IN") => {
 };
 
 /**
- * ============================================================================
- * Date Time Utilities
- * ============================================================================
- */
-
-/**
- * Formats ISO date-time into:
+ * Formats date-time as:
  *
- * Example:
- * Sat, 19 Jul 2026, 03:12 AM
+ * Sun, 19 Jul 2026, 03:04 AM
  *
  * @param {string} value
  * @returns {string}
@@ -51,7 +44,7 @@ export const formatDayDateTime = (value) => {
     return value;
   }
 
-  return new Intl.DateTimeFormat("en-IN", {
+  const parts = new Intl.DateTimeFormat("en-IN", {
     weekday: "short",
     day: "2-digit",
     month: "short",
@@ -59,9 +52,14 @@ export const formatDayDateTime = (value) => {
     hour: "2-digit",
     minute: "2-digit",
     hour12: true,
-  }).format(date);
+  }).formatToParts(date);
+
+  const get = (type) => parts.find((part) => part.type === type)?.value ?? "";
+
+  return `${get("weekday")}, ${get("day")} ${get("month")} ${get("year")}, ${get("hour")}:${get("minute")} ${get("dayPeriod")}`;
 };
 
 export default {
   formatDateTime,
+  formatDayDateTime,
 };

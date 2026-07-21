@@ -4,7 +4,13 @@ import EmptyValue from "./EmptyValue";
 
 import { DETAIL_FIELD_TYPES } from "../../../../constants/detailFieldTypes";
 
-const DetailValue = ({ value, type, formatter, className = "" }) => {
+const DetailValue = ({
+  value,
+  type,
+  formatter,
+  linkText = "",
+  className = "",
+}) => {
   if (value === null || value === undefined || value === "") {
     return (
       <div className={className}>
@@ -41,6 +47,39 @@ const DetailValue = ({ value, type, formatter, className = "" }) => {
   // Boolean
   if (type === DETAIL_FIELD_TYPES.BOOLEAN) {
     displayValue = value ? "Yes" : "No";
+  }
+
+  // // Link
+  // if (type === DETAIL_FIELD_TYPES.LINK) {
+  //   return (
+  //     <a
+  //       href={value}
+  //       target="_blank"
+  //       rel="noopener noreferrer"
+  //       className="text-decoration-none fw-semibold">
+  //       🔗 Open Image
+  //     </a>
+  //   );
+  // }
+  // Link
+  if (type === DETAIL_FIELD_TYPES.LINK) {
+    return (
+      <a
+        href={value}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="
+        d-inline-flex
+        align-items-center
+        gap-2
+        fw-semibold
+        text-decoration-none
+        text-primary
+      ">
+        <i className="bi bi-box-arrow-up-right"></i>
+        {linkText || "Open Link"}
+      </a>
+    );
   }
 
   return <div className={className}>{displayValue}</div>;

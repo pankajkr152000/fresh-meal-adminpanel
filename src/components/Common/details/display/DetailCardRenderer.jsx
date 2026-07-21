@@ -42,8 +42,11 @@ const DetailCardRenderer = ({ section, data }) => {
             value={getNestedValue(data, field.key)}
             type={field.type}
             formatter={field.formatter}
+            render={field.render}
+            data={data}
             emptyValue={field.emptyValue}
             copyable={field.copyable}
+            linkText={field.linkText}
           />
         ))}
       </DetailBody>

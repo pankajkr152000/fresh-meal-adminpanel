@@ -134,7 +134,8 @@ export const FOOD_DETAIL_SECTIONS = [
       {
         label: "Image URL",
         key: "imageUrl",
-        type: DETAIL_FIELD_TYPES.TEXT,
+        type: DETAIL_FIELD_TYPES.LINK,
+        linkText: "View Food Image",
       },
     ],
   },

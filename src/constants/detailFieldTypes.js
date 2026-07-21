@@ -32,5 +32,7 @@ export const DETAIL_FIELD_TYPES = Object.freeze({
 
   NUMBER: "number",
 
+  LINK: "link",
+
   CUSTOM: "custom",
 });

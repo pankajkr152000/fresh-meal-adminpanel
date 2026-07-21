@@ -18,10 +18,13 @@ import DetailValue from "./DetailValue";
 const DetailRow = ({
   label,
   value,
+  type,
+  formatter,
   required = false,
   className = "",
   labelClassName = "",
   valueClassName = "",
+  linkText,
 }) => {
   return (
     <div
@@ -42,7 +45,10 @@ const DetailRow = ({
       <div className="col-12 col-md-8">
         <DetailValue
           value={value}
+          type={type}
+          formatter={formatter}
           className={valueClassName}
+          linkText={linkText}
         />
       </div>
     </div>
@@ -53,6 +59,10 @@ DetailRow.propTypes = {
   label: PropTypes.node.isRequired,
 
   value: PropTypes.node,
+
+  type: PropTypes.string,
+
+  formatter: PropTypes.func,
 
   required: PropTypes.bool,
 
