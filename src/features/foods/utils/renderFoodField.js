@@ -51,6 +51,7 @@ export default function renderFoodField(field, food) {
     case DETAIL_FIELD_TYPES.CURRENCY:
     case DETAIL_FIELD_TYPES.DATE:
     case DETAIL_FIELD_TYPES.DATE_TIME:
+    case DETAIL_FIELD_TYPES.DAY_DATE_TIME:
       return formattedValue;
 
     case DETAIL_FIELD_TYPES.BOOLEAN:
@@ -73,6 +74,10 @@ export default function renderFoodField(field, food) {
       );
 
     case DETAIL_FIELD_TYPES.CUSTOM:
+      console.log("Field:", field.label);
+      console.log("Formatter:", field.formatter);
+      console.log("Original:", value);
+      console.log("Formatted:", formattedValue);
       return field.render ? field.render(food) : <EmptyValue />;
 
     default:

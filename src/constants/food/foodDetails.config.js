@@ -1,7 +1,7 @@
 import { DETAIL_FIELD_TYPES } from "../../constants/detailFieldTypes";
 
 import { formatCurrency } from "../../utils/formatCurrency";
-import { formatDateTime } from "../../utils/formatDateTime";
+import { formatDayDateTime } from "../../utils/formatDateTime";
 
 /**
  * ============================================================================
@@ -107,8 +107,8 @@ export const FOOD_DETAIL_SECTIONS = [
       {
         label: "Last Updated",
         key: "updatedAt",
-        type: DETAIL_FIELD_TYPES.DATE_TIME,
-        formatter: formatDateTime,
+        type: DETAIL_FIELD_TYPES.DAY_DATE_TIME,
+        formatter: formatDayDateTime,
       },
     ],
   },
@@ -134,7 +134,8 @@ export const FOOD_DETAIL_SECTIONS = [
       {
         label: "Image URL",
         key: "imageUrl",
-        type: DETAIL_FIELD_TYPES.TEXT,
+        type: DETAIL_FIELD_TYPES.LINK,
+        linkText: "View Food Image",
       },
     ],
   },

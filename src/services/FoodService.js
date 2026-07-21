@@ -1,63 +1,86 @@
 import axios from "axios";
+import apiClient from "../api/apiClient";
 import { API } from "../constants/ApiConstants";
-import apiClient from "./ApiClient";
 
 /**
- * Food Service.
- * File location : src/services/FoodService.js
+ * ============================================================================
+ * Food Service
+ * ============================================================================
+ *
  * Responsibilities:
- * - Create food items.
- * - Update food items.
- * - Delete food items.
- * - Retrieve food information.
+ * - Create food
+ * - Retrieve foods
+ * - Retrieve food details
+ * - Update food status
  *
  * Future Enhancements:
- * - Pagination support.
- * - Search support.
- * - Bulk upload support.
+ * - Pagination
+ * - Search
+ * - Bulk Upload
+ * ============================================================================
  */
+
 const FoodService = {
   /**
-   * Creates a new food item.
+   * Create Food
    *
    * @param {FormData} formData
    * @returns {Promise<Object>}
    */
   addFood: async (formData) => {
     const response = await axios.post(API.FOOD.ADD_FOOD, formData);
-
     return response.data;
   },
+
+  /**
+   * Retrieve All Foods
+   *
+   * @param {AbortSignal} signal
+   * @returns {Promise<Object>}
+   */
   getAllFoods: async (signal) => {
     const response = await apiClient.get(API.FOOD.GET_ALL_FOODS, {
       signal,
     });
+
     return response.data;
   },
+
   /**
-   * Updates only the lifecycle status of a food item.
+   * Update Food Status
    *
-   * PATCH /api/admin/foods/{foodId}/status
+   * @param {string} id
+   * @param {string} status
+   * @returns {Promise<Object>}
    */
   updateFoodStatus: async (id, status) => {
     const response = await apiClient.patch(API.FOOD.UPDATE_FOOD_STATUS(id), {
       status,
     });
+
     return response.data;
   },
 
   /**
-   * Get Food By Id
+   * Retrieve Food Details
+   *
+   * Backend Response:
+   *
+   * {
+   *   success,
+   *   message,
+   *   data : {
+   *      data : FoodResponse,
+   *      navigation : EntityNavigation
+   *   }
+   * }
    *
    * @param {string} foodId
    * @returns {Promise<Object>}
    */
   getFoodById: async (foodId) => {
-    console.log("foodId =", foodId);
-    console.log("typeof =", typeof foodId);
-    console.log("food foodid =", foodId.id);
     const response = await apiClient.post(API.FOOD.GET_FOOD_BY_ID, {
-      foodId: foodId,
+      foodId,
     });
 
     return response.data;
