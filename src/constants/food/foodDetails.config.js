@@ -40,11 +40,11 @@ export const FOOD_DETAIL_SECTIONS = [
         formatter: formatCurrency,
       },
 
-      {
-        label: "Availability",
-        key: "available",
-        type: DETAIL_FIELD_TYPES.BOOLEAN,
-      },
+      // {
+      //   label: "Availability",
+      //   key: "available",
+      //   type: DETAIL_FIELD_TYPES.BOOLEAN,
+      // },
     ],
   },
 
@@ -84,26 +84,12 @@ export const FOOD_DETAIL_SECTIONS = [
     id: "status-information",
 
     title: "Status Information",
-
     fields: [
       {
-        label: "Current Status",
-        key: "foodStatus.label",
+        label: "Food Status",
+        key: "foodStatus",
         type: DETAIL_FIELD_TYPES.BADGE,
       },
-
-      {
-        label: "Previous Status",
-        key: "previousStatus",
-        type: DETAIL_FIELD_TYPES.BADGE,
-      },
-
-      {
-        label: "Allowed Next Statuses",
-        key: "allowedStatuses",
-        type: DETAIL_FIELD_TYPES.BADGE_LIST,
-      },
-
       {
         label: "Last Updated",
         key: "updatedAt",

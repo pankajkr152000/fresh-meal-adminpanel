@@ -1,14 +1,14 @@
 import { useEffect } from "react";
 import { initializeTheme } from "../../utils/themeChangeScriptButton";
+import "./menubarStyle.css";
 
-const Menubar = ({toggleSidebar}) => {
-
+const Menubar = ({ toggleSidebar }) => {
   useEffect(() => {
     initializeTheme();
   }, []);
-  
+
   return (
-    <nav className="navbar navbar-expand-lg bg-body border-bottom">
+    <nav className="navbar navbar-expand-lg bg-body border-bottom app-navbar">
       <div className="container-fluid">
         <button
           className="btn btn-primary"
@@ -33,12 +33,13 @@ const Menubar = ({toggleSidebar}) => {
           <ul className="navbar-nav ms-auto mt-2 mt-lg-0">
             <li className="nav-item-theme-change-button">
               {/* <!-- dark/light button --> */}
-              <button id="theme-change-button"
-                  className="btn btn-outline-secondary 900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
-                  <i className="bi bi-sun"></i><span> Light</span>
+              <button
+                id="theme-change-button"
+                className="btn btn-outline-secondary 900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
+                <i className="bi bi-sun"></i>
+                <span> Light</span>
               </button>
             </li>
-            
 
             <li className="nav-item active">
               <a

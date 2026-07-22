@@ -5,13 +5,12 @@ import "./sidebarStyle.css";
 const Sidebar = ({ getSidebarVisible }) => {
   return (
     <div
-      className={`border-end ${getSidebarVisible ? "" : "d-none"}`}
+      className={`border-end app-sidebar ${getSidebarVisible ? "" : "d-none"}`}
       id="sidebar-wrapper">
       <div className="sidebar-heading border-bottom d-flex align-items-center ">
         <Link
           to={ROUTES.HOME}
-          className="d-flex align-items-center gap-3 text-decoration-none text-reset"
-        >
+          className="d-flex align-items-center gap-3 text-decoration-none text-reset">
           <img
             src={assets.brandLogo}
             alt="Logo"

@@ -1,11 +1,30 @@
 .sidebar-heading img {
-    width: 40px;
-    height: 40px;
-    margin-left: 15px;
-    object-fit: contain;
+  width: 40px;
+  height: 40px;
+  margin-left: 15px;
+  object-fit: contain;
 }
 
 .sidebar-heading a {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
+}
+.app-sidebar {
+  position: fixed;
+
+  top: 56px;
+
+  left: 0;
+
+  bottom: 0;
+
+  width: 240px;
+
+  overflow-y: auto;
+
+  overflow-x: hidden;
+
+  background: var(--bs-body-bg);
+
+  z-index: 1040;
 }
