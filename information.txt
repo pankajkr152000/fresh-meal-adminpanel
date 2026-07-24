@@ -836,7 +836,33 @@ src/
 
 
 
-
+src
+│
+├── pages
+│   └── EditFood
+│       │
+│       ├── EditFood.jsx                ← Main Page
+│       │
+│       ├── hooks
+│       │     └── useEditFood.js        ← Business Logic
+│       │
+│       ├── components
+│       │     ├── EditableImage.jsx
+│       │     ├── EditFoodForm.jsx
+│       │     ├── FormActions.jsx
+│       │     ├── FormSection.jsx
+│       │     └── ReadOnlyField.jsx
+│       │
+│       └── styles
+│             └── editFood.css
+│
+├── constants
+│   └── food
+│       ├── editFood.config.js          ← Page Blueprint
+│       └── foodValidation.js           ← Validation Rules
+│
+├── services
+│      └── FoodService.js               ← Existing Service (extended)
 
 
 

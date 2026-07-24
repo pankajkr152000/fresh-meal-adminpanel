@@ -30,7 +30,7 @@ const CommonSwitch = ({
   className = "",
 }) => {
   const handleChange = (event) => {
-    onChange(name, event.target.value);
+    onChange(name, event.target.checked);
   };
   return (
     <div className={className}>
