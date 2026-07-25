@@ -39,6 +39,7 @@ import LoadingSpinner from "../../components/Common/details/feedback/LoadingSpin
 
 import { NavigationCard } from "../../components/Food/details";
 import FoodHero from "../../components/Food/details/FoodHero";
+import ROUTES from "../../constants/RouteConstants";
 
 const ViewFood = () => {
   // ==========================================================================
@@ -83,6 +84,10 @@ const ViewFood = () => {
 
   const handleEdit = () => {
     navigate(`/foods/edit/${food.id}`);
+  };
+
+  const handleEditFood = () => {
+    navigate(ROUTES.EDIT_FOOD.replace(":foodId", food.id));
   };
 
   const handleNavigate = (id) => {
@@ -154,7 +159,7 @@ const ViewFood = () => {
       <FoodHero
         food={food}
         onBack={handleBack}
-        onEdit={handleEdit}
+        onEdit={handleEditFood}
         onStatusChange={handleStatusChange}
       />
 
