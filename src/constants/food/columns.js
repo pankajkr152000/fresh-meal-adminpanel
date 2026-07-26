@@ -91,7 +91,7 @@ export const FOOD_COLUMNS = Object.freeze([
 
     header: "Category",
 
-    accessor: "foodCategory",
+    accessor: "foodCategories",
 
     sortable: true,
 

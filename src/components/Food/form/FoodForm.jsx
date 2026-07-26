@@ -4,7 +4,6 @@ import {
   CommonFileUpload,
   CommonInput,
   CommonSelect,
-  CommonSwitch,
   CommonTextarea,
 } from "../../common/forms";
 
@@ -94,7 +93,9 @@ const FoodForm = ({
 
     foodStatus,
 
-    isAvailable,
+    allowedStatuses,
+
+    // isAvailable,
   } = food;
 
   // ===========================================================================
@@ -108,7 +109,7 @@ const FoodForm = ({
 
     cuisineCategories: cuisineOptions,
 
-    statuses: statusOptions = [],
+    //statuses: statusOptions = [],
   } = metadata;
 
   return (
@@ -167,7 +168,7 @@ const FoodForm = ({
               type="number"
               value={price}
               min={0}
-              step="0.01"
+              step="1.00"
               placeholder="0.00"
               required
               error={errors.price}
@@ -199,6 +200,7 @@ const FoodForm = ({
               value={selectedFoodCategories}
               options={categoryOptions}
               placeholder="Select Food Categories"
+              required
               isMulti
               isClearable
               closeMenuOnSelect={false}
@@ -249,27 +251,25 @@ const FoodForm = ({
         {mode === "edit" && (
           <div className="row mt-2">
             {/* -------------------------------------------------------------- */}
-            {/* Food Status */}
+            {/* Food Status and Allowed Food Options */}
             {/* -------------------------------------------------------------- */}
-
             <div className="col-lg-6 mb-3">
               <CommonSelect
                 label="Food Status"
                 name="foodStatus"
                 value={foodStatus}
-                options={statusOptions}
+                options={allowedStatuses}
                 placeholder="Select Food Status"
                 required
                 error={errors.foodStatus}
                 onChange={onChange}
               />
             </div>
-
             {/* -------------------------------------------------------------- */}
             {/* Availability */}
             {/* -------------------------------------------------------------- */}
-
-            <div className="col-lg-6 mb-3 d-flex align-items-center">
+            {/* commenting this as food Availability is based upon food status */}
+            {/* <div className="col-lg-6 mb-3 d-flex align-items-center">
               <CommonSwitch
                 label="Available for Ordering"
                 name="isAvailable"
@@ -277,7 +277,7 @@ const FoodForm = ({
                 error={errors.isAvailable}
                 onChange={onChange}
               />
-            </div>
+            </div> */}
           </div>
         )}
       </div>
@@ -407,7 +407,9 @@ FoodForm.propTypes = {
 
     foodStatus: PropTypes.object,
 
-    isAvailable: PropTypes.bool,
+    allowedStatuses: PropTypes.array,
+
+    // isAvailable: PropTypes.bool,
   }).isRequired,
 
   metadata: PropTypes.shape({
@@ -418,6 +420,8 @@ FoodForm.propTypes = {
     cuisineCategories: PropTypes.array.isRequired,
 
     statuses: PropTypes.array,
+
+    allowedStatuses: PropTypes.array,
   }).isRequired,
 
   preview: PropTypes.string,
@@ -431,7 +435,8 @@ FoodForm.propTypes = {
     dietCategory: PropTypes.string,
     cuisineType: PropTypes.string,
     foodStatus: PropTypes.string,
-    isAvailable: PropTypes.string,
+    allowedStatuses: PropTypes.string,
+    // isAvailable: PropTypes.string,
     image: PropTypes.string,
   }),
 

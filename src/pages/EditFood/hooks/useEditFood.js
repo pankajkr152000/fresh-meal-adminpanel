@@ -29,6 +29,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 import ROUTES from "../../../constants/RouteConstants";
+import { FoodMetadataService } from "../../../services";
 import FoodService from "../../../services/FoodService";
 
 /**
@@ -63,6 +64,8 @@ const INITIAL_FORM_DATA = {
 
   foodStatus: null,
 
+  allowedStatuses: null,
+
   isAvailable: true,
 
   image: null,
@@ -93,7 +96,9 @@ const INITIAL_METADATA = {
 
   dietCategories: [],
 
-  statuses: [],
+  groupCategories: [],
+
+  foodStatuses: [],
 };
 
 export default function useEditFood() {
@@ -247,6 +252,8 @@ export default function useEditFood() {
 
         foodStatus: food.foodStatus ?? null,
 
+        allowedStatuses: food.allowedStatuses ?? [],
+
         isAvailable: food.isAvailable ?? true,
 
         image: null,
@@ -282,18 +289,18 @@ export default function useEditFood() {
    */
   const loadMetadata = useCallback(async () => {
     try {
-      const response = await FoodService.getMetadata();
-
-      const data = response?.data?.data;
-
+      const response = await FoodMetadataService.getMetadata();
+      const data = response?.data;
       setMetadata({
-        foodCategories: data?.foodCategories ?? data?.categories ?? [],
+        foodCategories: data?.foodCategories ?? [],
 
-        cuisineCategories: data?.cuisineCategories ?? data?.cuisines ?? [],
+        cuisineCategories: data?.cuisineCategories ?? [],
 
-        dietCategories: data?.dietCategories ?? data?.diets ?? [],
+        dietCategories: data?.dietCategories ?? [],
 
-        statuses: data?.statuses ?? [],
+        groupCategories: data?.groupCategories ?? [],
+
+        foodStatuses: data?.foodStatuses ?? [],
       });
     } catch (error) {
       console.error("Failed to load metadata.", error);
@@ -393,8 +400,11 @@ export default function useEditFood() {
       validationErrors.foodName = "Food name is required.";
     }
 
-    if (!formData.description?.trim()) {
+    // description is not mandatory
+    {
+      /*if (!formData.description?.trim()) {
       validationErrors.description = "Description is required.";
+    } */
     }
 
     if (!formData.price || Number(formData.price) <= 0) {
@@ -432,7 +442,7 @@ export default function useEditFood() {
    * backend.
    * ------------------------------------------------------------------------
    */
-  const buildFormData = useCallback(() => {
+  /*const buildFormData = useCallback(() => {
     const request = new FormData();
 
     request.append("id", formData.id);
@@ -451,11 +461,36 @@ export default function useEditFood() {
 
     request.append("foodStatus", JSON.stringify(formData.foodStatus));
 
-    request.append("isAvailable", String(formData.isAvailable));
+    request.append("isAvailable", String(formData.isAvailable));*/
 
-    /**
-     * Image is optional during edit.
-     */
+  /**
+   * Image is optional during edit.
+   */
+  /*if (formData.image instanceof File) {
+      request.append("image", formData.image);
+    }
+
+    return request;
+  }, [formData]);*/
+
+  const buildFormData = useCallback(() => {
+    const request = new FormData();
+
+    const food = {
+      id: formData.id,
+      foodName: formData.foodName,
+      description: formData.description,
+      price: formData.price,
+      // foodCategories: formData.foodCategories.value,
+      foodCategories: formData.foodCategories.map((category) => category.value),
+      dietCategory: formData.dietCategory.value,
+      cuisineType: formData.cuisineType.value,
+      foodStatus: formData.foodStatus.value,
+      // isAvailable: formData.isAvailable,
+    };
+
+    request.append("food", JSON.stringify(food));
+
     if (formData.image instanceof File) {
       request.append("image", formData.image);
     }
@@ -468,7 +503,7 @@ export default function useEditFood() {
    * Save Food
    * ------------------------------------------------------------------------
    *
-   * Validates the form and submits the update request.
+   * Validates the form and submits the update or edited food request.
    * ------------------------------------------------------------------------
    */
   const handleSubmit = useCallback(
@@ -489,8 +524,8 @@ export default function useEditFood() {
         setSaving(true);
 
         const request = buildFormData();
-
-        const response = await FoodService.updateFood(request);
+        console.log(request);
+        const response = await FoodService.editFood(request);
 
         console.log(response);
 

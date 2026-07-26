@@ -67,7 +67,7 @@ FoodToolbar.propTypes = {
    * Current filter values.
    */
   filters: PropTypes.shape({
-    foodCategory: PropTypes.string,
+    foodCategories: PropTypes.string,
     cuisineType: PropTypes.string,
     dietCategory: PropTypes.string,
     status: PropTypes.string,

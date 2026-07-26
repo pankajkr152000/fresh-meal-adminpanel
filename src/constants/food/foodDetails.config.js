@@ -56,7 +56,7 @@ export const FOOD_DETAIL_SECTIONS = [
     fields: [
       {
         label: "Food Category",
-        key: "foodCategory.label",
+        key: "foodCategories.label",
         type: DETAIL_FIELD_TYPES.BADGE_LIST,
       },
 
@@ -74,7 +74,7 @@ export const FOOD_DETAIL_SECTIONS = [
 
       {
         label: "Category Group",
-        key: "categoryGroup.label",
+        key: "categoryGroups.label",
         type: DETAIL_FIELD_TYPES.BADGE_LIST,
       },
     ],

@@ -50,7 +50,7 @@ const FoodTableRow = ({ food, onStatusChange, onView }) => {
 
       <td>{food.description}</td>
 
-      <td>{getDisplayLabels(food.foodCategory)}</td>
+      <td>{getDisplayLabels(food.foodCategories)}</td>
 
       <td>{food.cuisineType?.label}</td>
 
