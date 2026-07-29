@@ -28,7 +28,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-import ROUTES from "../../../constants/RouteConstants";
+import { toast } from "react-toastify";
 import { FoodMetadataService } from "../../../services";
 import FoodService from "../../../services/FoodService";
 
@@ -533,8 +533,8 @@ export default function useEditFood() {
          * TODO
          * Replace with success toast.
          */
-
-        navigate(ROUTES.FOODS);
+        toast.success("Food updated successfully");
+        navigate(`/foods/view/${foodId}`);
       } catch (error) {
         console.error("Failed to update food.", error);
 
@@ -542,11 +542,12 @@ export default function useEditFood() {
          * TODO
          * Replace with error toast.
          */
+        toast.error("Failed to update food");
       } finally {
         setSaving(false);
       }
     },
-    [buildFormData, navigate, validateForm],
+    [buildFormData, foodId, navigate, validateForm],
   );
 
   /**
