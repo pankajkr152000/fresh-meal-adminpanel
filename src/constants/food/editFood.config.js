@@ -80,7 +80,7 @@ const EDIT_FOOD_CONFIG = {
 
       fields: [
         {
-          name: "foodCategory",
+          name: "foodCategories",
           label: "Food Category",
           type: "select",
           metadata: "categories",

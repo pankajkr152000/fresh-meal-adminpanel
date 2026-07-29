@@ -85,6 +85,24 @@ const FoodService = {
 
     return response.data;
   },
+
+  /**
+   * Update Food
+   *
+   * Updates an existing food item.
+   *
+   * @param {FormData} formData
+   * @returns {Promise<Object>}
+   */
+  editFood: async (formData) => {
+    const response = await apiClient.put(API.FOOD.EDIT_FOOD, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+
+    return response.data;
+  },
 };
 
 export default FoodService;

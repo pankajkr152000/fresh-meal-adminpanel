@@ -28,9 +28,25 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-import ROUTES from "../../../constants/RouteConstants";
+import { toast } from "react-toastify";
+import { FoodMetadataService } from "../../../services";
 import FoodService from "../../../services/FoodService";
 
+/**
+ * ============================================================================
+ * Initial Form State
+ * ============================================================================
+ *
+ * Mirrors the structure expected by FoodForm.jsx.
+ *
+ * Notes
+ * -----
+ * • Dropdowns store complete DisplayOption objects.
+ * • Multi-select stores an array of DisplayOption objects.
+ * • Image stores the selected File object.
+ * * Image URL stores the existing image received from the backend.
+ * ============================================================================
+ */
 const INITIAL_FORM_DATA = {
   id: "",
 
@@ -40,13 +56,15 @@ const INITIAL_FORM_DATA = {
 
   price: "",
 
-  foodCategory: "",
+  foodCategories: [],
 
-  cuisineType: "",
+  dietCategory: null,
 
-  dietCategory: "",
+  cuisineType: null,
 
-  foodStatus: "",
+  foodStatus: null,
+
+  allowedStatuses: null,
 
   isAvailable: true,
 
@@ -63,11 +81,24 @@ const INITIAL_FORM_DATA = {
   updatedBy: "",
 };
 
+/**
+ * ============================================================================
+ * Initial Metadata
+ * ============================================================================
+ *
+ * Dropdown options consumed directly by FoodForm.
+ * ============================================================================
+ */
 const INITIAL_METADATA = {
-  categories: [],
-  cuisines: [],
-  diets: [],
-  statuses: [],
+  foodCategories: [],
+
+  cuisineCategories: [],
+
+  dietCategories: [],
+
+  groupCategories: [],
+
+  foodStatuses: [],
 };
 
 export default function useEditFood() {
@@ -90,10 +121,12 @@ export default function useEditFood() {
   const [formData, setFormData] = useState(INITIAL_FORM_DATA);
 
   /**
-   * Original data from backend.
-   * Used for dirty state comparison.
+   * Original food loaded from backend.
+   *
+   * Used to:
+   * • Detect unsaved changes
+   * • Restore values on Reset
    */
-
   const [originalData, setOriginalData] = useState(null);
 
   /**
@@ -110,20 +143,88 @@ export default function useEditFood() {
    * ------------------------------------------------------------------------
    */
 
+  /**
+   * Page loading.
+   */
   const [loading, setLoading] = useState(true);
 
+  /**
+   * Save operation loading.
+   */
   const [saving, setSaving] = useState(false);
 
+  /**
+   * Validation errors.
+   */
   const [errors, setErrors] = useState({});
 
-  const [previewImage, setPreviewImage] = useState(null);
+  /**
+   * Current image preview.
+   *
+   * Either:
+   * • Existing image URL
+   * • Blob URL for newly selected image
+   */
+  const [previewImage, setPreviewImage] = useState("");
+
+  /**
+   * ------------------------------------------------------------------------
+   * Generic Change Handler
+   * ------------------------------------------------------------------------
+   *
+   * Supports every reusable form component.
+   *
+   * Components
+   * ----------
+   * ✔ CommonInput
+   * ✔ CommonTextarea
+   * ✔ CommonSelect
+   * ✔ CommonSwitch
+   * ✔ CommonFileUpload
+   */
+  const handleChange = useCallback(
+    (name, value) => {
+      setFormData((previous) => ({
+        ...previous,
+
+        [name]: value,
+      }));
+
+      /**
+       * Clear validation error immediately
+       * after user changes the field.
+       */
+      setErrors((previous) => ({
+        ...previous,
+
+        [name]: "",
+      }));
+
+      /**
+       * Handle image preview.
+       */
+      if (name === "image") {
+        if (previewImage?.startsWith("blob:")) {
+          URL.revokeObjectURL(previewImage);
+        }
+
+        if (value instanceof File) {
+          setPreviewImage(URL.createObjectURL(value));
+        }
+      }
+    },
+    [previewImage],
+  );
 
   /**
    * ------------------------------------------------------------------------
    * Load Food Details
    * ------------------------------------------------------------------------
+   *
+   * Loads the selected food from the backend and converts it into the
+   * structure expected by FoodForm.
+   * ------------------------------------------------------------------------
    */
-
   const loadFood = useCallback(async () => {
     try {
       const response = await FoodService.getFoodById(foodId);
@@ -143,13 +244,15 @@ export default function useEditFood() {
 
         price: food.price ?? "",
 
-        foodCategory: food.foodCategory?.value ?? "",
+        foodCategories: food.foodCategories ?? [],
 
-        cuisineType: food.cuisineType?.value ?? "",
+        dietCategory: food.dietCategory ?? null,
 
-        dietCategory: food.dietCategory?.value ?? "",
+        cuisineType: food.cuisineType ?? null,
 
-        foodStatus: food.foodStatus?.value ?? "",
+        foodStatus: food.foodStatus ?? null,
+
+        allowedStatuses: food.allowedStatuses ?? [],
 
         isAvailable: food.isAvailable ?? true,
 
@@ -170,7 +273,7 @@ export default function useEditFood() {
 
       setOriginalData(mappedFood);
 
-      setPreviewImage(food.imageUrl ?? "");
+      setPreviewImage(mappedFood.imageUrl);
     } catch (error) {
       console.error("Failed to load food.", error);
     }
@@ -178,24 +281,26 @@ export default function useEditFood() {
 
   /**
    * ------------------------------------------------------------------------
-   * Load Dropdown Metadata
+   * Load Metadata
+   * ------------------------------------------------------------------------
+   *
+   * Loads dropdown options required by FoodForm.
    * ------------------------------------------------------------------------
    */
-
   const loadMetadata = useCallback(async () => {
     try {
-      const response = await FoodService.getMetadata();
-
-      const data = response?.data?.data;
-
+      const response = await FoodMetadataService.getMetadata();
+      const data = response?.data;
       setMetadata({
-        categories: data?.categories ?? [],
+        foodCategories: data?.foodCategories ?? [],
 
-        cuisines: data?.cuisines ?? [],
+        cuisineCategories: data?.cuisineCategories ?? [],
 
-        diets: data?.diets ?? [],
+        dietCategories: data?.dietCategories ?? [],
 
-        statuses: data?.statuses ?? [],
+        groupCategories: data?.groupCategories ?? [],
+
+        foodStatuses: data?.foodStatuses ?? [],
       });
     } catch (error) {
       console.error("Failed to load metadata.", error);
@@ -204,106 +309,18 @@ export default function useEditFood() {
 
   /**
    * ------------------------------------------------------------------------
-   * Generic Input Change Handler
-   * ------------------------------------------------------------------------
-   *
-   * Handles all text, number and textarea inputs.
-   *
-   * Example:
-   * - Food Name
-   * - Description
-   * - Price
-   *
-   */
-
-  const handleChange = useCallback((event) => {
-    const { name, value, type, checked } = event.target;
-
-    setFormData((previous) => ({
-      ...previous,
-
-      [name]: type === "checkbox" ? checked : value,
-    }));
-
-    /**
-     * Remove validation error as soon as
-     * user starts correcting the field.
-     */
-
-    setErrors((previous) => ({
-      ...previous,
-
-      [name]: "",
-    }));
-  }, []);
-
-  /**
-   * ------------------------------------------------------------------------
-   * Dropdown Change Handler
-   * ------------------------------------------------------------------------
-   *
-   * Used by custom Select components.
-   *
-   * Example:
-   *
-   * handleSelect("foodCategory", "FAST_FOOD")
-   *
-   */
-
-  const handleSelect = useCallback((fieldName, value) => {
-    setFormData((previous) => ({
-      ...previous,
-
-      [fieldName]: value,
-    }));
-
-    setErrors((previous) => ({
-      ...previous,
-
-      [fieldName]: "",
-    }));
-  }, []);
-
-  /**
-   * ------------------------------------------------------------------------
-   * Image Selection
-   * ------------------------------------------------------------------------
-   *
-   * Stores selected image.
-   * Creates browser preview.
-   *
-   */
-
-  const handleImageChange = useCallback((event) => {
-    const file = event.target.files?.[0];
-
-    if (!file) {
-      return;
-    }
-
-    setFormData((previous) => ({
-      ...previous,
-
-      image: file,
-    }));
-
-    /**
-     * Display selected image immediately.
-     */
-
-    setPreviewImage(URL.createObjectURL(file));
-  }, []);
-
-  /**
-   * ------------------------------------------------------------------------
    * Remove Selected Image
    * ------------------------------------------------------------------------
    *
-   * Restore original image.
-   *
+   * Removes the newly selected image and restores the original image
+   * received from the backend.
+   * ------------------------------------------------------------------------
    */
-
   const removeImage = useCallback(() => {
+    if (previewImage?.startsWith("blob:")) {
+      URL.revokeObjectURL(previewImage);
+    }
+
     setFormData((previous) => ({
       ...previous,
 
@@ -311,47 +328,47 @@ export default function useEditFood() {
     }));
 
     setPreviewImage(originalData?.imageUrl ?? "");
-  }, [originalData]);
+  }, [originalData, previewImage]);
 
   /**
    * ------------------------------------------------------------------------
    * Reset Form
    * ------------------------------------------------------------------------
    *
-   * Restore original values.
-   *
+   * Restores the form back to its original backend values.
+   * ------------------------------------------------------------------------
    */
-
   const resetForm = useCallback(() => {
     if (!originalData) {
       return;
     }
 
+    if (previewImage?.startsWith("blob:")) {
+      URL.revokeObjectURL(previewImage);
+    }
+
     setFormData(originalData);
 
-    setPreviewImage(originalData.imageUrl);
+    setPreviewImage(originalData.imageUrl ?? "");
 
     setErrors({});
-  }, [originalData]);
+  }, [originalData, previewImage]);
 
   /**
    * ------------------------------------------------------------------------
    * Dirty State Detection
    * ------------------------------------------------------------------------
    *
-   * Determines whether the user has modified
-   * any value in the form.
+   * Determines whether the user has modified the form.
    *
+   * The image File object is ignored because it cannot be compared
+   * using JSON.stringify().
+   * ------------------------------------------------------------------------
    */
-
   const hasChanges = useMemo(() => {
     if (!originalData) {
       return false;
     }
-
-    /**
-     * Ignore image object while comparing.
-     */
 
     const current = {
       ...formData,
@@ -373,10 +390,9 @@ export default function useEditFood() {
    * Validate Form
    * ------------------------------------------------------------------------
    *
-   * Validates all editable fields before saving.
-   *
+   * Validates all editable fields before submitting the update request.
+   * ------------------------------------------------------------------------
    */
-
   const validateForm = useCallback(() => {
     const validationErrors = {};
 
@@ -384,24 +400,28 @@ export default function useEditFood() {
       validationErrors.foodName = "Food name is required.";
     }
 
-    if (!formData.description?.trim()) {
+    // description is not mandatory
+    {
+      /*if (!formData.description?.trim()) {
       validationErrors.description = "Description is required.";
+    } */
     }
 
     if (!formData.price || Number(formData.price) <= 0) {
       validationErrors.price = "Price must be greater than zero.";
     }
 
-    if (!formData.foodCategory) {
-      validationErrors.foodCategory = "Food category is required.";
-    }
-
-    if (!formData.cuisineType) {
-      validationErrors.cuisineType = "Cuisine type is required.";
+    if (!formData.foodCategories?.length) {
+      validationErrors.foodCategories =
+        "At least one food category is required.";
     }
 
     if (!formData.dietCategory) {
       validationErrors.dietCategory = "Diet category is required.";
+    }
+
+    if (!formData.cuisineType) {
+      validationErrors.cuisineType = "Cuisine type is required.";
     }
 
     if (!formData.foodStatus) {
@@ -417,9 +437,12 @@ export default function useEditFood() {
    * ------------------------------------------------------------------------
    * Build Multipart Form Data
    * ------------------------------------------------------------------------
+   *
+   * Converts the current form state into the request payload expected by the
+   * backend.
+   * ------------------------------------------------------------------------
    */
-
-  const buildFormData = useCallback(() => {
+  /*const buildFormData = useCallback(() => {
     const request = new FormData();
 
     request.append("id", formData.id);
@@ -430,21 +453,45 @@ export default function useEditFood() {
 
     request.append("price", formData.price);
 
-    request.append("foodCategory", formData.foodCategory);
+    request.append("foodCategories", JSON.stringify(formData.foodCategories));
 
-    request.append("cuisineType", formData.cuisineType);
+    request.append("dietCategory", JSON.stringify(formData.dietCategory));
 
-    request.append("dietCategory", formData.dietCategory);
+    request.append("cuisineType", JSON.stringify(formData.cuisineType));
 
-    request.append("foodStatus", formData.foodStatus);
+    request.append("foodStatus", JSON.stringify(formData.foodStatus));
 
-    request.append("isAvailable", formData.isAvailable);
+    request.append("isAvailable", String(formData.isAvailable));*/
 
-    /**
-     * Image is optional.
-     */
+  /**
+   * Image is optional during edit.
+   */
+  /*if (formData.image instanceof File) {
+      request.append("image", formData.image);
+    }
 
-    if (formData.image) {
+    return request;
+  }, [formData]);*/
+
+  const buildFormData = useCallback(() => {
+    const request = new FormData();
+
+    const food = {
+      id: formData.id,
+      foodName: formData.foodName,
+      description: formData.description,
+      price: formData.price,
+      // foodCategories: formData.foodCategories.value,
+      foodCategories: formData.foodCategories.map((category) => category.value),
+      dietCategory: formData.dietCategory.value,
+      cuisineType: formData.cuisineType.value,
+      foodStatus: formData.foodStatus.value,
+      // isAvailable: formData.isAvailable,
+    };
+
+    request.append("food", JSON.stringify(food));
+
+    if (formData.image instanceof File) {
       request.append("image", formData.image);
     }
 
@@ -455,58 +502,59 @@ export default function useEditFood() {
    * ------------------------------------------------------------------------
    * Save Food
    * ------------------------------------------------------------------------
+   *
+   * Validates the form and submits the update or edited food request.
+   * ------------------------------------------------------------------------
    */
-
-  const saveFood = useCallback(async () => {
-    /**
-     * Prevent invalid submission.
-     */
-
-    if (!validateForm()) {
-      return;
-    }
-
-    try {
-      setSaving(true);
-
-      const request = buildFormData();
-
-      const response = await FoodService.updateFood(request);
+  const handleSubmit = useCallback(
+    async (event) => {
+      /**
+       * Prevent default form submission.
+       */
+      event.preventDefault();
 
       /**
-       * TODO
-       *
-       * Replace with your Toast utility.
-       *
+       * Validate before saving.
        */
+      if (!validateForm()) {
+        return;
+      }
 
-      console.log(response);
+      try {
+        setSaving(true);
 
-      /**
-       * Food updated successfully.
-       */
+        const request = buildFormData();
+        console.log(request);
+        const response = await FoodService.editFood(request);
 
-      navigate(ROUTES.FOODS);
-    } catch (error) {
-      console.error("Failed to update food.", error);
+        console.log(response);
 
-      /**
-       * TODO
-       *
-       * Show error toast.
-       *
-       */
-    } finally {
-      setSaving(false);
-    }
-  }, [buildFormData, navigate, validateForm]);
+        /**
+         * TODO
+         * Replace with success toast.
+         */
+        toast.success("Food updated successfully");
+        navigate(`/foods/view/${foodId}`);
+      } catch (error) {
+        console.error("Failed to update food.", error);
+
+        /**
+         * TODO
+         * Replace with error toast.
+         */
+        toast.error("Failed to update food");
+      } finally {
+        setSaving(false);
+      }
+    },
+    [buildFormData, foodId, navigate, validateForm],
+  );
 
   /**
    * ------------------------------------------------------------------------
-   * Initial Data Loading
+   * Initial Page Load
    * ------------------------------------------------------------------------
    */
-
   useEffect(() => {
     const initializePage = async () => {
       try {
@@ -523,17 +571,12 @@ export default function useEditFood() {
 
   /**
    * ------------------------------------------------------------------------
-   * Cleanup Object URL
+   * Cleanup Blob URL
    * ------------------------------------------------------------------------
-   *
-   * Prevents memory leaks caused by repeatedly
-   * creating image preview URLs.
-   *
    */
-
   useEffect(() => {
     return () => {
-      if (previewImage && previewImage.startsWith("blob:")) {
+      if (previewImage?.startsWith("blob:")) {
         URL.revokeObjectURL(previewImage);
       }
     };
@@ -544,12 +587,10 @@ export default function useEditFood() {
    * Hook Exports
    * ------------------------------------------------------------------------
    */
-
   return {
     /**
      * Form
      */
-
     formData,
 
     metadata,
@@ -557,7 +598,6 @@ export default function useEditFood() {
     /**
      * UI
      */
-
     loading,
 
     saving,
@@ -569,18 +609,12 @@ export default function useEditFood() {
     /**
      * State
      */
-
     hasChanges,
 
     /**
      * Form Actions
      */
-
     handleChange,
-
-    handleSelect,
-
-    handleImageChange,
 
     removeImage,
 
@@ -589,7 +623,6 @@ export default function useEditFood() {
     /**
      * API
      */
-
-    saveFood,
+    handleSubmit,
   };
 }

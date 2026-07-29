@@ -13,6 +13,7 @@ export const API = {
     GET_ALL_FOODS: `${BASE_URL}/api/foods/readAllFoods`,
     // GET_FOOD_BY_ID: (foodId) => `${BASE_URL}/api/foods/view/${foodId}`,
     GET_FOOD_BY_ID: `${BASE_URL}/api/foods/view`,
+    EDIT_FOOD: `${BASE_URL}/api/foods/edit`,
     UPDATE: (id) => `/api/v1/foods/${id}`,
     UPDATE_FOOD_STATUS: (id) => `${BASE_URL}/api/foods/${id}/status`,
     DELETE: (id) => `/api/v1/foods/${id}`,

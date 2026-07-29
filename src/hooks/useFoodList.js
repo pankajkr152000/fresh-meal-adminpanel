@@ -39,7 +39,7 @@ Rendering is delegated to presentation components.
  * Default filter values.
  */
 const DEFAULT_FILTERS = Object.freeze({
-  foodCategory: "",
+  foodCategories: "",
   cuisineType: "",
   dietCategory: "",
   status: "",
@@ -220,8 +220,8 @@ const useFoodList = () => {
         food.foodName?.toLowerCase().includes(debouncedSearch.toLowerCase());
 
       const matchesCategory = containsDisplayOption(
-        food.foodCategory,
-        filters.foodCategory,
+        food.foodCategories,
+        filters.foodCategories,
       );
 
       const matchesCuisine =

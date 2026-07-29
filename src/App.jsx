@@ -7,7 +7,7 @@ import Sidebar from "./components/Sidebar/Sidebar";
 
 import ROUTES from "./constants/RouteConstants";
 
-import { ViewFood } from "./pages/Food";
+import { EditFood, ViewFood } from "./pages/Food";
 import AddFood from "./pages/Food/AddFood";
 import FoodList from "./pages/Food/FoodList";
 import Orders from "./pages/Orders/Orders";
@@ -95,6 +95,11 @@ const App = () => {
             <Route
               path={ROUTES.VIEW_FOOD}
               element={<ViewFood />}
+            />
+
+            <Route
+              path={ROUTES.EDIT_FOOD}
+              element={<EditFood />}
             />
           </Routes>
         </main>
