@@ -529,19 +529,13 @@ export default function useEditFood() {
 
         console.log(response);
 
-        /**
-         * TODO
-         * Replace with success toast.
-         */
+        // sussess message
         toast.success("Food updated successfully");
         navigate(`/foods/view/${foodId}`);
       } catch (error) {
         console.error("Failed to update food.", error);
 
-        /**
-         * TODO
-         * Replace with error toast.
-         */
+        // error message
         toast.error("Failed to update food");
       } finally {
         setSaving(false);
