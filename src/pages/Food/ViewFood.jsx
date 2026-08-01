@@ -37,9 +37,12 @@ import EmptyState from "../../components/Common/details/feedback/EmptyState";
 import ErrorAlert from "../../components/Common/details/feedback/ErrorAlert";
 import LoadingSpinner from "../../components/Common/details/feedback/LoadingSpinner";
 
+import { toast } from "react-toastify";
 import { NavigationCard } from "../../components/Food/details";
 import FoodHero from "../../components/Food/details/FoodHero";
+import StatusConfirmationModal from "../../components/Food/status/StatusConfirmationModal";
 import ROUTES from "../../constants/RouteConstants";
+import { FoodService } from "../../services";
 
 const ViewFood = () => {
   // ==========================================================================
@@ -55,6 +58,12 @@ const ViewFood = () => {
   // ==========================================================================
 
   const [showImageViewer, setShowImageViewer] = useState(false);
+
+  const [showStatusModal, setShowStatusModal] = useState(false);
+
+  const [selectedStatus, setSelectedStatus] = useState(null);
+
+  const [statusLoading, setStatusLoading] = useState(false);
 
   // ==========================================================================
   // Data
@@ -97,7 +106,43 @@ const ViewFood = () => {
   };
 
   const handleStatusChange = () => {
-    // Will be implemented with StatusConfirmationModal
+    if (!food?.allowedStatuses?.length) {
+      toast.info("No status transition available.");
+
+      return;
+    }
+
+    setSelectedStatus(food.allowedStatuses[0]);
+
+    setShowStatusModal(true);
+  };
+
+  const handleCancelStatus = () => {
+    setShowStatusModal(false);
+
+    setSelectedStatus(null);
+  };
+
+  const handleConfirmStatus = async () => {
+    try {
+      setStatusLoading(true);
+
+      await FoodService.updateFoodStatus(food.id, selectedStatus.value);
+
+      toast.success("Food status updated successfully.");
+
+      setShowStatusModal(false);
+
+      setSelectedStatus(null);
+
+      refreshFood();
+    } catch (error) {
+      console.error(error);
+
+      toast.error("Unable to update food status.");
+    } finally {
+      setStatusLoading(false);
+    }
   };
 
   // ==========================================================================
@@ -272,6 +317,16 @@ const ViewFood = () => {
         imageUrl={food.imageUrl}
         imageName={food.foodName}
         onClose={closeImageViewer}
+      />
+
+      <StatusConfirmationModal
+        show={showStatusModal}
+        food={food}
+        previousStatus={food.foodStatus}
+        nextStatus={selectedStatus}
+        loading={statusLoading}
+        onCancel={handleCancelStatus}
+        onConfirm={handleConfirmStatus}
       />
     </PageLayout>
   );
