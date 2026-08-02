@@ -5,7 +5,7 @@ import DetailHeader from "../card/DetailHeader";
 import DetailCard from "../layout/DetailCard";
 import DetailRow from "./DetailRow";
 
-import { getNestedValue } from "../../../../utils/DisplayOptionUtils";
+import { getNestedValue } from "../../../utils/DisplayOptionUtils";
 
 /**
  * ============================================================================

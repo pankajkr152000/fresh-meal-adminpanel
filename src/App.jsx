@@ -2,17 +2,16 @@ import { useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 
-import Menubar from "./components/Menubar/Menubar";
-import Sidebar from "./components/Sidebar/Sidebar";
+import Menubar from "./shell/Menubar/Menubar";
+import Sidebar from "./shell/Sidebar/Sidebar";
 
-import ROUTES from "./constants/RouteConstants";
+import ROUTES from "./global/constants/RouteConstants";
 
-import { EditFood, ViewFood } from "./pages/Food";
-import AddFood from "./pages/Food/AddFood";
-import FoodList from "./pages/Food/FoodList";
-import Orders from "./pages/Orders/Orders";
+import { AddFood, EditFood, FoodList, ViewFood } from "./features/foods/pages";
 
-import "./styles/appLayout.css";
+import Orders from "./features/orders/pages/orders";
+
+import "./global/styles/appLayout.css";
 
 /**
  * =============================================================================

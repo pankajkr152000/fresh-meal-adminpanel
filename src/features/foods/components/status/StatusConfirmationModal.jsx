@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
+import { CommonSelect } from "../../../../global/components/forms";
 import displayOptionPropType from "../../../../global/prop-types/displayOptionPropType";
-import { CommonSelect } from "../../common/forms";
 
 console.log("Inside StatusConfirmationmodal Component");
 /**

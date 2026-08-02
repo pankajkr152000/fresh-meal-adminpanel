@@ -6,7 +6,7 @@ import useFoodForm from "../hooks/useFoodForm";
 
 import FoodService from "../services/FoodService";
 
-import { buildFoodFormData } from "../utils/FoodFormDataUtil";
+import FoodFormDataUtil from "../utils/FoodFormDataUtil";
 
 /**
  * =============================================================================
@@ -61,7 +61,7 @@ const AddFood = () => {
     event.preventDefault();
 
     try {
-      const formData = buildFoodFormData(food, image);
+      const formData = FoodFormDataUtil.buildFoodFormData(food, image);
 
       await FoodService.addFood(formData);
 
