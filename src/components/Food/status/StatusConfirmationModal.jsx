@@ -1,5 +1,6 @@
 import PropTypes from "prop-types";
 import displayOptionPropType from "../../../prop-types/displayOptionPropType";
+import { CommonSelect } from "../../common/forms";
 
 console.log("Inside StatusConfirmationmodal Component");
 /**
@@ -32,6 +33,7 @@ const StatusConfirmationModal = ({
   loading = false,
   onCancel,
   onConfirm,
+  onStatusChange,
 }) => {
   console.log("Inside StatusConfirmationModal Component");
   if (!show || !food) {
@@ -78,7 +80,13 @@ const StatusConfirmationModal = ({
                   <div>
                     <small className="text-muted d-block">New Status</small>
 
-                    <strong>{nextStatus?.label}</strong>
+                    {/* <strong>{nextStatus?.label}</strong> */}
+                    <CommonSelect
+                      name="status"
+                      value={nextStatus}
+                      options={food.allowedStatuses}
+                      onChange={(name, value) => onStatusChange(value)}
+                    />
                   </div>
                 </div>
               </div>
@@ -126,6 +134,7 @@ StatusConfirmationModal.propTypes = {
   loading: PropTypes.bool,
   onCancel: PropTypes.func.isRequired,
   onConfirm: PropTypes.func.isRequired,
+  onStatusChange: PropTypes.func.isRequired,
 };
 
 export default StatusConfirmationModal;

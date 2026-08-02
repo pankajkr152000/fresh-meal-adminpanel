@@ -91,9 +91,9 @@ const ViewFood = () => {
     navigate(-1);
   };
 
-  const handleEdit = () => {
-    navigate(`/foods/edit/${food.id}`);
-  };
+  // const handleEdit = () => {
+  //   navigate(`/foods/edit/${food.id}`);
+  // };
 
   const handleEditFood = () => {
     navigate(ROUTES.EDIT_FOOD.replace(":foodId", food.id));
@@ -108,13 +108,16 @@ const ViewFood = () => {
   const handleStatusChange = () => {
     if (!food?.allowedStatuses?.length) {
       toast.info("No status transition available.");
-
       return;
     }
 
     setSelectedStatus(food.allowedStatuses[0]);
 
     setShowStatusModal(true);
+  };
+
+  const handleStatusSelection = (status) => {
+    setSelectedStatus(status);
   };
 
   const handleCancelStatus = () => {
@@ -127,7 +130,7 @@ const ViewFood = () => {
     try {
       setStatusLoading(true);
 
-      await FoodService.updateFoodStatus(food.id, selectedStatus.value);
+      await FoodService.updateFoodStatus(food.id, selectedStatus);
 
       toast.success("Food status updated successfully.");
 
@@ -324,6 +327,7 @@ const ViewFood = () => {
         food={food}
         previousStatus={food.foodStatus}
         nextStatus={selectedStatus}
+        onStatusChange={handleStatusSelection}
         loading={statusLoading}
         onCancel={handleCancelStatus}
         onConfirm={handleConfirmStatus}
