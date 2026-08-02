@@ -4,13 +4,13 @@
 // Renders a food detail field based on its configured type.
 // ============================================================================
 
-import FoodStatusBadge from "../components/FoodStatusBadge";
+import FoodStatusBadge from "../components/status/FoodStatusBadge";
 
-import DetailBadge from "../../../components/common/details/display/DetailBadge";
-import EmptyValue from "../../../components/common/details/display/EmptyValue";
+import DetailBadge from "../../../global/components/details/display/DetailBadge";
+import EmptyValue from "../../../global/components/details/display/EmptyValue";
 
-import { DETAIL_FIELD_TYPES } from "../../../constants/detailFieldTypes";
-import { getNestedValue } from "../../../utils/getNestedValue";
+import { DETAIL_FIELD_TYPES } from "../../../global/constants/detailFieldTypes";
+import { getNestedValue } from "../../../global/utils/getNestedValue";
 
 /**
  * Renders a field value based on its configuration.
