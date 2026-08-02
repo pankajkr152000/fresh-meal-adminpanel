@@ -1,0 +1,171 @@
+src/
+│
+├── api/
+│   │
+│   ├── apiClient.js
+│   ├── interceptors.js                (future)
+│   ├── request.js                     (future)
+│   ├── response.js                    (future)
+│   └── index.js
+│
+├── assets/
+│   │
+│   ├── icons/
+│   │
+│   ├── images/
+│   │
+│   ├── fonts/
+│   │
+│   ├── styles/
+│   │      global.css
+│   │      utilities.css
+│   │      variables.css
+│   │
+│   └── index.js
+│
+├── components/
+│   │
+│   ├── Common/
+│   │
+│   │   ├── data-display/
+│   │   │
+│   │   │   ├── badges/
+│   │   │   ├── cards/
+│   │   │   ├── pagination/
+│   │   │   ├── skeletons/
+│   │   │   ├── tables/
+│   │   │   └── index.js
+│   │   │
+│   │   ├── details/
+│   │   │
+│   │   │   ├── audit/
+│   │   │   ├── card/
+│   │   │   ├── display/
+│   │   │   ├── feedback/
+│   │   │   ├── header/
+│   │   │   ├── layout/
+│   │   │   ├── media/
+│   │   │   ├── utils/
+│   │   │   └── index.js
+│   │   │
+│   │   ├── feedback/
+│   │   │
+│   │   ├── forms/
+│   │   │
+│   │   │   ├── buttons/
+│   │   │   ├── checkbox/
+│   │   │   ├── date/
+│   │   │   ├── dropdowns/
+│   │   │   ├── file/
+│   │   │   ├── filters/
+│   │   │   ├── input/
+│   │   │   ├── radio/
+│   │   │   ├── search/
+│   │   │   ├── select/
+│   │   │   ├── switch/
+│   │   │   ├── textarea/
+│   │   │   └── index.js
+│   │   │
+│   │   ├── layout/
+│   │   │
+│   │   ├── overlay/
+│   │   │
+│   │   └── index.js
+│   │
+│   ├── Menubar/
+│   │
+│   ├── Sidebar/
+│   │
+│   └── index.js
+│
+├── constants/
+│   │
+│   ├── ApiConstants.js
+│   ├── AppConstants.js
+│   ├── HttpStatusConstants.js
+│   ├── MessageConstants.js
+│   ├── RouteConstants.js
+│   ├── FoodStatus.js
+│   ├── detailFieldFactory.js
+│   ├── detailFieldTypes.js
+│   └── index.js
+│
+├── features/
+│   │
+│   ├── foods/
+│   │
+│   ├── orders/
+│   │
+│   ├── customers/
+│   │
+│   ├── restaurants/
+│   │
+│   ├── categories/
+│   │
+│   ├── offers/
+│   │
+│   ├── users/
+│   │
+│   └── index.js
+│
+├── hooks/
+│   │
+│   ├── useDebounce.js
+│   ├── useLocalStorage.js             (future)
+│   ├── usePagination.js               (future)
+│   ├── useTheme.js                    (future)
+│   ├── useModal.js                    (future)
+│   └── index.js
+│
+├── layouts/
+│   │
+│   ├── AdminLayout.jsx
+│   ├── AuthLayout.jsx
+│   ├── PageLayout.jsx
+│   └── index.js
+│
+├── prop-types/
+│   │
+│   ├── displayOptionPropType.js
+│   ├── commonPropTypes.js             (future)
+│   └── index.js
+│
+├── routes/
+│   │
+│   ├── AppRoutes.jsx
+│   ├── ProtectedRoute.jsx
+│   └── index.js
+│
+├── services/
+│   │
+│   ├── ApiClient.js
+│   ├── StorageService.js              (future)
+│   ├── AuthService.js                 (future)
+│   └── index.js
+│
+├── styles/
+│   │
+│   ├── appLayout.css
+│   ├── theme.css                      (future)
+│   └── index.js
+│
+├── utils/
+│   │
+│   ├── DateUtils.js
+│   ├── DisplayOptionUtils.jsx
+│   ├── FoodStatusUtils.js             ❌ move into foods
+│   ├── FoodFormDataUtil.js            ❌ move into foods
+│   ├── formatCurrency.js
+│   ├── formatDate.js
+│   ├── formatDateTime.js
+│   ├── formatFileSize.js
+│   ├── formatNumber.js
+│   ├── getNestedValue.js
+│   ├── ImageUtils.js
+│   ├── themeChangeScriptButton.js
+│   └── index.js
+│
+├── App.jsx
+├── App.css
+├── index.css
+└── main.jsx

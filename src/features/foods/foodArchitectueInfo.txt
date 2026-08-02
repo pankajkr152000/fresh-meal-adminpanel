@@ -1,0 +1,124 @@
+src/
+│
+├── features/
+│
+│   └── foods/
+│       │
+│       ├── index.js
+│       │
+│       ├── pages/
+│       │   │
+│       │   ├── FoodList.jsx
+│       │   ├── ViewFood.jsx
+│       │   ├── EditFood.jsx
+│       │   ├── AddFood.jsx
+│       │   └── index.js
+│       │
+│       ├── components/
+│       │   │
+│       │   ├── details/
+│       │   │   │
+│       │   │   ├── FoodHero.jsx
+│       │   │   ├── NavigationCard.jsx
+│       │   │   └── index.js
+│       │   │
+│       │   ├── statistics/
+│       │   │   │
+│       │   │   ├── FoodStatistics.jsx
+│       │   │   └── index.js
+│       │   │
+│       │   ├── table/
+│       │   │   │
+│       │   │   ├── FoodTable.jsx
+│       │   │   ├── FoodTableRow.jsx
+│       │   │   └── index.js
+│       │   │
+│       │   ├── toolbar/
+│       │   │   │
+│       │   │   ├── FoodToolbar.jsx
+│       │   │   ├── FoodSearch.jsx
+│       │   │   ├── FoodFilters.jsx
+│       │   │   └── index.js
+│       │   │
+│       │   ├── form/
+│       │   │   │
+│       │   │   ├── FoodForm.jsx
+│       │   │   └── index.js
+│       │   │
+│       │   ├── status/
+│       │   │   │
+│       │   │   ├── FoodStatusBadge.jsx
+│       │   │   ├── FoodStatusDropdown.jsx
+│       │   │   ├── StatusConfirmationModal.jsx
+│       │   │   └── index.js
+│       │   │
+│       │   └── media/
+│       │       │
+│       │       ├── FoodImage.jsx
+│       │       ├── FoodGallery.jsx              (future)
+│       │       ├── FoodThumbnail.jsx            (future)
+│       │       └── index.js
+│       │
+│       ├── hooks/
+│       │   │
+│       │   ├── useFoodList.js
+│       │   ├── useFoodDetails.js
+│       │   ├── useFoodForm.js
+│       │   ├── useFoodMetadata.js
+│       │   ├── useFoodFilters.js               (future)
+│       │   ├── useFoodStatistics.js            (future)
+│       │   └── index.js
+│       │
+│       ├── services/
+│       │   │
+│       │   ├── FoodService.js
+│       │   ├── FoodMetadataService.js
+│       │   ├── FoodStatusService.js            (future)
+│       │   └── index.js
+│       │
+│       ├── constants/
+│       │   │
+│       │   ├── columns.js
+│       │   ├── defaults.js
+│       │   ├── filterConfig.js
+│       │   ├── foodDetails.config.js
+│       │   ├── editFood.config.js
+│       │   ├── validation.js
+│       │   ├── foodValidation.js
+│       │   ├── status.js
+│       │   ├── sortOptions.js                  (future)
+│       │   └── index.js
+│       │
+│       ├── utils/
+│       │   │
+│       │   ├── FoodFormDataUtil.js
+│       │   ├── FoodStatusUtils.js
+│       │   ├── FoodDisplayUtil.js              (future)
+│       │   ├── FoodValidationUtil.js           (future)
+│       │   ├── renderFoodField.js
+│       │   └── index.js
+│       │
+│       ├── styles/
+│       │   │
+│       │   ├── food.css
+│       │   ├── foodTable.css
+│       │   ├── foodForm.css
+│       │   ├── foodDetails.css
+│       │   ├── foodToolbar.css
+│       │   └── editFood.css
+│       │
+│       ├── types/
+│       │   │
+│       │   ├── foodPropTypes.js
+│       │   ├── foodFormPropTypes.js
+│       │   └── index.js
+│       │
+│       ├── assets/
+│       │   │
+│       │   ├── icons/
+│       │   │
+│       │   ├── images/
+│       │   │
+│       │   └── index.js
+│       │
+│       └── README.md

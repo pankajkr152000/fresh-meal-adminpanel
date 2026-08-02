@@ -1,49 +1,121 @@
-// ============================================================================
+// ===========================================================================
 // File: useFoodDetails.js
+// File location: src/hooks/useFoodDetails.js
+//
 // Description:
-// Custom hook for fetching and managing a single food's details.
-// ============================================================================
+// Custom hook responsible for loading and managing a single food entity.
+//
+// Responsibilities:
+// - Load food details
+// - Load previous / next navigation
+// - Manage loading state
+// - Manage error state
+// - Expose refresh capability
+//
+// NOTE:
+// This hook contains NO UI logic.
+// Rendering decisions belong to ViewFood and reusable Detail components.
+// ===========================================================================
 
 import { useCallback, useEffect, useState } from "react";
+import FoodService from "../services/FoodService";
 
-import FoodService from "../../../services/FoodService";
+// ===========================================================================
+// Hook
+// ===========================================================================
 
-export default function useFoodDetails(foodId) {
+const useFoodDetails = (foodId) => {
+  // =======================================================================
+  // State
+  // =======================================================================
+
   const [food, setFood] = useState(null);
+
+  const [navigation, setNavigation] = useState(null);
 
   const [loading, setLoading] = useState(true);
 
   const [error, setError] = useState(null);
 
+  // =======================================================================
+  // Load Food
+  // =======================================================================
+
   const loadFood = useCallback(async () => {
     if (!foodId) {
+      setFood(null);
+      setNavigation(null);
+      setError("Food id is required.");
+      setLoading(false);
       return;
     }
 
-    setLoading(true);
-    setError(null);
-
     try {
+      setLoading(true);
+      setError(null);
+
       const response = await FoodService.getFoodById(foodId);
 
-      setFood(response.data);
-    } catch (err) {
-      console.error("Failed to load food details:", err);
+      // ApiResponse
+      const viewResponse = response?.data;
 
-      setError(err);
+      // EntityViewResponse
+      setFood(viewResponse?.data ?? null);
+      setNavigation(viewResponse?.navigation ?? null);
+    } catch (exception) {
+      console.error("Failed to load food details:", exception);
+
+      setFood(null);
+      setNavigation(null);
+
+      setError(
+        exception?.response?.data?.message ||
+          exception?.message ||
+          "Unable to load food details.",
+      );
     } finally {
       setLoading(false);
     }
   }, [foodId]);
 
-  useEffect(() => {
-    loadFood();
+  // =======================================================================
+  // Refresh
+  // =======================================================================
+
+  const refreshFood = useCallback(async () => {
+    await loadFood();
   }, [loadFood]);
 
+  // =======================================================================
+  // Effects
+  // =======================================================================
+
+  useEffect(() => {
+    // Defer calling loadFood to avoid synchronous setState within the effect
+    const id = setTimeout(() => {
+      loadFood();
+    }, 0);
+
+    return () => clearTimeout(id);
+  }, [loadFood]);
+
+  // =======================================================================
+  // Return
+  // =======================================================================
+
   return {
+    // Data
     food,
+    navigation,
+
+    // State
     loading,
     error,
-    refresh: loadFood,
+    hasFood: Boolean(food),
+
+    // Actions
+    refreshFood,
   };
-}
+};
+
+export default useFoodDetails;
