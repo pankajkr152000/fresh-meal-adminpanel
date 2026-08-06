@@ -371,17 +371,19 @@ export default function useEditFood() {
 
     const current = {
       ...formData,
-
       image: null,
     };
 
     const original = {
       ...originalData,
-
       image: null,
     };
 
-    return JSON.stringify(current) !== JSON.stringify(original);
+    const hasFormChanges = JSON.stringify(current) !== JSON.stringify(original);
+
+    const hasImageChanged = formData.image != null;
+
+    return hasFormChanges || hasImageChanged;
   }, [formData, originalData]);
 
   /**
