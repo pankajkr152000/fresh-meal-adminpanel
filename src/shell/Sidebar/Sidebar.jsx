@@ -38,6 +38,12 @@ const Sidebar = ({ getSidebarVisible }) => {
         </Link>
         <Link
           className="list-group-item list-group-item-action  p-3"
+          to={ROUTES.ARCHIVED_FOOD}>
+          <i className="bi bi-list-ul me-2"></i>
+          Archived Foods
+        </Link>
+        <Link
+          className="list-group-item list-group-item-action  p-3"
           to={ROUTES.FETCH_ALL_ORDERS}>
           <i className="bi bi-cart me-2"></i>
           All Orders

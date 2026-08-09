@@ -22,6 +22,8 @@ export const API = {
     // Archive / Restore / Permanent Delete
     // =========================================================================
 
+    GET_ARCHIVED_FOODS: `${BASE_URL}/api/foods/archived`,
+
     ARCHIVE_FOOD: `${BASE_URL}/api/foods/archive`,
 
     BULK_ARCHIVE_FOOD: `${BASE_URL}/api/foods/bulkArchive`,
@@ -29,8 +31,6 @@ export const API = {
     RESTORE_FOOD: `${BASE_URL}/api/foods/restore`,
 
     BULK_RESTORE_FOOD: `${BASE_URL}/api/foods/bulkRestore`,
-
-    GET_ARCHIVED_FOODS: `${BASE_URL}/api/foods/archived`,
 
     PERMANENT_DELETE_FOOD: `${BASE_URL}/api/foods/permanentDelete`,
 

@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import { memo, useEffect, useRef } from "react";
-
+import "./commonCheckboxStyle.css";
 /**
  * ============================================================================
  * Component : CommonCheckbox
@@ -57,7 +57,7 @@ const CommonCheckbox = ({
         id={name}
         name={name}
         type="checkbox"
-        className={`form-check-input ${error ? "is-invalid" : ""}`}
+        className={`form-check-input freshmeal-checkbox ${error ? "is-invalid" : ""}`}
         checked={checked}
         onChange={handleChange}
         disabled={disabled}

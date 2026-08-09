@@ -100,6 +100,23 @@ const FoodService = {
         "Content-Type": "multipart/form-data",
       },
     });
+    return response.data;
+  },
+
+  /**
+   * ============================================================================
+   * Retrieve Archived Foods
+   * ============================================================================
+   *
+   * Retrieves all foods currently archived.
+   *
+   * @param {AbortSignal} signal Abort signal.
+   * @returns {Promise} API response.
+   */
+  getArchivedFoods: async (signal) => {
+    const response = await apiClient.get(API.FOOD.GET_ARCHIVED_FOODS, {
+      signal,
+    });
 
     return response.data;
   },

@@ -1,53 +1,116 @@
 import { useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
+
+import { useArchivedFoodContext } from "../../features/foods/context";
+import ROUTES from "../../global/constants/RouteConstants";
 import { initializeTheme } from "../../global/utils/themeChangeScriptButton";
+
 import "./menubarStyle.css";
 
+/**
+ * ============================================================================
+ * Component : Menubar
+ * ============================================================================
+ *
+ * Purpose
+ * -------
+ * Main navigation bar for the FreshMeal Admin Panel.
+ *
+ * Responsibilities
+ * ----------------
+ * • Toggle sidebar.
+ * • Provide theme switching.
+ * • Provide application navigation.
+ * • Provide contextual food actions.
+ *
+ * ============================================================================
+ */
+
 const Menubar = ({ toggleSidebar }) => {
+  const location = useLocation();
+
+  // ==========================================================================
+  // Archived Food Context
+  // ==========================================================================
+
+  const {
+    selectedCount,
+    openRestoreConfirmation,
+    openPermanentDeleteConfirmation,
+  } = useArchivedFoodContext();
+
+  // ==========================================================================
+  // Page Detection
+  // ==========================================================================
+
+  const isArchivedFoodPage = location.pathname === ROUTES.GET_ARCHIVED_FOODS;
+
+  const hasSelection = selectedCount > 0;
+
+  // ==========================================================================
+  // Theme Initialization
+  // ==========================================================================
+
   useEffect(() => {
     initializeTheme();
   }, []);
 
+  // ==========================================================================
+  // Render
+  // ==========================================================================
+
   return (
-    <nav className="navbar navbar-expand-lg bg-body border-bottom app-navbar">
+    <nav className="navbar navbar-expand-lg app-navbar">
       <div className="container-fluid">
+        {/* ================================================================
+            Sidebar Toggle
+        ================================================================ */}
+
         <button
-          className="btn btn-primary"
-          id="sidebarToggle"
-          onClick={toggleSidebar}>
-          <i className="bi bi-list"></i>
-          {/* Toggle Menu */}
-        </button>
-        <button
-          className="navbar-toggler"
           type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarSupportedContent"
-          aria-controls="navbarSupportedContent"
-          aria-expanded="false"
-          aria-label="Toggle navigation">
-          <span className="navbar-toggler-icon"></span>
+          className="btn btn-outline-secondary"
+          onClick={toggleSidebar}
+          aria-label="Toggle sidebar">
+          ☰
         </button>
-        <div
-          className="collapse navbar-collapse"
-          id="navbarSupportedContent">
-          <ul className="navbar-nav ms-auto mt-2 mt-lg-0">
-            <li className="nav-item-theme-change-button">
-              {/* <!-- dark/light button --> */}
+
+        {/* ================================================================
+            Navigation
+        ================================================================ */}
+
+        <div className="collapse navbar-collapse">
+          <ul className="navbar-nav ms-auto align-items-center">
+            {/* ============================================================
+                Theme Toggle
+            ============================================================ */}
+
+            <li className="nav-item me-2">
               <button
+                type="button"
                 id="theme-change-button"
-                className="btn btn-outline-secondary 900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
-                <i className="bi bi-sun"></i>
-                <span> Light</span>
+                className="btn btn-outline-secondary d-flex align-items-center gap-1"
+                aria-label="Toggle theme">
+                <span id="theme-icon">☀️</span>
+                <span id="theme-text">Light</span>
               </button>
             </li>
 
-            <li className="nav-item active">
-              <a
-                className="nav-link"
-                href="#!">
+            {/* ============================================================
                 Home
-              </a>
+            ============================================================ */}
+
+            <li className="nav-item active">
+              <Link
+                className="nav-link"
+                to={ROUTES.HOME}>
+                Home
+              </Link>
             </li>
+
+            {/* ============================================================
+                Link
+            ============================================================ */}
+
             <li className="nav-item">
               <a
                 className="nav-link"
@@ -55,6 +118,11 @@ const Menubar = ({ toggleSidebar }) => {
                 Link
               </a>
             </li>
+
+            {/* ============================================================
+                Context Actions
+            ============================================================ */}
+
             <li className="nav-item dropdown">
               <a
                 className="nav-link dropdown-toggle"
@@ -64,27 +132,51 @@ const Menubar = ({ toggleSidebar }) => {
                 data-bs-toggle="dropdown"
                 aria-haspopup="true"
                 aria-expanded="false">
-                Dropdown
+                Actions
               </a>
+
               <div
                 className="dropdown-menu dropdown-menu-end"
                 aria-labelledby="navbarDropdown">
-                <a
-                  className="dropdown-item"
-                  href="#!">
-                  Action
-                </a>
-                <a
-                  className="dropdown-item"
-                  href="#!">
-                  Another action
-                </a>
-                <div className="dropdown-divider"></div>
-                <a
-                  className="dropdown-item"
-                  href="#!">
-                  Something else here
-                </a>
+                {isArchivedFoodPage ? (
+                  <>
+                    {/* ==================================================
+                        Restore Selected Foods
+                    ================================================== */}
+
+                    <button
+                      type="button"
+                      className="dropdown-item"
+                      disabled={!hasSelection}
+                      onClick={openRestoreConfirmation}>
+                      Restore
+                    </button>
+
+                    {/* ==================================================
+                        Permanently Delete Selected Foods
+                    ================================================== */}
+
+                    <button
+                      type="button"
+                      className="dropdown-item text-danger"
+                      disabled={!hasSelection}
+                      onClick={openPermanentDeleteConfirmation}>
+                      Delete Permanently
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    {/* ==================================================
+                        Navigate to Archived Foods
+                    ================================================== */}
+
+                    <Link
+                      className="dropdown-item"
+                      to={ROUTES.GET_ARCHIVED_FOODS}>
+                      Delete
+                    </Link>
+                  </>
+                )}
               </div>
             </li>
           </ul>

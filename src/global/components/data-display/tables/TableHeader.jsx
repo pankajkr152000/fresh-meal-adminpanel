@@ -108,7 +108,7 @@ const TableHeader = ({
               {column.sortable ? (
                 <button
                   type="button"
-                  className="btn btn-link p-0 fw-semibold text-decoration-none text-dark"
+                  className="btn btn-link p-0 fw-semibold text-decoration-none text-body"
                   onClick={() => onSort(column.accessor)}>
                   {column.header}
 
