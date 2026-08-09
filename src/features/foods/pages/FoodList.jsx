@@ -85,6 +85,12 @@ const FoodList = () => {
 
     // Retry
     retryLoadingFoods,
+
+    // food selection
+    selectedFoodIds,
+    handleFoodSelectionChange,
+    handleSelectAllFoods,
+    selectionInfo,
   } = useFoodList();
 
   // ===========================================================================
@@ -162,6 +168,10 @@ const FoodList = () => {
         onStatusChange={selectStatus}
         onView={handleViewFood}
         retryAction={error ? retryLoadingFoods : retryLoadingMetadata}
+        selectedFoodIds={selectedFoodIds}
+        onFoodSelectionChange={handleFoodSelectionChange}
+        handleSelectAllFoods={handleSelectAllFoods}
+        selectionInfo={selectionInfo}
       />
 
       <StatusConfirmationModal

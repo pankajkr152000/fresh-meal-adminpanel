@@ -5,6 +5,7 @@ import {
   handleImageError,
 } from "../../../../global/utils/ImageUtils";
 
+import CommonCheckbox from "../../../../global/components/forms/checkbox/CommonCheckbox";
 import { getDisplayLabels } from "../../../../global/utils/DisplayOptionUtils";
 import FoodStatusBadge from "../status/FoodStatusBadge";
 import FoodStatusDropdown from "../status/FoodStatusDropdown";
@@ -32,12 +33,26 @@ console.log("Inside FoodTableRow Component");
  * No business logic.
  * -----------------------------------------------------------------------------
  */
-
-const FoodTableRow = ({ food, onStatusChange, onView }) => {
+const FoodTableRow = ({
+  food,
+  onStatusChange,
+  onView,
+  // selection
+  selected = false,
+  onSelectionChange,
+}) => {
   console.log("Inside FoodTableRow Component");
   console.log("Food Table Row food id " + food.id);
   return (
     <tr>
+      {/* Selection */}
+      <td className="text-center">
+        <CommonCheckbox
+          name={`food-${food.id}`}
+          checked={selected}
+          onChange={(_, checked) => onSelectionChange(food.id, checked)}
+        />
+      </td>
       <td className="text-center">
         <img
           src={getFoodImage(food.imageUrl)}
@@ -95,6 +110,10 @@ FoodTableRow.propTypes = {
   onStatusChange: PropTypes.func.isRequired,
 
   onView: PropTypes.string,
+
+  selected: PropTypes.bool,
+
+  onSelectionChange: PropTypes.func,
 };
 
 export default FoodTableRow;

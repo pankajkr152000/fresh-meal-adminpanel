@@ -6,11 +6,10 @@ import LoadingSpinner from "../../feedback/LoadingSpinner";
 
 import TableHeader from "./TableHeader";
 
-console.log("Inside Datatable Compoenent");
 /**
- * -----------------------------------------------------------------------------
+ * ============================================================================
  * Component : DataTable
- * -----------------------------------------------------------------------------
+ * ============================================================================
  *
  * Purpose
  * -------
@@ -26,12 +25,14 @@ console.log("Inside Datatable Compoenent");
  * • Render reusable table header.
  * • Render table rows.
  * • Render footer.
+ * • Optionally support row selection.
  *
  * Notes
  * -----
- * This component intentionally contains no business logic.
- * Feature modules provide column definitions and row renderers.
- * -----------------------------------------------------------------------------
+ * Selection is a generic table capability.
+ * Feature-specific selection logic remains outside this component.
+ *
+ * ============================================================================
  */
 
 const DataTable = ({
@@ -53,11 +54,17 @@ const DataTable = ({
   retryAction,
 
   tableClassName = "table table-hover align-middle mb-0",
+
+  // Selection
+  selectable = false,
+  selectedRowKeys = new Set(),
+  allRowsSelected = false,
+  someRowsSelected = false,
+  onSelectAll,
 }) => {
-  console.log("Inside Datatable Compoenent");
-  // ==========================================================================
+  // =========================================================================
   // Loading State
-  // ==========================================================================
+  // =========================================================================
 
   if (loading) {
     return (
@@ -71,9 +78,9 @@ const DataTable = ({
     );
   }
 
-  // ==========================================================================
+  // =========================================================================
   // Error State
-  // ==========================================================================
+  // =========================================================================
 
   if (error) {
     return (
@@ -90,9 +97,9 @@ const DataTable = ({
     );
   }
 
-  // ==========================================================================
+  // =========================================================================
   // Empty State
-  // ==========================================================================
+  // =========================================================================
 
   if (data.length === 0) {
     return (
@@ -109,6 +116,10 @@ const DataTable = ({
     );
   }
 
+  // =========================================================================
+  // Table
+  // =========================================================================
+
   return (
     <>
       {toolbar}
@@ -120,6 +131,10 @@ const DataTable = ({
             sortField={sortField}
             sortDirection={sortDirection}
             onSort={onSort}
+            selectable={selectable}
+            allRowsSelected={allRowsSelected}
+            someRowsSelected={someRowsSelected}
+            onSelectAll={onSelectAll}
           />
 
           <tbody>{data.map((row) => renderRow(row, row[rowKey]))}</tbody>
@@ -157,6 +172,17 @@ DataTable.propTypes = {
   onSort: PropTypes.func,
 
   tableClassName: PropTypes.string,
+
+  // Selection
+  selectable: PropTypes.bool,
+
+  selectedRowKeys: PropTypes.instanceOf(Set),
+
+  allRowsSelected: PropTypes.bool,
+
+  someRowsSelected: PropTypes.bool,
+
+  onSelectAll: PropTypes.func,
 };
 
 export default DataTable;

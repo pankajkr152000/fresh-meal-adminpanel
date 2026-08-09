@@ -17,6 +17,24 @@ export const API = {
     UPDATE: (id) => `/api/v1/foods/${id}`,
     UPDATE_FOOD_STATUS: (id) => `${BASE_URL}/api/foods/${id}/status`,
     DELETE: (id) => `/api/v1/foods/${id}`,
+
+    // =========================================================================
+    // Archive / Restore / Permanent Delete
+    // =========================================================================
+
+    ARCHIVE_FOOD: `${BASE_URL}/api/foods/archive`,
+
+    BULK_ARCHIVE_FOOD: `${BASE_URL}/api/foods/bulkArchive`,
+
+    RESTORE_FOOD: `${BASE_URL}/api/foods/restore`,
+
+    BULK_RESTORE_FOOD: `${BASE_URL}/api/foods/bulkRestore`,
+
+    GET_ARCHIVED_FOODS: `${BASE_URL}/api/foods/archived`,
+
+    PERMANENT_DELETE_FOOD: `${BASE_URL}/api/foods/permanentDelete`,
+
+    BULK_PERMANENT_DELETE_FOOD: `${BASE_URL}/api/foods/bulkPermanentDelete`,
   },
 
   ORDER: {

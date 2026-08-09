@@ -69,6 +69,12 @@ const useFoodList = () => {
   const [foods, setFoods] = useState([]);
 
   // ===========================================================================
+  // Food Selection for action
+  // ===========================================================================
+
+  const [selectedFoodIds, setSelectedFoodIds] = useState(new Set());
+
+  // ===========================================================================
   // Request State
   // ===========================================================================
 
@@ -168,10 +174,28 @@ const useFoodList = () => {
   useEffect(() => {
     const controller = new AbortController();
 
-    loadFoods(controller.signal);
+    loadFoods(controller.signal).catch(() => {
+      // Error handling is already done in loadFoods
+    });
 
     return () => controller.abort();
   }, [loadFoods]);
+
+  // handle food selection by checkbox
+  const handleFoodSelectionChange = useCallback((foodId, checked) => {
+    setSelectedFoodIds((previous) => {
+      console.log("Selection:", foodId, checked);
+      const next = new Set(previous);
+
+      if (checked) {
+        next.add(foodId);
+      } else {
+        next.delete(foodId);
+      }
+
+      return next;
+    });
+  }, []);
 
   // ===========================================================================
   // Filter Actions
@@ -456,6 +480,60 @@ const useFoodList = () => {
     return sortedFoods.slice(startIndex, endIndex);
   }, [sortedFoods, pagination]);
 
+  // ===========================================================================
+  // Selection Actions
+  // ===========================================================================
+
+  /**
+   * Selects or deselects all foods visible on the current page.
+   *
+   * Selection is intentionally limited to pagedFoods.
+   */
+  const handleSelectAllFoods = useCallback(
+    (checked) => {
+      setSelectedFoodIds((previous) => {
+        const next = new Set(previous);
+
+        pagedFoods.forEach((food) => {
+          if (!food?.id) {
+            return;
+          }
+
+          if (checked) {
+            next.add(food.id);
+          } else {
+            next.delete(food.id);
+          }
+        });
+
+        return next;
+      });
+    },
+    [pagedFoods],
+  );
+
+  const selectionInfo = useMemo(() => {
+    const visibleFoodIds = pagedFoods.map((food) => food?.id).filter(Boolean);
+
+    const selectedVisibleCount = visibleFoodIds.filter((id) =>
+      selectedFoodIds.has(id),
+    ).length;
+
+    return {
+      selectedCount: selectedFoodIds.size,
+
+      selectedVisibleCount,
+
+      allFoodsSelected:
+        visibleFoodIds.length > 0 &&
+        selectedVisibleCount === visibleFoodIds.length,
+
+      someFoodsSelected:
+        selectedVisibleCount > 0 &&
+        selectedVisibleCount < visibleFoodIds.length,
+    };
+  }, [pagedFoods, selectedFoodIds]);
+
   useEffect(() => {
     if (pagination.page > totalPages) {
       setPagination((previous) => ({
@@ -626,6 +704,11 @@ const useFoodList = () => {
     // API
     refreshFoods,
     retryLoadingFoods,
+    // Selection
+    selectedFoodIds,
+    handleFoodSelectionChange,
+    handleSelectAllFoods,
+    selectionInfo,
   };
 };
 
