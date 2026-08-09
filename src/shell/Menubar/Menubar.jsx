@@ -1,7 +1,10 @@
 import { useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 
-import { useArchivedFoodContext } from "../../features/foods/context";
+import {
+  useArchivedFoodContext,
+  useFoodListContext,
+} from "../../features/foods/context";
 import ROUTES from "../../global/constants/RouteConstants";
 import { initializeTheme } from "../../global/utils/themeChangeScriptButton";
 
@@ -39,11 +42,23 @@ const Menubar = ({ toggleSidebar }) => {
     openPermanentDeleteConfirmation,
   } = useArchivedFoodContext();
 
+  const {
+    selectedCount: selectedFoodCount,
+    hasSelection: hasFoodSelection,
+    openArchiveConfirmation,
+  } = useFoodListContext();
+
   // ==========================================================================
   // Page Detection
   // ==========================================================================
 
   const isArchivedFoodPage = location.pathname === ROUTES.GET_ARCHIVED_FOODS;
+
+  const isAllFoodsPage =
+    location.pathname === ROUTES.FETCH_ALL_FOODS ||
+    location.pathname === ROUTES.HOME;
+
+  const shouldShowActions = isAllFoodsPage || isArchivedFoodPage;
 
   const hasSelection = selectedCount > 0;
 
@@ -123,62 +138,71 @@ const Menubar = ({ toggleSidebar }) => {
                 Context Actions
             ============================================================ */}
 
-            <li className="nav-item dropdown">
-              <a
-                className="nav-link dropdown-toggle"
-                id="navbarDropdown"
-                href="#"
-                role="button"
-                data-bs-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false">
-                Actions
-              </a>
+            {shouldShowActions && (
+              <li className="nav-item dropdown">
+                <a
+                  className="nav-link dropdown-toggle"
+                  id="navbarDropdown"
+                  href="#"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false">
+                  Actions
+                </a>
 
-              <div
-                className="dropdown-menu dropdown-menu-end"
-                aria-labelledby="navbarDropdown">
-                {isArchivedFoodPage ? (
-                  <>
-                    {/* ==================================================
-                        Restore Selected Foods
-                    ================================================== */}
+                <div
+                  className="dropdown-menu dropdown-menu-end"
+                  aria-labelledby="navbarDropdown">
+                  {isArchivedFoodPage ? (
+                    <>
+                      <button
+                        type="button"
+                        className="dropdown-item"
+                        disabled={!hasSelection}
+                        onClick={openRestoreConfirmation}>
+                        Restore
+                      </button>
 
+                      <button
+                        type="button"
+                        className="dropdown-item text-danger"
+                        disabled={!hasSelection}
+                        onClick={openPermanentDeleteConfirmation}>
+                        Delete Permanently
+                      </button>
+                    </>
+                  ) : (
+                    // <Link
+                    //   className="dropdown-item"
+                    //   to={ROUTES.GET_ARCHIVED_FOODS}>
+                    //   Delete
+                    // </Link>
+                    // <button
+                    //   type="button"
+                    //   className="dropdown-item"
+                    //   disabled={!hasFoodSelection}
+                    //   onClick={() => {
+                    //     console.log(
+                    //       "Selected foods for archive:",
+                    //       selectedFoodCount,
+                    //     );
+
+                    //     openArchiveConfirmation();
+                    //   }}>
+                    //   Delete
+                    // </button>
                     <button
                       type="button"
                       className="dropdown-item"
-                      disabled={!hasSelection}
-                      onClick={openRestoreConfirmation}>
-                      Restore
+                      disabled={!hasFoodSelection}
+                      onClick={openArchiveConfirmation}>
+                      Archive
                     </button>
-
-                    {/* ==================================================
-                        Permanently Delete Selected Foods
-                    ================================================== */}
-
-                    <button
-                      type="button"
-                      className="dropdown-item text-danger"
-                      disabled={!hasSelection}
-                      onClick={openPermanentDeleteConfirmation}>
-                      Delete Permanently
-                    </button>
-                  </>
-                ) : (
-                  <>
-                    {/* ==================================================
-                        Navigate to Archived Foods
-                    ================================================== */}
-
-                    <Link
-                      className="dropdown-item"
-                      to={ROUTES.GET_ARCHIVED_FOODS}>
-                      Delete
-                    </Link>
-                  </>
-                )}
-              </div>
-            </li>
+                  )}
+                </div>
+              </li>
+            )}
           </ul>
         </div>
       </div>

@@ -7,6 +7,8 @@ import FoodToolbar from "../components/toolbar/FoodToolbar";
 
 import { TablePagination } from "../../../global/components/data-display/tables";
 
+import { ConfirmationModal } from "../../../global/components/overlay";
+import { useFoodListContext } from "../context";
 import useFoodList from "../hooks/useFoodList";
 import useFoodMetadata from "../hooks/useFoodMetadata";
 
@@ -116,6 +118,19 @@ const FoodList = () => {
     retryLoadingMetadata,
   } = useFoodMetadata();
 
+  const {
+    selectedCount,
+    hasSelection,
+    showArchiveConfirmation,
+    openArchiveConfirmation,
+    closeArchiveConfirmation,
+  } = useFoodListContext();
+
+  console.log("FoodList archive modal:", {
+    selectedCount,
+    showArchiveConfirmation,
+  });
+
   // ===========================================================================
   // Navigation
   // ===========================================================================
@@ -182,6 +197,26 @@ const FoodList = () => {
         loading={statusUpdating}
         onCancel={cancelStatusChange}
         onConfirm={confirmStatusChange}
+      />
+
+      {/* confirmation modal to delete / archive food */}
+      <ConfirmationModal
+        show={showArchiveConfirmation}
+        title="Archive Food"
+        message={
+          selectedCount === 1
+            ? "Are you sure you want to archive the selected food?"
+            : `Are you sure you want to archive ${selectedCount} selected foods?`
+        }
+        confirmText="Archive"
+        cancelText="Cancel"
+        confirmButtonClass="btn-warning"
+        onConfirm={() => {
+          console.log("Archive selected foods:", [...selectedFoodIds]);
+
+          closeArchiveConfirmation();
+        }}
+        onCancel={closeArchiveConfirmation}
       />
     </>
   );

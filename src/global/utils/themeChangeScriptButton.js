@@ -88,7 +88,7 @@ function applyTheme(theme) {
   }
 
   if (iconSpan) {
-    iconSpan.textContent = theme === "light" ? "☀️" : "🌙";
+    iconSpan.textContent = theme === "light" ? "🌙" : "☀️";
   }
 }
 

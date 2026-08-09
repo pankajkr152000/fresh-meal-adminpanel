@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import useDebounce from "../../../global/hooks/useDebounce";
 import { containsDisplayOption } from "../../../global/utils/DisplayOptionUtils";
+import { useFoodListContext } from "../context";
 import FoodService from "../services/FoodService";
 
 /**
@@ -72,7 +73,8 @@ const useFoodList = () => {
   // Food Selection for action
   // ===========================================================================
 
-  const [selectedFoodIds, setSelectedFoodIds] = useState(new Set());
+  // const [selectedFoodIds, setSelectedFoodIds] = useState(new Set());
+  const { selectedFoodIds, selectFood, deselectFood } = useFoodListContext();
 
   // ===========================================================================
   // Request State
@@ -182,20 +184,18 @@ const useFoodList = () => {
   }, [loadFoods]);
 
   // handle food selection by checkbox
-  const handleFoodSelectionChange = useCallback((foodId, checked) => {
-    setSelectedFoodIds((previous) => {
+  const handleFoodSelectionChange = useCallback(
+    (foodId, checked) => {
       console.log("Selection:", foodId, checked);
-      const next = new Set(previous);
 
       if (checked) {
-        next.add(foodId);
+        selectFood(foodId);
       } else {
-        next.delete(foodId);
+        deselectFood(foodId);
       }
-
-      return next;
-    });
-  }, []);
+    },
+    [selectFood, deselectFood],
+  );
 
   // ===========================================================================
   // Filter Actions
@@ -491,25 +491,19 @@ const useFoodList = () => {
    */
   const handleSelectAllFoods = useCallback(
     (checked) => {
-      setSelectedFoodIds((previous) => {
-        const next = new Set(previous);
+      pagedFoods.forEach((food) => {
+        if (!food?.id) {
+          return;
+        }
 
-        pagedFoods.forEach((food) => {
-          if (!food?.id) {
-            return;
-          }
-
-          if (checked) {
-            next.add(food.id);
-          } else {
-            next.delete(food.id);
-          }
-        });
-
-        return next;
+        if (checked) {
+          selectFood(food.id);
+        } else {
+          deselectFood(food.id);
+        }
       });
     },
-    [pagedFoods],
+    [pagedFoods, selectFood, deselectFood],
   );
 
   const selectionInfo = useMemo(() => {

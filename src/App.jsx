@@ -17,7 +17,10 @@ import {
 
 import Orders from "./features/orders/pages/orders";
 
-import { ArchivedFoodProvider } from "./features/foods/context";
+import {
+  ArchivedFoodProvider,
+  FoodListProvider,
+} from "./features/foods/context";
 import "./global/styles/appLayout.css";
 
 /**
@@ -59,65 +62,67 @@ const App = () => {
   };
 
   return (
-    <ArchivedFoodProvider>
-      <div
-        className="d-flex"
-        id="wrapper">
-        {/* ================= Sidebar ================= */}
-        <Sidebar getSidebarVisible={getSidebarVisible} />
-
-        {/* ================= Main Layout ================= */}
+    <FoodListProvider>
+      <ArchivedFoodProvider>
         <div
-          id="page-content-wrapper"
-          className={getSidebarVisible ? "sidebar-open" : "sidebar-closed"}>
-          {/* Top Navigation */}
-          <Menubar toggleSidebar={toggleSidebar} />
+          className="d-flex"
+          id="wrapper">
+          {/* ================= Sidebar ================= */}
+          <Sidebar getSidebarVisible={getSidebarVisible} />
 
-          {/* Toast Notifications */}
-          <ToastContainer />
+          {/* ================= Main Layout ================= */}
+          <div
+            id="page-content-wrapper"
+            className={getSidebarVisible ? "sidebar-open" : "sidebar-closed"}>
+            {/* Top Navigation */}
+            <Menubar toggleSidebar={toggleSidebar} />
 
-          {/* Main Page Content */}
-          <main className="container-fluid app-content">
-            <Routes>
-              <Route
-                path={ROUTES.HOME}
-                element={<FoodList />}
-              />
+            {/* Toast Notifications */}
+            <ToastContainer />
 
-              <Route
-                path={ROUTES.ADD_FOOD}
-                element={<AddFood />}
-              />
+            {/* Main Page Content */}
+            <main className="container-fluid app-content">
+              <Routes>
+                <Route
+                  path={ROUTES.HOME}
+                  element={<FoodList />}
+                />
 
-              <Route
-                path={ROUTES.FETCH_ALL_FOODS}
-                element={<FoodList />}
-              />
+                <Route
+                  path={ROUTES.ADD_FOOD}
+                  element={<AddFood />}
+                />
 
-              <Route
-                path={ROUTES.FETCH_ALL_ORDERS}
-                element={<Orders />}
-              />
+                <Route
+                  path={ROUTES.FETCH_ALL_FOODS}
+                  element={<FoodList />}
+                />
 
-              <Route
-                path={ROUTES.VIEW_FOOD}
-                element={<ViewFood />}
-              />
+                <Route
+                  path={ROUTES.FETCH_ALL_ORDERS}
+                  element={<Orders />}
+                />
 
-              <Route
-                path={ROUTES.EDIT_FOOD}
-                element={<EditFood />}
-              />
+                <Route
+                  path={ROUTES.VIEW_FOOD}
+                  element={<ViewFood />}
+                />
 
-              <Route
-                path={ROUTES.GET_ARCHIVED_FOODS}
-                element={<ArchivedFoods />}
-              />
-            </Routes>
-          </main>
+                <Route
+                  path={ROUTES.EDIT_FOOD}
+                  element={<EditFood />}
+                />
+
+                <Route
+                  path={ROUTES.GET_ARCHIVED_FOODS}
+                  element={<ArchivedFoods />}
+                />
+              </Routes>
+            </main>
+          </div>
         </div>
-      </div>
-    </ArchivedFoodProvider>
+      </ArchivedFoodProvider>
+    </FoodListProvider>
   );
 };
 
