@@ -120,6 +120,139 @@ const FoodService = {
 
     return response.data;
   },
+
+  // ==========================================================================
+  // Archive
+  // ==========================================================================
+
+  /**
+   * Archive a single food.
+   *
+   * Request:
+   * {
+   *   foodId: "..."
+   * }
+   *
+   * @param {string} foodId
+   * @returns {Promise<Object>}
+   */
+  archiveFood: async (foodId) => {
+    const response = await apiClient.post(API.FOOD.ARCHIVE_FOOD, {
+      foodId,
+    });
+
+    return response.data;
+  },
+
+  /**
+   * Archive multiple foods.
+   *
+   * Request:
+   * {
+   *   foodIds: ["...", "..."]
+   * }
+   *
+   * @param {string[]} foodIds
+   * @returns {Promise<Object>}
+   */
+  bulkArchiveFoods: async (foodIds) => {
+    const response = await apiClient.post(API.FOOD.BULK_ARCHIVE_FOOD, {
+      foodIds,
+    });
+
+    return response.data;
+  },
+
+  // ==========================================================================
+  // Restore
+  // ==========================================================================
+
+  /**
+   * Restore a single archived food.
+   *
+   * Request:
+   * {
+   *   foodId: "..."
+   * }
+   *
+   * @param {string} foodId
+   * @returns {Promise<Object>}
+   */
+  restoreFood: async (foodId) => {
+    const response = await apiClient.post(API.FOOD.RESTORE_FOOD, {
+      foodId,
+    });
+
+    return response.data;
+  },
+
+  /**
+   * Restore multiple archived foods.
+   *
+   * Request:
+   * {
+   *   foodIds: ["...", "..."]
+   * }
+   *
+   * @param {string[]} foodIds
+   * @returns {Promise<Object>}
+   */
+  bulkRestoreFoods: async (foodIds) => {
+    const response = await apiClient.post(API.FOOD.BULK_RESTORE_FOOD, {
+      foodIds,
+    });
+
+    return response.data;
+  },
+
+  // ==========================================================================
+  // Permanent Delete
+  // ==========================================================================
+
+  /**
+   * Permanently delete a single food.
+   *
+   * Request:
+   * {
+   *   foodId: "..."
+   * }
+   *
+   * @param {string} foodId
+   * @returns {Promise<Object>}
+   */
+  deleteFood: async (foodId) => {
+    const response = await apiClient.delete(API.FOOD.PERMANENT_DELETE_FOOD, {
+      data: {
+        foodId,
+      },
+    });
+
+    return response.data;
+  },
+
+  /**
+   * Permanently delete multiple foods.
+   *
+   * Request:
+   * {
+   *   foodIds: ["...", "..."]
+   * }
+   *
+   * @param {string[]} foodIds
+   * @returns {Promise<Object>}
+   */
+  bulkDeleteFoods: async (foodIds) => {
+    const response = await apiClient.delete(
+      API.FOOD.BULK_PERMANENT_DELETE_FOOD,
+      {
+        data: {
+          foodIds,
+        },
+      },
+    );
+
+    return response.data;
+  },
 };
 
 export default FoodService;
