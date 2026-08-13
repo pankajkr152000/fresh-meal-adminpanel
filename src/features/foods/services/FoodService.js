@@ -11,12 +11,15 @@ import { API } from "../../../global/constants/ApiConstants";
  * - Create food
  * - Retrieve foods
  * - Retrieve food details
+ * - Update food
  * - Update food status
- *
- * Future Enhancements:
- * - Pagination
- * - Search
- * - Bulk Upload
+ * - Retrieve archived foods
+ * - Archive food
+ * - Bulk archive foods
+ * - Restore food
+ * - Bulk restore foods
+ * - Permanently delete food
+ * - Bulk permanently delete foods
  * ============================================================================
  */
 

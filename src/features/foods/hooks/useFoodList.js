@@ -74,7 +74,8 @@ const useFoodList = () => {
   // ===========================================================================
 
   // const [selectedFoodIds, setSelectedFoodIds] = useState(new Set());
-  const { selectedFoodIds, selectFood, deselectFood } = useFoodListContext();
+  const { selectedFoodIds, selectFood, deselectFood, clearSelection } =
+    useFoodListContext();
 
   // ===========================================================================
   // Request State
@@ -83,6 +84,13 @@ const useFoodList = () => {
   const [loading, setLoading] = useState(false);
 
   const [error, setError] = useState("");
+
+  // ===========================================================================
+  // Action State
+  // ===========================================================================
+  const [actionLoading, setActionLoading] = useState(false);
+
+  const [actionError, setActionError] = useState("");
 
   // ===========================================================================
   // Search
@@ -634,6 +642,165 @@ const useFoodList = () => {
       setStatusUpdating(false);
     }
   }, [selectedFood, selectedStatus, cancelStatusChange, foods]);
+  // single archive
+  const archiveFood = useCallback(
+    async (foodId) => {
+      if (!foodId) {
+        return false;
+      }
+
+      try {
+        setActionLoading(true);
+        setActionError("");
+
+        const response = await FoodService.archiveFood(foodId);
+
+        if (!response.success) {
+          throw new Error(response.message || "Unable to archive food.");
+        }
+
+        setFoods((previous) => previous.filter((food) => food.id !== foodId));
+
+        deselectFood(foodId);
+
+        return true;
+      } catch (error) {
+        console.error("Failed to archive food.", error);
+
+        setActionError(
+          error?.response?.data?.message ||
+            error?.message ||
+            "Unable to archive food.",
+        );
+
+        return false;
+      } finally {
+        setActionLoading(false);
+      }
+    },
+    [deselectFood],
+  );
+
+  // bulk archive
+  const bulkArchiveFoods = useCallback(async () => {
+    const foodIds = [...selectedFoodIds];
+
+    if (foodIds.length === 0) {
+      return false;
+    }
+
+    try {
+      setActionLoading(true);
+      setActionError("");
+
+      const response = await FoodService.bulkArchiveFoods(foodIds);
+
+      if (!response.success) {
+        throw new Error(
+          response.message || "Unable to archive selected foods.",
+        );
+      }
+
+      setFoods((previous) =>
+        previous.filter((food) => !foodIds.includes(food.id)),
+      );
+
+      clearSelection();
+
+      return true;
+    } catch (error) {
+      console.error("Failed to bulk archive foods.", error);
+
+      setActionError(
+        error?.response?.data?.message ||
+          error?.message ||
+          "Unable to archive selected foods.",
+      );
+
+      return false;
+    } finally {
+      setActionLoading(false);
+    }
+  }, [selectedFoodIds, clearSelection]);
+
+  //  single delete
+  const deleteFood = useCallback(
+    async (foodId) => {
+      if (!foodId) {
+        return false;
+      }
+
+      try {
+        setActionLoading(true);
+        setActionError("");
+
+        const response = await FoodService.deleteFood(foodId);
+
+        if (!response.success) {
+          throw new Error(response.message || "Unable to delete food.");
+        }
+
+        setFoods((previous) => previous.filter((food) => food.id !== foodId));
+
+        deselectFood(foodId);
+
+        return true;
+      } catch (error) {
+        console.error("Failed to delete food.", error);
+
+        setActionError(
+          error?.response?.data?.message ||
+            error?.message ||
+            "Unable to delete food.",
+        );
+
+        return false;
+      } finally {
+        setActionLoading(false);
+      }
+    },
+    [deselectFood],
+  );
+
+  // bulk delete
+  const bulkDeleteFoods = useCallback(async () => {
+    const foodIds = [...selectedFoodIds];
+
+    if (foodIds.length === 0) {
+      return false;
+    }
+
+    try {
+      setActionLoading(true);
+      setActionError("");
+
+      const response = await FoodService.bulkDeleteFoods(foodIds);
+
+      if (!response.success) {
+        throw new Error(response.message || "Unable to delete selected foods.");
+      }
+
+      setFoods((previous) =>
+        previous.filter((food) => !foodIds.includes(food.id)),
+      );
+
+      clearSelection();
+
+      return true;
+    } catch (error) {
+      console.error("Failed to bulk delete foods.", error);
+
+      setActionError(
+        error?.response?.data?.message ||
+          error?.message ||
+          "Unable to delete selected foods.",
+      );
+
+      return false;
+    } finally {
+      setActionLoading(false);
+    }
+  }, [selectedFoodIds, clearSelection]);
 
   // ===========================================================================
   // Public API
@@ -703,6 +870,16 @@ const useFoodList = () => {
     handleFoodSelectionChange,
     handleSelectAllFoods,
     selectionInfo,
+
+    // Lifecycle Actions
+    archiveFood,
+    bulkArchiveFoods,
+    deleteFood,
+    bulkDeleteFoods,
+
+    // Lifecycle Action State
+    actionLoading,
+    actionError,
   };
 };
 

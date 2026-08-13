@@ -43,6 +43,11 @@ export const FoodListProvider = ({ children }) => {
   const [selectedFoodIds, setSelectedFoodIds] = useState(new Set());
 
   const [showArchiveConfirmation, setShowArchiveConfirmation] = useState(false);
+
+  const [actionConfirmation, setActionConfirmation] = useState({
+    show: false,
+    type: null,
+  });
   // =========================================================================
   // Selection Actions
   // =========================================================================
@@ -85,6 +90,27 @@ export const FoodListProvider = ({ children }) => {
     setShowArchiveConfirmation(false);
   }, []);
 
+  const openActionConfirmation = useCallback(
+    (type) => {
+      if (selectedFoodIds.size === 0) {
+        return;
+      }
+
+      setActionConfirmation({
+        show: true,
+        type,
+      });
+    },
+    [selectedFoodIds],
+  );
+
+  const closeActionConfirmation = useCallback(() => {
+    setActionConfirmation({
+      show: false,
+      type: null,
+    });
+  }, []);
+
   // =========================================================================
   // Derived State
   // =========================================================================
@@ -122,6 +148,10 @@ export const FoodListProvider = ({ children }) => {
       openArchiveConfirmation,
 
       closeArchiveConfirmation,
+
+      actionConfirmation,
+      openActionConfirmation,
+      closeActionConfirmation,
     }),
     [
       // Selection
@@ -137,6 +167,9 @@ export const FoodListProvider = ({ children }) => {
       showArchiveConfirmation,
       openArchiveConfirmation,
       closeArchiveConfirmation,
+      actionConfirmation,
+      openActionConfirmation,
+      closeActionConfirmation,
     ],
   );
 

@@ -4,29 +4,26 @@ import { useArchivedFoodContext } from "../context";
 import FoodService from "../services/FoodService";
 
 /**
- * ============================================================================
+ * =============================================================================
  * Hook : useArchivedFoodList
- * ============================================================================
+ * =============================================================================
  *
  * Purpose
  * -------
- * Encapsulates archived-food list state and operations.
+ * Centralizes business logic for archived foods.
  *
  * Responsibilities
- * ----------------
- * • Load archived foods.
- * • Manage loading/error state.
- * • Manage pagination.
- * • Manage food selection.
- * • Support current-page Select All.
- * • Support indeterminate selection state.
- * • Support retry.
+ * --------------
+ * - Load archived foods
+ * - Manage loading/error state
+ * - Manage pagination
+ * - Manage selection
+ * - Restore food
+ * - Bulk restore foods
+ * - Permanently delete food
+ * - Bulk permanently delete foods
  *
- * Notes
- * -----
- * Archive, restore and permanent-delete operations will be added separately.
- *
- * ============================================================================
+ * =============================================================================
  */
 
 const DEFAULT_PAGINATION = Object.freeze({
@@ -35,42 +32,57 @@ const DEFAULT_PAGINATION = Object.freeze({
 });
 
 const useArchivedFoodList = () => {
-  // =========================================================================
+  // ===========================================================================
   // Data State
-  // =========================================================================
+  // ===========================================================================
 
   const [foods, setFoods] = useState([]);
+
+  // ===========================================================================
+  // Request State
+  // ===========================================================================
 
   const [loading, setLoading] = useState(false);
 
   const [error, setError] = useState("");
 
-  // =========================================================================
-  // Pagination State
-  // =========================================================================
+  // ===========================================================================
+  // Action State
+  // ===========================================================================
+
+  const [actionLoading, setActionLoading] = useState(false);
+
+  const [actionError, setActionError] = useState("");
+
+  // ===========================================================================
+  // Pagination
+  // ===========================================================================
 
   const [pagination, setPagination] = useState(DEFAULT_PAGINATION);
 
-  // =========================================================================
-  // Selection State
-  // =========================================================================
+  // ===========================================================================
+  // Selection
+  // ===========================================================================
 
-  //const [selectedFoodIds, setSelectedFoodIds] = useState(new Set());
   const { selectedFoodIds, selectFood, deselectFood, clearSelection } =
     useArchivedFoodContext();
-  // =========================================================================
+
+  // ===========================================================================
   // Load Archived Foods
-  // =========================================================================
+  // ===========================================================================
 
   const loadArchivedFoods = useCallback(async (signal) => {
     try {
       setLoading(true);
-
       setError("");
 
       const response = await FoodService.getArchivedFoods(signal);
 
-      setFoods(response?.data ?? []);
+      if (!response.success) {
+        throw new Error(response.message || "Unable to load archived foods.");
+      }
+
+      setFoods(response.data ?? []);
     } catch (exception) {
       if (
         exception?.name === "CanceledError" ||
@@ -82,7 +94,9 @@ const useArchivedFoodList = () => {
       console.error("Failed to load archived foods.", exception);
 
       setError(
-        exception?.response?.data?.message || "Unable to load archived foods.",
+        exception?.response?.data?.message ||
+          exception?.message ||
+          "Unable to load archived foods.",
       );
     } finally {
       if (!signal?.aborted) {
@@ -91,9 +105,9 @@ const useArchivedFoodList = () => {
     }
   }, []);
 
-  // =========================================================================
+  // ===========================================================================
   // Initial Load
-  // =========================================================================
+  // ===========================================================================
 
   useEffect(() => {
     const controller = new AbortController();
@@ -103,9 +117,31 @@ const useArchivedFoodList = () => {
     return () => controller.abort();
   }, [loadArchivedFoods]);
 
-  // =========================================================================
+  // ===========================================================================
+  // Refresh
+  // ===========================================================================
+
+  const refreshArchivedFoods = useCallback(async () => {
+    const controller = new AbortController();
+
+    try {
+      await loadArchivedFoods(controller.signal);
+    } finally {
+      controller.abort();
+    }
+  }, [loadArchivedFoods]);
+
+  // ===========================================================================
+  // Retry
+  // ===========================================================================
+
+  const retryAction = useCallback(async () => {
+    await refreshArchivedFoods();
+  }, [refreshArchivedFoods]);
+
+  // ===========================================================================
   // Pagination
-  // =========================================================================
+  // ===========================================================================
 
   const pagedFoods = useMemo(() => {
     const startIndex = (pagination.page - 1) * pagination.size;
@@ -115,12 +151,63 @@ const useArchivedFoodList = () => {
     return foods.slice(startIndex, endIndex);
   }, [foods, pagination]);
 
-  // =========================================================================
-  // Individual Selection
-  // =========================================================================
+  const totalPages = useMemo(() => {
+    return Math.max(1, Math.ceil(foods.length / pagination.size));
+  }, [foods.length, pagination.size]);
+
+  const paginationInfo = useMemo(() => {
+    const totalItems = foods.length;
+
+    const startRecord =
+      totalItems === 0 ? 0 : (pagination.page - 1) * pagination.size + 1;
+
+    const endRecord = Math.min(pagination.page * pagination.size, totalItems);
+
+    return {
+      currentPage: pagination.page,
+      pageSize: pagination.size,
+      totalPages,
+      totalItems,
+      startRecord,
+      endRecord,
+      hasPrevious: pagination.page > 1,
+      hasNext: pagination.page < totalPages,
+    };
+  }, [foods.length, pagination, totalPages]);
+
+  const handlePageChange = useCallback((page) => {
+    setPagination((previous) => ({
+      ...previous,
+      page: Math.max(1, page),
+    }));
+  }, []);
+
+  const handlePageSizeChange = useCallback((size) => {
+    setPagination({
+      page: 1,
+      size,
+    });
+  }, []);
+
+  useEffect(() => {
+    if (pagination.page > totalPages) {
+      setPagination((previous) => ({
+        ...previous,
+        page: totalPages,
+      }));
+    }
+  }, [pagination.page, totalPages]);
+
+  // ===========================================================================
+  // Selection
+  // ===========================================================================
 
   const handleFoodSelectionChange = useCallback(
     (foodId, checked) => {
+      if (!foodId) {
+        return;
+      }
+
       if (checked) {
         selectFood(foodId);
       } else {
@@ -129,10 +216,6 @@ const useArchivedFoodList = () => {
     },
     [selectFood, deselectFood],
   );
-
-  // =========================================================================
-  // Current Page Select All
-  // =========================================================================
 
   const handleSelectAllFoods = useCallback(
     (checked) => {
@@ -150,10 +233,6 @@ const useArchivedFoodList = () => {
     },
     [pagedFoods, selectFood, deselectFood],
   );
-
-  // =========================================================================
-  // Selection Information
-  // =========================================================================
 
   const selectionInfo = useMemo(() => {
     const visibleFoodIds = pagedFoods.map((food) => food?.id).filter(Boolean);
@@ -177,53 +256,201 @@ const useArchivedFoodList = () => {
     };
   }, [pagedFoods, selectedFoodIds]);
 
-  // =========================================================================
-  // Pagination Actions
-  // =========================================================================
+  // ===========================================================================
+  // Restore Single Food
+  // ===========================================================================
 
-  const handlePageChange = useCallback((page) => {
-    setPagination((previous) => ({
-      ...previous,
-      page,
-    }));
-  }, []);
+  const restoreFood = useCallback(
+    async (foodId) => {
+      if (!foodId) {
+        return false;
+      }
 
-  const handlePageSizeChange = useCallback((size) => {
-    setPagination({
-      page: 1,
-      size,
-    });
-  }, []);
+      try {
+        setActionLoading(true);
+        setActionError("");
 
-  // =========================================================================
-  // Retry
-  // =========================================================================
+        const response = await FoodService.restoreFood(foodId);
 
-  const retryAction = useCallback(() => {
-    const controller = new AbortController();
+        if (!response.success) {
+          throw new Error(response.message || "Unable to restore food.");
+        }
 
-    loadArchivedFoods(controller.signal);
+        setFoods((previous) => previous.filter((food) => food.id !== foodId));
 
-    return () => controller.abort();
-  }, [loadArchivedFoods]);
+        deselectFood(foodId);
 
-  // =========================================================================
-  // Return
-  // =========================================================================
+        return true;
+      } catch (error) {
+        console.error("Failed to restore food.", error);
+
+        setActionError(
+          error?.response?.data?.message ||
+            error?.message ||
+            "Unable to restore food.",
+        );
+
+        return false;
+      } finally {
+        setActionLoading(false);
+      }
+    },
+    [deselectFood],
+  );
+
+  // ===========================================================================
+  // Bulk Restore
+  // ===========================================================================
+
+  const bulkRestoreFoods = useCallback(async () => {
+    const foodIds = [...selectedFoodIds];
+
+    if (foodIds.length === 0) {
+      return false;
+    }
+
+    try {
+      setActionLoading(true);
+      setActionError("");
+
+      const response = await FoodService.bulkRestoreFoods(foodIds);
+
+      if (!response.success) {
+        throw new Error(
+          response.message || "Unable to restore selected foods.",
+        );
+      }
+
+      setFoods((previous) =>
+        previous.filter((food) => !foodIds.includes(food.id)),
+      );
+
+      clearSelection();
+
+      return true;
+    } catch (error) {
+      console.error("Failed to bulk restore foods.", error);
+
+      setActionError(
+        error?.response?.data?.message ||
+          error?.message ||
+          "Unable to restore selected foods.",
+      );
+
+      return false;
+    } finally {
+      setActionLoading(false);
+    }
+  }, [selectedFoodIds, clearSelection]);
+
+  // ===========================================================================
+  // Permanent Delete Single
+  // ===========================================================================
+
+  const deleteFood = useCallback(
+    async (foodId) => {
+      if (!foodId) {
+        return false;
+      }
+
+      try {
+        setActionLoading(true);
+        setActionError("");
+
+        const response = await FoodService.deleteFood(foodId);
+
+        if (!response.success) {
+          throw new Error(response.message || "Unable to delete food.");
+        }
+
+        setFoods((previous) => previous.filter((food) => food.id !== foodId));
+
+        deselectFood(foodId);
+
+        return true;
+      } catch (error) {
+        console.error("Failed to delete food.", error);
+
+        setActionError(
+          error?.response?.data?.message ||
+            error?.message ||
+            "Unable to delete food.",
+        );
+
+        return false;
+      } finally {
+        setActionLoading(false);
+      }
+    },
+    [deselectFood],
+  );
+
+  // ===========================================================================
+  // Bulk Permanent Delete
+  // ===========================================================================
+
+  const bulkDeleteFoods = useCallback(async () => {
+    const foodIds = [...selectedFoodIds];
+
+    if (foodIds.length === 0) {
+      return false;
+    }
+
+    try {
+      setActionLoading(true);
+      setActionError("");
+
+      const response = await FoodService.bulkDeleteFoods(foodIds);
+
+      if (!response.success) {
+        throw new Error(response.message || "Unable to delete selected foods.");
+      }
+
+      setFoods((previous) =>
+        previous.filter((food) => !foodIds.includes(food.id)),
+      );
+
+      clearSelection();
+
+      return true;
+    } catch (error) {
+      console.error("Failed to bulk delete foods.", error);
+
+      setActionError(
+        error?.response?.data?.message ||
+          error?.message ||
+          "Unable to delete selected foods.",
+      );
+
+      return false;
+    } finally {
+      setActionLoading(false);
+    }
+  }, [selectedFoodIds, clearSelection]);
+
+  // ===========================================================================
+  // Public API
+  // ===========================================================================
 
   return {
     // Data
     foods,
     pagedFoods,
 
-    // State
+    // Request State
     loading,
     error,
 
+    // Action State
+    actionLoading,
+    actionError,
+
     // Pagination
     pagination,
+    paginationInfo,
     handlePageChange,
     handlePageSizeChange,
+    totalPages,
 
     // Selection
     selectedFoodIds,
@@ -231,8 +458,15 @@ const useArchivedFoodList = () => {
     handleSelectAllFoods,
     selectionInfo,
 
-    // Actions
+    // Lifecycle Actions
+    restoreFood,
+    bulkRestoreFoods,
+    deleteFood,
+    bulkDeleteFoods,
+
+    // API
     loadArchivedFoods,
+    refreshArchivedFoods,
     retryAction,
   };
 };
