@@ -40,6 +40,9 @@ const FoodTableRow = ({
   // selection
   selected = false,
   onSelectionChange,
+  // action
+  onArchive,
+  // onDelete,
 }) => {
   console.log("Inside FoodTableRow Component");
   console.log("Food Table Row food id " + food.id);
@@ -98,6 +101,20 @@ const FoodTableRow = ({
               onStatusChange={(status) => onStatusChange(food, status)}
             />
           </div>
+          {/* actions */}
+          <button
+            type="button"
+            className="btn btn-sm btn-outline-warning w-100"
+            onClick={() => onArchive(food)}>
+            Archive
+          </button>
+
+          {/* <button
+            type="button"
+            className="btn btn-sm btn-outline-danger w-100"
+            onClick={() => onDelete(food)}>
+            Delete
+          </button> */}
         </div>
       </td>
     </tr>
@@ -114,6 +131,10 @@ FoodTableRow.propTypes = {
   selected: PropTypes.bool,
 
   onSelectionChange: PropTypes.func,
+
+  onArchive: PropTypes.func.isRequired,
+
+  onDelete: PropTypes.func.isRequired,
 };
 
 export default FoodTableRow;

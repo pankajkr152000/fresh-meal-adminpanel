@@ -13,15 +13,21 @@ import FoodService from "../services/FoodService";
  * Centralizes business logic for archived foods.
  *
  * Responsibilities
- * --------------
- * - Load archived foods
- * - Manage loading/error state
- * - Manage pagination
- * - Manage selection
- * - Restore food
- * - Bulk restore foods
- * - Permanently delete food
- * - Bulk permanently delete foods
+ * ----------------
+ * • Load archived foods.
+ * • Manage loading/error state.
+ * • Manage pagination.
+ * • Manage selection.
+ * • Restore a single food.
+ * • Restore multiple foods.
+ * • Permanently delete a single food.
+ * • Permanently delete multiple foods.
+ * • Update UI immediately after successful actions.
+ *
+ * Notes
+ * -----
+ * The page component only coordinates UI.
+ * API/business operations remain inside this hook.
  *
  * =============================================================================
  */
@@ -175,6 +181,10 @@ const useArchivedFoodList = () => {
     };
   }, [foods.length, pagination, totalPages]);
 
+  // ===========================================================================
+  // Pagination Actions
+  // ===========================================================================
+
   const handlePageChange = useCallback((page) => {
     setPagination((previous) => ({
       ...previous,
@@ -188,6 +198,10 @@ const useArchivedFoodList = () => {
       size,
     });
   }, []);
+
+  // ===========================================================================
+  // Correct Page After Food Removal
+  // ===========================================================================
 
   useEffect(() => {
     if (pagination.page > totalPages) {
@@ -217,6 +231,10 @@ const useArchivedFoodList = () => {
     [selectFood, deselectFood],
   );
 
+  // ===========================================================================
+  // Current Page Select All
+  // ===========================================================================
+
   const handleSelectAllFoods = useCallback(
     (checked) => {
       pagedFoods.forEach((food) => {
@@ -233,6 +251,10 @@ const useArchivedFoodList = () => {
     },
     [pagedFoods, selectFood, deselectFood],
   );
+
+  // ===========================================================================
+  // Selection Information
+  // ===========================================================================
 
   const selectionInfo = useMemo(() => {
     const visibleFoodIds = pagedFoods.map((food) => food?.id).filter(Boolean);
@@ -276,8 +298,11 @@ const useArchivedFoodList = () => {
           throw new Error(response.message || "Unable to restore food.");
         }
 
+        // Remove restored food immediately
+        // from archived list.
         setFoods((previous) => previous.filter((food) => food.id !== foodId));
 
+        // Remove it from selection.
         deselectFood(foodId);
 
         return true;
@@ -321,10 +346,12 @@ const useArchivedFoodList = () => {
         );
       }
 
+      // Remove restored foods from archived list.
       setFoods((previous) =>
         previous.filter((food) => !foodIds.includes(food.id)),
       );
 
+      // Clear all selected IDs.
       clearSelection();
 
       return true;
@@ -344,7 +371,7 @@ const useArchivedFoodList = () => {
   }, [selectedFoodIds, clearSelection]);
 
   // ===========================================================================
-  // Permanent Delete Single
+  // Permanent Delete - Single Food
   // ===========================================================================
 
   const deleteFood = useCallback(
@@ -360,21 +387,26 @@ const useArchivedFoodList = () => {
         const response = await FoodService.deleteFood(foodId);
 
         if (!response.success) {
-          throw new Error(response.message || "Unable to delete food.");
+          throw new Error(
+            response.message || "Unable to permanently delete food.",
+          );
         }
 
+        // Remove deleted food immediately
+        // from archived list.
         setFoods((previous) => previous.filter((food) => food.id !== foodId));
 
+        // Remove from selection.
         deselectFood(foodId);
 
         return true;
       } catch (error) {
-        console.error("Failed to delete food.", error);
+        console.error("Failed to permanently delete food.", error);
 
         setActionError(
           error?.response?.data?.message ||
             error?.message ||
-            "Unable to delete food.",
+            "Unable to permanently delete food.",
         );
 
         return false;
@@ -386,7 +418,7 @@ const useArchivedFoodList = () => {
   );
 
   // ===========================================================================
-  // Bulk Permanent Delete
+  // Permanent Delete - Bulk
   // ===========================================================================
 
   const bulkDeleteFoods = useCallback(async () => {
@@ -403,13 +435,18 @@ const useArchivedFoodList = () => {
       const response = await FoodService.bulkDeleteFoods(foodIds);
 
       if (!response.success) {
-        throw new Error(response.message || "Unable to delete selected foods.");
+        throw new Error(
+          response.message || "Unable to permanently delete selected foods.",
+        );
       }
 
+      // Remove deleted foods immediately
+      // from archived list.
       setFoods((previous) =>
         previous.filter((food) => !foodIds.includes(food.id)),
       );
 
+      // Clear selection.
       clearSelection();
 
       return true;
@@ -419,7 +456,7 @@ const useArchivedFoodList = () => {
       setActionError(
         error?.response?.data?.message ||
           error?.message ||
-          "Unable to delete selected foods.",
+          "Unable to permanently delete selected foods.",
       );
 
       return false;
@@ -433,38 +470,64 @@ const useArchivedFoodList = () => {
   // ===========================================================================
 
   return {
+    // ========================================================================
     // Data
+    // ========================================================================
+
     foods,
     pagedFoods,
 
+    // ========================================================================
     // Request State
+    // ========================================================================
+
     loading,
     error,
 
+    // ========================================================================
     // Action State
+    // ========================================================================
+
     actionLoading,
     actionError,
 
+    // ========================================================================
     // Pagination
+    // ========================================================================
+
     pagination,
     paginationInfo,
+
     handlePageChange,
     handlePageSizeChange,
+
     totalPages,
 
+    // ========================================================================
     // Selection
+    // ========================================================================
+
     selectedFoodIds,
+
     handleFoodSelectionChange,
     handleSelectAllFoods,
+
     selectionInfo,
 
-    // Lifecycle Actions
+    // ========================================================================
+    // Food Actions
+    // ========================================================================
+
     restoreFood,
     bulkRestoreFoods,
+
     deleteFood,
     bulkDeleteFoods,
 
-    // API
+    // ========================================================================
+    // Lifecycle
+    // ========================================================================
+
     loadArchivedFoods,
     refreshArchivedFoods,
     retryAction,

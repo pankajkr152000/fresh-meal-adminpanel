@@ -47,6 +47,10 @@ const ArchivedFoodTable = ({
   onSelectAllFoods,
 
   retryAction,
+
+  // actions
+  onRestore,
+  onDeletePermanently,
 }) => {
   return (
     <DataTable
@@ -75,6 +79,9 @@ const ArchivedFoodTable = ({
           food={food}
           selected={selectedFoodIds.has(food.id)}
           onSelectionChange={onFoodSelectionChange}
+          // actions
+          onRestore={onRestore}
+          onDeletePermanently={onDeletePermanently}
         />
       )}
     />
@@ -102,6 +109,10 @@ ArchivedFoodTable.propTypes = {
   onSelectAllFoods: PropTypes.func,
 
   retryAction: PropTypes.func,
+
+  onRestore: PropTypes.func.isRequired,
+
+  onDeletePermanently: PropTypes.func.isRequired,
 };
 
 export default ArchivedFoodTable;

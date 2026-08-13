@@ -39,6 +39,9 @@ const ArchivedFoodTableRow = ({
   food,
   selected = false,
   onSelectionChange,
+  // actions
+  onRestore,
+  onDeletePermanently,
 }) => {
   return (
     <tr>
@@ -117,7 +120,19 @@ const ArchivedFoodTableRow = ({
       ===================================================================== */}
 
       <td className="text-center">
-        <span className="text-muted">Actions</span>
+        <button
+          type="button"
+          className="btn btn-sm btn-outline-warning w-75 mb-2"
+          onClick={() => onRestore(food)}>
+          Restore
+        </button>
+
+        <button
+          type="button"
+          className="btn btn-sm btn-outline-danger w-75 mt-2"
+          onClick={() => onDeletePermanently(food)}>
+          Delete Permanently
+        </button>
       </td>
     </tr>
   );
@@ -129,6 +144,10 @@ ArchivedFoodTableRow.propTypes = {
   selected: PropTypes.bool,
 
   onSelectionChange: PropTypes.func,
+
+  obRestore: PropTypes.func.isRequired,
+
+  onDeletePermanently: PropTypes.func.isRequired,
 };
 
 export default ArchivedFoodTableRow;

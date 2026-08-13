@@ -57,6 +57,10 @@ const FoodTable = ({
   onFoodSelectionChange,
   selectionInfo,
   handleSelectAllFoods,
+
+  // action
+  onArchive,
+  // onDelete,
 }) => {
   return (
     <DataTable
@@ -80,11 +84,14 @@ const FoodTable = ({
       onSelectAll={handleSelectAllFoods}
       renderRow={(food) => (
         <FoodTableRow
+          key={food.id}
           food={food}
           onStatusChange={onStatusChange}
           onView={onView}
           selected={selectedFoodIds.has(food.id)}
           onSelectionChange={onFoodSelectionChange}
+          onArchive={onArchive}
+          // onDelete={onDelete}
         />
       )}
     />
@@ -122,6 +129,10 @@ FoodTable.propTypes = {
   onSelectAllFoods: PropTypes.func,
 
   onFoodSelectionChange: PropTypes.func,
+
+  onArchive: PropTypes.func.isRequired,
+
+  // onDelete: PropTypes.func.isRequired,
 
   selectionInfo: PropTypes.shape({
     selectedCount: PropTypes.number,

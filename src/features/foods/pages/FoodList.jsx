@@ -7,6 +7,8 @@ import FoodToolbar from "../components/toolbar/FoodToolbar";
 
 import { TablePagination } from "../../../global/components/data-display/tables";
 
+import { useState } from "react";
+import { toast } from "react-toastify";
 import { ConfirmationModal } from "../../../global/components/overlay";
 import { useFoodListContext } from "../context";
 import useFoodList from "../hooks/useFoodList";
@@ -93,6 +95,12 @@ const FoodList = () => {
     handleFoodSelectionChange,
     handleSelectAllFoods,
     selectionInfo,
+
+    // Food Actions
+    archiveFood,
+    bulkArchiveFoods,
+
+    actionLoading,
   } = useFoodList();
 
   // ===========================================================================
@@ -121,10 +129,17 @@ const FoodList = () => {
   const {
     selectedCount,
     hasSelection,
+
     showArchiveConfirmation,
     openArchiveConfirmation,
     closeArchiveConfirmation,
   } = useFoodListContext();
+  // actions
+  const [confirmation, setConfirmation] = useState({
+    show: false,
+    action: null,
+    food: null,
+  });
 
   console.log("FoodList archive modal:", {
     selectedCount,
@@ -138,6 +153,55 @@ const FoodList = () => {
   const handleViewFood = (foodId) => {
     console.log("Received in handleViewFood in FoodList :", foodId);
     navigate(`/foods/view/${foodId}`);
+  };
+
+  // ===========================================================================
+  // Actions
+  // ===========================================================================
+  const openSingleActionConfirmation = (action, food) => {
+    setConfirmation({
+      show: true,
+      action,
+      food,
+    });
+  };
+
+  const closeConfirmation = () => {
+    setConfirmation({
+      show: false,
+      action: null,
+      food: null,
+    });
+  };
+
+  const handleArchiveConfirmation = async () => {
+    const { action, food } = confirmation;
+
+    if (action !== "ARCHIVE" || !food) {
+      return;
+    }
+
+    const success = await archiveFood(food.id);
+
+    if (success) {
+      toast.success("Food archived successfully");
+      closeConfirmation();
+    }
+  };
+
+  const handleBulkArchiveConfirmation = async () => {
+    //const foodIds = [...selectedFoodIds];
+
+    if (selectedFoodIds.size === 0) {
+      return;
+    }
+
+    const success = await bulkArchiveFoods();
+
+    if (success) {
+      toast.success("Foods archived successfully.");
+      closeArchiveConfirmation();
+    }
   };
 
   // ===========================================================================
@@ -182,6 +246,8 @@ const FoodList = () => {
         onSort={changeSort}
         onStatusChange={selectStatus}
         onView={handleViewFood}
+        onArchive={(food) => openSingleActionConfirmation("ARCHIVE", food)}
+        // onDelete={(food) => openSingleActionConfirmation("DELETE", food)}
         retryAction={error ? retryLoadingFoods : retryLoadingMetadata}
         selectedFoodIds={selectedFoodIds}
         onFoodSelectionChange={handleFoodSelectionChange}
@@ -199,7 +265,8 @@ const FoodList = () => {
         onConfirm={confirmStatusChange}
       />
 
-      {/* confirmation modal to delete / archive food */}
+      {/* confirmation modal to archive food in bulk*/}
+
       <ConfirmationModal
         show={showArchiveConfirmation}
         title="Archive Food"
@@ -211,12 +278,25 @@ const FoodList = () => {
         confirmText="Archive"
         cancelText="Cancel"
         confirmButtonClass="btn-warning"
-        onConfirm={() => {
-          console.log("Archive selected foods:", [...selectedFoodIds]);
-
-          closeArchiveConfirmation();
-        }}
+        loading={actionLoading}
+        onConfirm={handleBulkArchiveConfirmation}
         onCancel={closeArchiveConfirmation}
+      />
+      {/* single archive confirmation modal */}
+      <ConfirmationModal
+        show={confirmation.show}
+        title="Archive Food"
+        message={
+          confirmation.food
+            ? `Are you sure you want to archive "${confirmation.food.foodName}"?`
+            : ""
+        }
+        confirmText="Archive"
+        cancelText="Cancel"
+        confirmButtonClass="btn-warning"
+        loading={actionLoading}
+        onConfirm={handleArchiveConfirmation}
+        onCancel={closeConfirmation}
       />
     </>
   );

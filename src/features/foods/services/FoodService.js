@@ -140,7 +140,7 @@ const FoodService = {
    * @returns {Promise<Object>}
    */
   archiveFood: async (foodId) => {
-    const response = await apiClient.post(API.FOOD.ARCHIVE_FOOD, {
+    const response = await apiClient.patch(API.FOOD.ARCHIVE_FOOD, {
       foodId,
     });
 
@@ -159,7 +159,7 @@ const FoodService = {
    * @returns {Promise<Object>}
    */
   bulkArchiveFoods: async (foodIds) => {
-    const response = await apiClient.post(API.FOOD.BULK_ARCHIVE_FOOD, {
+    const response = await apiClient.patch(API.FOOD.BULK_ARCHIVE_FOOD, {
       foodIds,
     });
 
@@ -182,7 +182,7 @@ const FoodService = {
    * @returns {Promise<Object>}
    */
   restoreFood: async (foodId) => {
-    const response = await apiClient.post(API.FOOD.RESTORE_FOOD, {
+    const response = await apiClient.patch(API.FOOD.RESTORE_FOOD, {
       foodId,
     });
 
@@ -201,7 +201,7 @@ const FoodService = {
    * @returns {Promise<Object>}
    */
   bulkRestoreFoods: async (foodIds) => {
-    const response = await apiClient.post(API.FOOD.BULK_RESTORE_FOOD, {
+    const response = await apiClient.patch(API.FOOD.BULK_RESTORE_FOOD, {
       foodIds,
     });
 
