@@ -1,0 +1,46 @@
+/* =============================================================================
+   Global Button
+   ============================================================================= */
+
+/*
+ * Smooth interaction.
+ */
+.primary-button {
+  transition:
+    transform 0.1s ease,
+    box-shadow 0.1s ease;
+}
+
+/*
+ * Hover effect.
+ */
+.primary-button:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.12);
+}
+
+/*
+ * Physical press effect.
+ *
+ * When the user presses the mouse/touch button,
+ * the button moves slightly downward.
+ */
+.primary-button:active:not(:disabled) {
+  transform: translateY(2px);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+}
+
+/*
+ * Keyboard accessibility.
+ */
+.primary-button:focus-visible {
+  outline: 2px solid var(--bs-primary);
+  outline-offset: 2px;
+}
+
+/*
+ * Disabled buttons should not have hover/press animation.
+ */
+.primary-button:disabled {
+  cursor: not-allowed;
+}

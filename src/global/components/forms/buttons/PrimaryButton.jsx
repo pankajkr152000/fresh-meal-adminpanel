@@ -1,6 +1,8 @@
 import PropTypes from "prop-types";
 import { memo } from "react";
 
+import "./primaryButton.css";
+
 /**
  * =============================================================================
  * Component : PrimaryButton
@@ -8,36 +10,87 @@ import { memo } from "react";
  *
  * Purpose
  * -------
- * Generic reusable primary action button.
+ * Generic reusable button component for the application.
  *
  * Responsibilities
  * ----------------
- * • Render a Bootstrap primary button.
- * • Display a loading state.
+ * • Render Bootstrap button variants.
+ * • Support loading state.
  * • Prevent interaction while loading.
- * • Forward click events.
+ * • Support disabled state.
+ * • Support custom CSS classes.
+ * • Provide consistent button press animation.
+ *
+ * Supported Variants
+ * ------------------
+ * • primary
+ * • secondary
+ * • success
+ * • danger
+ * • warning
+ * • info
+ * • light
+ * • dark
+ * • link
+ * • outline-primary
+ * • outline-secondary
+ * • outline-success
+ * • outline-danger
+ * • outline-warning
+ * • outline-info
+ * • outline-light
+ * • outline-dark
  *
  * Notes
  * -----
- * This component contains no business logic and can be reused across the
- * application.
+ * This component contains no business logic.
+ * It can be reused throughout the application.
+ *
  * =============================================================================
  */
 
 const PrimaryButton = ({
   children,
+
   onClick,
+
   type = "button",
+
   disabled = false,
+
   loading = false,
+
+  variant = "primary",
+
   className = "",
+
+  loadingText,
+
+  title,
 }) => {
+  /**
+   * ---------------------------------------------------------------------------
+   * Button Classes
+   * ---------------------------------------------------------------------------
+   */
+
+  const buttonClassName = ["btn", `btn-${variant}`, "primary-button", className]
+    .filter(Boolean)
+    .join(" ");
+
+  /**
+   * ---------------------------------------------------------------------------
+   * Render
+   * ---------------------------------------------------------------------------
+   */
+
   return (
     <button
       type={type}
-      className={`btn btn-primary ${className}`}
+      className={buttonClassName}
       onClick={onClick}
-      disabled={disabled || loading}>
+      disabled={disabled || loading}
+      title={title}>
       {loading && (
         <span
           className="spinner-border spinner-border-sm me-2"
@@ -46,10 +99,16 @@ const PrimaryButton = ({
         />
       )}
 
-      {children}
+      {loading && loadingText ? loadingText : children}
     </button>
   );
 };
+
+/**
+ * =============================================================================
+ * PropTypes
+ * =============================================================================
+ */
 
 PrimaryButton.propTypes = {
   /**
@@ -78,9 +137,43 @@ PrimaryButton.propTypes = {
   loading: PropTypes.bool,
 
   /**
+   * Bootstrap button variant.
+   */
+  variant: PropTypes.oneOf([
+    "primary",
+    "secondary",
+    "success",
+    "danger",
+    "warning",
+    "info",
+    "light",
+    "dark",
+    "link",
+
+    "outline-primary",
+    "outline-secondary",
+    "outline-success",
+    "outline-danger",
+    "outline-warning",
+    "outline-info",
+    "outline-light",
+    "outline-dark",
+  ]),
+
+  /**
    * Additional CSS classes.
    */
   className: PropTypes.string,
+
+  /**
+   * Optional text displayed while loading.
+   */
+  loadingText: PropTypes.string,
+
+  /**
+   * Optional tooltip/title.
+   */
+  title: PropTypes.string,
 };
 
 export default memo(PrimaryButton);

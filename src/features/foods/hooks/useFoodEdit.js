@@ -49,6 +49,8 @@ import { FoodMetadataService, FoodService } from "../services";
 const INITIAL_FORM_DATA = {
   id: "",
 
+  foodNumber: "",
+
   foodName: "",
 
   description: "",
@@ -236,6 +238,8 @@ export default function useEditFood() {
 
       const mappedFood = {
         id: food.id ?? "",
+
+        foodNumber: food.foodNumber ?? "",
 
         foodName: food.foodName ?? "",
 
@@ -479,6 +483,7 @@ export default function useEditFood() {
 
     const food = {
       id: formData.id,
+      // foodNumber: formData.foodNumber,
       foodName: formData.foodName,
       description: formData.description,
       price: formData.price,

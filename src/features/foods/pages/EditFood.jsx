@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import FoodForm from "../components/form/FoodForm";
 import useFoodEdit from "../hooks/useFoodEdit";
 
@@ -26,8 +27,8 @@ import useFoodEdit from "../hooks/useFoodEdit";
  * @since 2.0
  * =============================================================================
  */
-
 const EditFood = () => {
+  const navigate = useNavigate();
   const {
     formData,
 
@@ -104,6 +105,7 @@ const EditFood = () => {
             onChange={handleChange}
             onSubmit={handleSubmit}
             onReset={resetForm}
+            onBack={() => navigate(-1)}
             onRemoveImage={removeImage}
           />
         </div>
