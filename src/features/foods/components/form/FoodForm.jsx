@@ -6,6 +6,7 @@ import {
   CommonSelect,
   CommonTextarea,
 } from "../../../../global/components/forms";
+import { PrimaryButton } from "../../../../global/components/forms/buttons";
 
 /**
  * =============================================================================
@@ -65,6 +66,7 @@ const FoodForm = ({
   onSubmit,
   onReset,
   onRemoveImage,
+  onBack,
 }) => {
   // ===========================================================================
   // Button Labels
@@ -79,7 +81,8 @@ const FoodForm = ({
   // ===========================================================================
 
   const {
-    id,
+    // id,
+    foodNumber,
 
     foodName,
     description,
@@ -132,9 +135,9 @@ const FoodForm = ({
           {mode === "edit" && (
             <div className="col-md-4 mb-3">
               <CommonInput
-                label="Food ID"
-                name="id"
-                value={id ?? ""}
+                label="Food Number"
+                name="foodNumber"
+                value={foodNumber ?? ""}
                 readOnly
                 disabled
               />
@@ -328,46 +331,59 @@ const FoodForm = ({
       {/* ==================================================================== */}
 
       <div className="border-top pt-4 mt-4">
-        <div className="d-flex justify-content-end gap-2 flex-wrap">
+        <div className="d-flex justify-content-between align-items-center gap-2 flex-wrap">
           {/* ---------------------------------------------------------------- */}
-          {/* Reset / Discard */}
+          {/* Back */}
           {/* ---------------------------------------------------------------- */}
 
-          <button
+          <PrimaryButton
             type="button"
-            className="btn btn-outline-secondary"
-            disabled={loading}
-            onClick={onReset}>
-            <i className="bi bi-arrow-counterclockwise me-2"></i>
-
-            {resetButtonText}
-          </button>
+            variant="outline-primary"
+            onClick={onBack}
+            disabled={loading}>
+            <i className="bi bi-arrow-left me-2"></i>
+            Back
+          </PrimaryButton>
 
           {/* ---------------------------------------------------------------- */}
-          {/* Submit */}
+          {/* Form Actions */}
           {/* ---------------------------------------------------------------- */}
 
-          <button
-            type="submit"
-            className="btn btn-primary"
-            disabled={loading || !hasChanges}>
-            {loading ? (
-              <>
-                <span
-                  className="spinner-border spinner-border-sm me-2"
-                  role="status"
-                  aria-hidden="true"></span>
+          <div className="d-flex gap-2 flex-wrap">
+            {/* Reset / Discard */}
+            <button
+              type="button"
+              className="btn btn-outline-secondary"
+              disabled={loading}
+              onClick={onReset}>
+              <i className="bi bi-arrow-counterclockwise me-2"></i>
 
-                {mode === "edit" ? "Updating..." : "Saving..."}
-              </>
-            ) : (
-              <>
-                <i className="bi bi-check-circle me-2"></i>
+              {resetButtonText}
+            </button>
 
-                {submitButtonText}
-              </>
-            )}
-          </button>
+            {/* Submit */}
+            <button
+              type="submit"
+              className="btn btn-primary"
+              disabled={loading || !hasChanges}>
+              {loading ? (
+                <>
+                  <span
+                    className="spinner-border spinner-border-sm me-2"
+                    role="status"
+                    aria-hidden="true"></span>
+
+                  {mode === "edit" ? "Updating..." : "Saving..."}
+                </>
+              ) : (
+                <>
+                  <i className="bi bi-check-circle me-2"></i>
+
+                  {submitButtonText}
+                </>
+              )}
+            </button>
+          </div>
         </div>
 
         {/* ---------------------------------------------------------------- */}
@@ -391,7 +407,9 @@ FoodForm.propTypes = {
   mode: PropTypes.oneOf(["add", "edit"]),
 
   food: PropTypes.shape({
-    id: PropTypes.string,
+    // id: PropTypes.string,
+
+    foodNumber: PropTypes.string,
 
     foodName: PropTypes.string,
 
@@ -449,6 +467,8 @@ FoodForm.propTypes = {
   onSubmit: PropTypes.func.isRequired,
 
   onReset: PropTypes.func.isRequired,
+
+  onBack: PropTypes.func.isRequired,
 
   onRemoveImage: PropTypes.func,
 };

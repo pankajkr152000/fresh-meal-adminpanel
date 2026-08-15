@@ -17,7 +17,7 @@ const FoodHero = ({ food, onBack, onEdit, onStatusChange }) => {
   return (
     <PageDetailHeader
       title={food.foodName}
-      subtitle={`Food ID : ${food.id}`}
+      subtitle={`Food No : ${food.foodNumber}`}
       onBack={onBack}
       status={<FoodStatusBadge status={food.foodStatus} />}>
       <PrimaryButton

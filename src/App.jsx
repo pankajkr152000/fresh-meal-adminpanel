@@ -2,17 +2,26 @@ import { useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 
-import Menubar from "./components/Menubar/Menubar";
-import Sidebar from "./components/Sidebar/Sidebar";
+import Menubar from "./shell/Menubar/Menubar";
+import Sidebar from "./shell/Sidebar/Sidebar";
 
-import ROUTES from "./constants/RouteConstants";
+import ROUTES from "./global/constants/RouteConstants";
 
-import { EditFood, ViewFood } from "./pages/Food";
-import AddFood from "./pages/Food/AddFood";
-import FoodList from "./pages/Food/FoodList";
-import Orders from "./pages/Orders/Orders";
+import {
+  AddFood,
+  ArchivedFoods,
+  EditFood,
+  FoodList,
+  ViewFood,
+} from "./features/foods/pages";
 
-import "./styles/appLayout.css";
+import Orders from "./features/orders/pages/orders";
+
+import {
+  ArchivedFoodProvider,
+  FoodListProvider,
+} from "./features/foods/context";
+import "./global/styles/appLayout.css";
 
 /**
  * =============================================================================
@@ -53,58 +62,67 @@ const App = () => {
   };
 
   return (
-    <div
-      className="d-flex"
-      id="wrapper">
-      {/* ================= Sidebar ================= */}
-      <Sidebar getSidebarVisible={getSidebarVisible} />
+    <FoodListProvider>
+      <ArchivedFoodProvider>
+        <div
+          className="d-flex"
+          id="wrapper">
+          {/* ================= Sidebar ================= */}
+          <Sidebar getSidebarVisible={getSidebarVisible} />
 
-      {/* ================= Main Layout ================= */}
-      <div
-        id="page-content-wrapper"
-        className={getSidebarVisible ? "sidebar-open" : "sidebar-closed"}>
-        {/* Top Navigation */}
-        <Menubar toggleSidebar={toggleSidebar} />
+          {/* ================= Main Layout ================= */}
+          <div
+            id="page-content-wrapper"
+            className={getSidebarVisible ? "sidebar-open" : "sidebar-closed"}>
+            {/* Top Navigation */}
+            <Menubar toggleSidebar={toggleSidebar} />
 
-        {/* Toast Notifications */}
-        <ToastContainer />
+            {/* Toast Notifications */}
+            <ToastContainer />
 
-        {/* Main Page Content */}
-        <main className="container-fluid app-content">
-          <Routes>
-            <Route
-              path={ROUTES.HOME}
-              element={<FoodList />}
-            />
+            {/* Main Page Content */}
+            <main className="container-fluid app-content">
+              <Routes>
+                <Route
+                  path={ROUTES.HOME}
+                  element={<FoodList />}
+                />
 
-            <Route
-              path={ROUTES.ADD_FOOD}
-              element={<AddFood />}
-            />
+                <Route
+                  path={ROUTES.ADD_FOOD}
+                  element={<AddFood />}
+                />
 
-            <Route
-              path={ROUTES.FETCH_ALL_FOODS}
-              element={<FoodList />}
-            />
+                <Route
+                  path={ROUTES.FETCH_ALL_FOODS}
+                  element={<FoodList />}
+                />
 
-            <Route
-              path={ROUTES.FETCH_ALL_ORDERS}
-              element={<Orders />}
-            />
+                <Route
+                  path={ROUTES.FETCH_ALL_ORDERS}
+                  element={<Orders />}
+                />
 
-            <Route
-              path={ROUTES.VIEW_FOOD}
-              element={<ViewFood />}
-            />
+                <Route
+                  path={ROUTES.VIEW_FOOD}
+                  element={<ViewFood />}
+                />
 
-            <Route
-              path={ROUTES.EDIT_FOOD}
-              element={<EditFood />}
-            />
-          </Routes>
-        </main>
-      </div>
-    </div>
+                <Route
+                  path={ROUTES.EDIT_FOOD}
+                  element={<EditFood />}
+                />
+
+                <Route
+                  path={ROUTES.GET_ARCHIVED_FOODS}
+                  element={<ArchivedFoods />}
+                />
+              </Routes>
+            </main>
+          </div>
+        </div>
+      </ArchivedFoodProvider>
+    </FoodListProvider>
   );
 };
 

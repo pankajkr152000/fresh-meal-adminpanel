@@ -58,28 +58,42 @@ export function initializeTheme() {
   setupThemeToggle();
 }
 
-function applyTheme(theme) {
-  document.documentElement.setAttribute(
-    "data-bs-theme",
-    theme
-  );
+// function applyTheme(theme) {
+//   document.documentElement.setAttribute(
+//     "data-bs-theme",
+//     theme
+//   );
 
-  const textSpan = document.querySelector(
-    "#theme-change-button span"
-  );
+//   const textSpan = document.querySelector(
+//     "#theme-change-button span"
+//   );
+
+//   if (textSpan) {
+//     textSpan.textContent =
+//       theme === "light"
+//         ? "Dark"
+//         : "Light";
+//   }
+// }
+
+function applyTheme(theme) {
+  document.documentElement.setAttribute("data-bs-theme", theme);
+
+  const textSpan = document.querySelector("#theme-text");
+
+  const iconSpan = document.querySelector("#theme-icon");
 
   if (textSpan) {
-    textSpan.textContent =
-      theme === "light"
-        ? "Dark"
-        : "Light";
+    textSpan.textContent = theme === "light" ? "Dark" : "Light";
+  }
+
+  if (iconSpan) {
+    iconSpan.textContent = theme === "light" ? "🌙" : "☀️";
   }
 }
 
 function setupThemeToggle() {
-  const btn = document.querySelector(
-    "#theme-change-button"
-  );
+  const btn = document.querySelector("#theme-change-button");
 
   if (!btn || btn.dataset.initialized) {
     return;
@@ -88,10 +102,7 @@ function setupThemeToggle() {
   btn.dataset.initialized = "true";
 
   btn.addEventListener("click", () => {
-    currentTheme =
-      currentTheme === "dark"
-        ? "light"
-        : "dark";
+    currentTheme = currentTheme === "dark" ? "light" : "dark";
 
     setTheme(currentTheme);
     applyTheme(currentTheme);
@@ -103,8 +114,5 @@ function setTheme(theme) {
 }
 
 function getTheme() {
-  return (
-    localStorage.getItem("theme") ||
-    "light"
-  );
+  return localStorage.getItem("theme") || "light";
 }

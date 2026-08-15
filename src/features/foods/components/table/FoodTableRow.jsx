@@ -5,6 +5,7 @@ import {
   handleImageError,
 } from "../../../../global/utils/ImageUtils";
 
+import CommonCheckbox from "../../../../global/components/forms/checkbox/CommonCheckbox";
 import { getDisplayLabels } from "../../../../global/utils/DisplayOptionUtils";
 import FoodStatusBadge from "../status/FoodStatusBadge";
 import FoodStatusDropdown from "../status/FoodStatusDropdown";
@@ -32,12 +33,29 @@ console.log("Inside FoodTableRow Component");
  * No business logic.
  * -----------------------------------------------------------------------------
  */
-
-const FoodTableRow = ({ food, onStatusChange, onView }) => {
+const FoodTableRow = ({
+  food,
+  onStatusChange,
+  onView,
+  // selection
+  selected = false,
+  onSelectionChange,
+  // action
+  onArchive,
+  // onDelete,
+}) => {
   console.log("Inside FoodTableRow Component");
   console.log("Food Table Row food id " + food.id);
   return (
     <tr>
+      {/* Selection */}
+      <td className="text-center">
+        <CommonCheckbox
+          name={`food-${food.id}`}
+          checked={selected}
+          onChange={(_, checked) => onSelectionChange(food.id, checked)}
+        />
+      </td>
       <td className="text-center">
         <img
           src={getFoodImage(food.imageUrl)}
@@ -83,6 +101,20 @@ const FoodTableRow = ({ food, onStatusChange, onView }) => {
               onStatusChange={(status) => onStatusChange(food, status)}
             />
           </div>
+          {/* actions */}
+          <button
+            type="button"
+            className="btn btn-sm btn-outline-warning w-100"
+            onClick={() => onArchive(food)}>
+            Archive
+          </button>
+
+          {/* <button
+            type="button"
+            className="btn btn-sm btn-outline-danger w-100"
+            onClick={() => onDelete(food)}>
+            Delete
+          </button> */}
         </div>
       </td>
     </tr>
@@ -95,6 +127,14 @@ FoodTableRow.propTypes = {
   onStatusChange: PropTypes.func.isRequired,
 
   onView: PropTypes.string,
+
+  selected: PropTypes.bool,
+
+  onSelectionChange: PropTypes.func,
+
+  onArchive: PropTypes.func.isRequired,
+
+  onDelete: PropTypes.func.isRequired,
 };
 
 export default FoodTableRow;

@@ -1,3 +1,4 @@
+export * from "./archivedFoodColumns";
 export { default as FOOD_COLUMNS } from "./columns";
 export * from "./defaults";
 export * from "./editFood.config";

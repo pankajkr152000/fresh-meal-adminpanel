@@ -47,8 +47,8 @@ const EDIT_FOOD_CONFIG = {
 
       fields: [
         {
-          name: "id",
-          label: "Food ID",
+          name: "foodNumber",
+          label: "Food Number",
           type: "text",
           readOnly: true,
         },

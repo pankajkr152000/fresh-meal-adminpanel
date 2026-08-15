@@ -49,6 +49,8 @@ import { FoodMetadataService, FoodService } from "../services";
 const INITIAL_FORM_DATA = {
   id: "",
 
+  foodNumber: "",
+
   foodName: "",
 
   description: "",
@@ -237,6 +239,8 @@ export default function useEditFood() {
       const mappedFood = {
         id: food.id ?? "",
 
+        foodNumber: food.foodNumber ?? "",
+
         foodName: food.foodName ?? "",
 
         description: food.description ?? "",
@@ -371,17 +375,19 @@ export default function useEditFood() {
 
     const current = {
       ...formData,
-
       image: null,
     };
 
     const original = {
       ...originalData,
-
       image: null,
     };
 
-    return JSON.stringify(current) !== JSON.stringify(original);
+    const hasFormChanges = JSON.stringify(current) !== JSON.stringify(original);
+
+    const hasImageChanged = formData.image != null;
+
+    return hasFormChanges || hasImageChanged;
   }, [formData, originalData]);
 
   /**
@@ -477,6 +483,7 @@ export default function useEditFood() {
 
     const food = {
       id: formData.id,
+      // foodNumber: formData.foodNumber,
       foodName: formData.foodName,
       description: formData.description,
       price: formData.price,

@@ -5,11 +5,10 @@ import { FOOD_COLUMNS } from "../../constants/columns";
 
 import FoodTableRow from "./FoodTableRow";
 
-console.log("Inside FoodTable Component");
 /**
- * -----------------------------------------------------------------------------
+ * ============================================================================
  * Component : FoodTable
- * -----------------------------------------------------------------------------
+ * ============================================================================
  *
  * Purpose
  * -------
@@ -22,12 +21,14 @@ console.log("Inside FoodTable Component");
  * • Forward sorting, pagination and toolbar.
  * • Forward food action callbacks.
  * • Forward retry callback.
+ * • Forward food selection configuration.
  *
  * Notes
  * -----
- * This component intentionally contains no business logic.
- * All table rendering is delegated to DataTable.
- * -----------------------------------------------------------------------------
+ * This component contains no selection business logic.
+ * Selection state is owned by the food feature hook.
+ *
+ * ============================================================================
  */
 
 const FoodTable = ({
@@ -45,11 +46,22 @@ const FoodTable = ({
 
   onStatusChange,
 
-  // ✅ NEW
   retryAction,
   onView,
+
+  // Selection
+  selectedFoodIds = new Set(),
+  allFoodsSelected = false,
+  onSelectAllFoods,
+  someFoodsSelected,
+  onFoodSelectionChange,
+  selectionInfo,
+  handleSelectAllFoods,
+
+  // action
+  onArchive,
+  // onDelete,
 }) => {
-  console.log("Inside FoodTable Component");
   return (
     <DataTable
       columns={FOOD_COLUMNS}
@@ -62,15 +74,24 @@ const FoodTable = ({
       sortField={sortField}
       sortDirection={sortDirection}
       onSort={onSort}
-      // ✅ NEW
       retryAction={retryAction}
       onView={onView}
+      // Selection
+      selectable
+      selectedRowKeys={selectedFoodIds}
+      allRowsSelected={selectionInfo?.allFoodsSelected ?? false}
+      someRowsSelected={selectionInfo?.someFoodsSelected ?? false}
+      onSelectAll={handleSelectAllFoods}
       renderRow={(food) => (
         <FoodTableRow
           key={food.id}
           food={food}
           onStatusChange={onStatusChange}
           onView={onView}
+          selected={selectedFoodIds.has(food.id)}
+          onSelectionChange={onFoodSelectionChange}
+          onArchive={onArchive}
+          // onDelete={onDelete}
         />
       )}
     />
@@ -96,10 +117,31 @@ FoodTable.propTypes = {
 
   onStatusChange: PropTypes.func.isRequired,
 
-  // ✅ NEW
   retryAction: PropTypes.func,
-  // ✅ NEW
+
   onView: PropTypes.func,
+
+  // Selection
+  selectedFoodIds: PropTypes.instanceOf(Set),
+
+  allFoodsSelected: PropTypes.bool,
+
+  onSelectAllFoods: PropTypes.func,
+
+  onFoodSelectionChange: PropTypes.func,
+
+  onArchive: PropTypes.func.isRequired,
+
+  // onDelete: PropTypes.func.isRequired,
+
+  selectionInfo: PropTypes.shape({
+    selectedCount: PropTypes.number,
+    selectedVisibleCount: PropTypes.number,
+    allFoodsSelected: PropTypes.bool,
+    someFoodsSelected: PropTypes.bool,
+  }),
+
+  handleSelectAllFoods: PropTypes.func,
 };
 
 export default FoodTable;

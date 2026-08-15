@@ -1,5 +1,6 @@
 // src/features/foods/hooks/index.js
 
+export { default as useArchivedFoodList } from "./useArchivedFoodList";
 export { default as useFoodDetails } from "./useFoodDetails";
 export { default as useFoodEdit } from "./useFoodEdit";
 export { default as useFoodForm } from "./useFoodForm";

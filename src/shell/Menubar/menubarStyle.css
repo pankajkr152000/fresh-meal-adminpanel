@@ -9,4 +9,8 @@
   z-index: 1050;
 
   padding: 0 1rem;
+
+  border-bottom: 1px solid var(--bs-border-color);
+
+  background-color: var(--bs-body-bg);
 }

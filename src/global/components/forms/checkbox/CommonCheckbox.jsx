@@ -1,22 +1,23 @@
 import PropTypes from "prop-types";
-import { memo } from "react";
-
+import { memo, useEffect, useRef } from "react";
+import "./commonCheckboxStyle.css";
 /**
- * =============================================================================
+ * ============================================================================
  * Component : CommonCheckbox
- * =============================================================================
+ * ============================================================================
  *
- * Enterprise reusable checkbox component.
+ * Enterprise reusable controlled checkbox component.
  *
  * Responsibilities
  * ----------------
  * • Render Bootstrap checkbox.
  * • Display label.
  * • Display validation error.
- * • Controlled component.
+ * • Support controlled checked state.
+ * • Support indeterminate state.
  *
  * Contains no business logic.
- * =============================================================================
+ * ============================================================================
  */
 
 const CommonCheckbox = ({
@@ -29,34 +30,49 @@ const CommonCheckbox = ({
   required = false,
   error = "",
   className = "",
+  indeterminate = false,
 }) => {
+  const checkboxRef = useRef(null);
+
+  /**
+   * Synchronize native checkbox indeterminate state.
+   *
+   * The indeterminate property is not a normal HTML attribute,
+   * therefore it must be assigned directly to the DOM element.
+   */
+  useEffect(() => {
+    if (checkboxRef.current) {
+      checkboxRef.current.indeterminate = indeterminate;
+    }
+  }, [indeterminate]);
+
   const handleChange = (event) => {
-    onChange(name, event.target.value);
+    onChange(name, event.target.checked);
   };
+
   return (
-    <div className={className}>
-      <div className="form-check">
-        <input
-          id={name}
-          name={name}
-          type="checkbox"
-          className={`form-check-input ${error ? "is-invalid" : ""}`}
-          checked={checked}
-          onChange={handleChange}
-          disabled={disabled}
-          required={required}
-        />
+    <div className={`form-check ${className}`}>
+      <input
+        ref={checkboxRef}
+        id={name}
+        name={name}
+        type="checkbox"
+        className={`form-check-input freshmeal-checkbox ${error ? "is-invalid" : ""}`}
+        checked={checked}
+        onChange={handleChange}
+        disabled={disabled}
+        required={required}
+      />
 
-        {label && (
-          <label
-            htmlFor={name}
-            className="form-check-label">
-            {label}
-          </label>
-        )}
+      {label && (
+        <label
+          htmlFor={name}
+          className="form-check-label">
+          {label}
+        </label>
+      )}
 
-        {error && <div className="invalid-feedback d-block">{error}</div>}
-      </div>
+      {error && <div className="invalid-feedback d-block">{error}</div>}
     </div>
   );
 };
@@ -77,6 +93,8 @@ CommonCheckbox.propTypes = {
   error: PropTypes.string,
 
   className: PropTypes.string,
+
+  indeterminate: PropTypes.bool,
 };
 
 export default memo(CommonCheckbox);

@@ -1,13 +1,15 @@
 import PropTypes from "prop-types";
 
+import CommonCheckbox from "../../forms/checkbox/CommonCheckbox";
+
 /**
- * -----------------------------------------------------------------------------
+ * ============================================================================
  * Component : TableHeader
- * -----------------------------------------------------------------------------
+ * ============================================================================
  *
  * Purpose
  * -------
- * Renders reusable table headers based on column configuration.
+ * Reusable table header based on column configuration.
  *
  * Responsibilities
  * ----------------
@@ -16,16 +18,32 @@ import PropTypes from "prop-types";
  * • Display sort indicators.
  * • Apply alignment and width.
  * • Emit sort events.
+ * • Optionally render a select-all checkbox.
  *
  * Notes
  * -----
- * This component intentionally contains no business logic.
- * -----------------------------------------------------------------------------
+ * This component contains no feature-specific business logic.
+ *
+ * ============================================================================
  */
 
-const TableHeader = ({ columns, sortField, sortDirection, onSort }) => {
+const TableHeader = ({
+  columns,
+  sortField,
+  sortDirection,
+  onSort,
+
+  // Selection
+  selectable = false,
+  someRowsSelected = false,
+  allRowsSelected = false,
+  onSelectAll,
+}) => {
   /**
    * Returns sort icon.
+   *
+   * @param {Object} column Column configuration.
+   * @returns {JSX.Element|null} Sort indicator.
    */
   const getSortIcon = (column) => {
     if (!column.sortable) {
@@ -40,8 +58,33 @@ const TableHeader = ({ columns, sortField, sortDirection, onSort }) => {
   };
 
   return (
-    <thead className="table-light">
+    <thead>
       <tr>
+        {/* ===============================================================
+            Select All
+            =============================================================== */}
+
+        {selectable && (
+          <th
+            scope="col"
+            className="text-center"
+            style={{
+              width: "50px",
+              minWidth: "50px",
+            }}>
+            <CommonCheckbox
+              name="table-select-all"
+              checked={allRowsSelected}
+              indeterminate={someRowsSelected}
+              onChange={(_, checked) => onSelectAll(checked)}
+            />
+          </th>
+        )}
+
+        {/* ===============================================================
+            Table Columns
+            =============================================================== */}
+
         {columns
           .filter((column) => column.visible)
           .map((column) => (
@@ -65,7 +108,7 @@ const TableHeader = ({ columns, sortField, sortDirection, onSort }) => {
               {column.sortable ? (
                 <button
                   type="button"
-                  className="btn btn-link p-0 fw-semibold text-decoration-none text-dark"
+                  className="btn btn-link p-0 fw-semibold text-decoration-none text-body"
                   onClick={() => onSort(column.accessor)}>
                   {column.header}
 
@@ -89,6 +132,15 @@ TableHeader.propTypes = {
   sortDirection: PropTypes.oneOf(["asc", "desc"]),
 
   onSort: PropTypes.func.isRequired,
+
+  // Selection
+  selectable: PropTypes.bool,
+
+  someRowsSelected: PropTypes.bool,
+
+  allRowsSelected: PropTypes.bool,
+
+  onSelectAll: PropTypes.func,
 };
 
 export default TableHeader;

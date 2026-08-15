@@ -42,7 +42,7 @@ import LoadingSpinner from "../../../global/components/details/feedback/LoadingS
 import { NavigationCard } from "../components/details";
 import FoodHero from "../components/details/FoodHero";
 import StatusConfirmationModal from "../components/status/StatusConfirmationModal";
-import { FoodService } from "../services/FoodService";
+import { FoodService } from "../services";
 
 const ViewFood = () => {
   // ==========================================================================
@@ -131,7 +131,7 @@ const ViewFood = () => {
       setStatusLoading(true);
 
       await FoodService.updateFoodStatus(food.id, selectedStatus);
-
+      console.log("Selected Status:", selectedStatus);
       toast.success("Food status updated successfully.");
 
       setShowStatusModal(false);

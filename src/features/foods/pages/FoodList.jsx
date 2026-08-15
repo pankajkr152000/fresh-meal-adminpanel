@@ -7,6 +7,10 @@ import FoodToolbar from "../components/toolbar/FoodToolbar";
 
 import { TablePagination } from "../../../global/components/data-display/tables";
 
+import { useState } from "react";
+import { toast } from "react-toastify";
+import { ConfirmationModal } from "../../../global/components/overlay";
+import { useFoodListContext } from "../context";
 import useFoodList from "../hooks/useFoodList";
 import useFoodMetadata from "../hooks/useFoodMetadata";
 
@@ -85,6 +89,18 @@ const FoodList = () => {
 
     // Retry
     retryLoadingFoods,
+
+    // food selection
+    selectedFoodIds,
+    handleFoodSelectionChange,
+    handleSelectAllFoods,
+    selectionInfo,
+
+    // Food Actions
+    archiveFood,
+    bulkArchiveFoods,
+
+    actionLoading,
   } = useFoodList();
 
   // ===========================================================================
@@ -110,6 +126,26 @@ const FoodList = () => {
     retryLoadingMetadata,
   } = useFoodMetadata();
 
+  const {
+    selectedCount,
+    hasSelection,
+
+    showArchiveConfirmation,
+    openArchiveConfirmation,
+    closeArchiveConfirmation,
+  } = useFoodListContext();
+  // actions
+  const [confirmation, setConfirmation] = useState({
+    show: false,
+    action: null,
+    food: null,
+  });
+
+  console.log("FoodList archive modal:", {
+    selectedCount,
+    showArchiveConfirmation,
+  });
+
   // ===========================================================================
   // Navigation
   // ===========================================================================
@@ -117,6 +153,55 @@ const FoodList = () => {
   const handleViewFood = (foodId) => {
     console.log("Received in handleViewFood in FoodList :", foodId);
     navigate(`/foods/view/${foodId}`);
+  };
+
+  // ===========================================================================
+  // Actions
+  // ===========================================================================
+  const openSingleActionConfirmation = (action, food) => {
+    setConfirmation({
+      show: true,
+      action,
+      food,
+    });
+  };
+
+  const closeConfirmation = () => {
+    setConfirmation({
+      show: false,
+      action: null,
+      food: null,
+    });
+  };
+
+  const handleArchiveConfirmation = async () => {
+    const { action, food } = confirmation;
+
+    if (action !== "ARCHIVE" || !food) {
+      return;
+    }
+
+    const success = await archiveFood(food.id);
+
+    if (success) {
+      toast.success("Food archived successfully");
+      closeConfirmation();
+    }
+  };
+
+  const handleBulkArchiveConfirmation = async () => {
+    //const foodIds = [...selectedFoodIds];
+
+    if (selectedFoodIds.size === 0) {
+      return;
+    }
+
+    const success = await bulkArchiveFoods();
+
+    if (success) {
+      toast.success("Foods archived successfully.");
+      closeArchiveConfirmation();
+    }
   };
 
   // ===========================================================================
@@ -161,7 +246,13 @@ const FoodList = () => {
         onSort={changeSort}
         onStatusChange={selectStatus}
         onView={handleViewFood}
+        onArchive={(food) => openSingleActionConfirmation("ARCHIVE", food)}
+        // onDelete={(food) => openSingleActionConfirmation("DELETE", food)}
         retryAction={error ? retryLoadingFoods : retryLoadingMetadata}
+        selectedFoodIds={selectedFoodIds}
+        onFoodSelectionChange={handleFoodSelectionChange}
+        handleSelectAllFoods={handleSelectAllFoods}
+        selectionInfo={selectionInfo}
       />
 
       <StatusConfirmationModal
@@ -172,6 +263,40 @@ const FoodList = () => {
         loading={statusUpdating}
         onCancel={cancelStatusChange}
         onConfirm={confirmStatusChange}
+      />
+
+      {/* confirmation modal to archive food in bulk*/}
+
+      <ConfirmationModal
+        show={showArchiveConfirmation}
+        title="Archive Food"
+        message={
+          selectedCount === 1
+            ? "Are you sure you want to archive the selected food?"
+            : `Are you sure you want to archive ${selectedCount} selected foods?`
+        }
+        confirmText="Archive"
+        cancelText="Cancel"
+        confirmButtonClass="btn-warning"
+        loading={actionLoading}
+        onConfirm={handleBulkArchiveConfirmation}
+        onCancel={closeArchiveConfirmation}
+      />
+      {/* single archive confirmation modal */}
+      <ConfirmationModal
+        show={confirmation.show}
+        title="Archive Food"
+        message={
+          confirmation.food
+            ? `Are you sure you want to archive "${confirmation.food.foodName}"?`
+            : ""
+        }
+        confirmText="Archive"
+        cancelText="Cancel"
+        confirmButtonClass="btn-warning"
+        loading={actionLoading}
+        onConfirm={handleArchiveConfirmation}
+        onCancel={closeConfirmation}
       />
     </>
   );
