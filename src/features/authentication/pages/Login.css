@@ -1,0 +1,420 @@
+/**
+ * =============================================================================
+ * FreshMeal
+ * =============================================================================
+ *
+ * Login Page Styles
+ *
+ * Purpose
+ * -------
+ * Provides the visual presentation for the common FreshMeal authentication
+ * login page.
+ *
+ * Design Direction
+ * ----------------
+ * • Premium food-delivery appearance.
+ * • Compact and refined typography.
+ * • Soft surfaces and subtle depth.
+ * • Strong visual hierarchy.
+ * • Responsive desktop/tablet/mobile behaviour.
+ * • Accessible focus states.
+ *
+ * Notes
+ * -----
+ * • Page-specific styles only.
+ * • Bootstrap remains the primary layout/form framework.
+ * • No authentication/business logic belongs here.
+ *
+ * =============================================================================
+ */
+
+/* =============================================================================
+   Login Page
+   ============================================================================= */
+
+.freshmeal-login {
+  background: #f7f8f6;
+  color: #212529;
+}
+
+/* =============================================================================
+   Brand / Visual Section
+   ============================================================================= */
+
+.freshmeal-login__brand {
+  min-height: 650px;
+  padding: 3.5rem;
+  background:
+    radial-gradient(
+      circle at 15% 15%,
+      rgba(255, 255, 255, 0.9),
+      transparent 34%
+    ),
+    linear-gradient(145deg, #eef5ed 0%, #f7f8f6 55%, #edf2eb 100%);
+  border-radius: 1.25rem 0 0 1.25rem;
+  overflow: hidden;
+  position: relative;
+}
+
+.freshmeal-login__brand::after {
+  content: "";
+  position: absolute;
+  width: 280px;
+  height: 280px;
+  right: -100px;
+  bottom: -110px;
+  border-radius: 50%;
+  background: rgba(40, 167, 69, 0.08);
+  pointer-events: none;
+}
+
+.freshmeal-login__brand-content {
+  max-width: 440px;
+  position: relative;
+  z-index: 1;
+}
+
+.freshmeal-login__brand-logo {
+  width: 145px;
+  max-height: 58px;
+  object-fit: contain;
+  object-position: left center;
+}
+
+.freshmeal-login__eyebrow,
+.freshmeal-login__section-label {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.freshmeal-login__eyebrow {
+  color: #198754;
+}
+
+.freshmeal-login__brand-title {
+  font-size: clamp(1.85rem, 3vw, 2.55rem);
+  line-height: 1.15;
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  max-width: 420px;
+}
+
+.freshmeal-login__brand-text {
+  max-width: 390px;
+  color: #6c757d;
+  font-size: 0.84rem;
+  line-height: 1.75;
+}
+
+/* =============================================================================
+   Login Panel
+   ============================================================================= */
+
+.freshmeal-login__panel {
+  min-height: 650px;
+  padding: 3rem 4rem;
+  background: #ffffff;
+  border-radius: 0 1.25rem 1.25rem 0;
+  box-shadow: 0 1rem 3rem rgba(33, 37, 41, 0.07);
+}
+
+.freshmeal-login__card {
+  max-width: 390px;
+}
+
+/* =============================================================================
+   Login Header
+   ============================================================================= */
+
+.freshmeal-login__section-label {
+  color: #198754;
+  font-size: 0.65rem;
+  margin-bottom: 0.35rem;
+}
+
+.freshmeal-login__title {
+  color: #212529;
+  font-size: 1.55rem;
+  line-height: 1.25;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+}
+
+.freshmeal-login__subtitle {
+  color: #6c757d;
+  font-size: 0.78rem;
+  line-height: 1.55;
+}
+
+/* =============================================================================
+   Form Fields
+   ============================================================================= */
+
+.freshmeal-login__field .form-label {
+  color: #343a40;
+  font-size: 0.73rem;
+  margin-bottom: 0.4rem;
+}
+
+.freshmeal-login__field .form-control {
+  min-height: 43px;
+  padding: 0.55rem 0.75rem;
+  border: 1px solid #dee2e6;
+  border-radius: 0.55rem;
+  color: #212529;
+  font-size: 0.78rem;
+  background-color: #ffffff;
+  box-shadow: none;
+  transition:
+    border-color 0.18s ease,
+    box-shadow 0.18s ease,
+    background-color 0.18s ease;
+}
+
+.freshmeal-login__field .form-control::placeholder {
+  color: #adb5bd;
+  font-size: 0.74rem;
+}
+
+.freshmeal-login__field .form-control:hover:not(:disabled) {
+  border-color: #c4c9ce;
+}
+
+.freshmeal-login__field .form-control:focus {
+  border-color: #198754;
+  background-color: #ffffff;
+  box-shadow: 0 0 0 0.18rem rgba(25, 135, 84, 0.1);
+}
+
+.freshmeal-login__field .form-control:disabled {
+  background-color: #f8f9fa;
+  cursor: not-allowed;
+}
+
+/* =============================================================================
+   Password Visibility
+   ============================================================================= */
+
+.freshmeal-login__password-toggle {
+  position: absolute;
+  right: 0.65rem;
+  bottom: 0.48rem;
+
+  border: 0;
+  padding: 0.25rem 0.35rem;
+
+  background: transparent;
+  color: #6c757d;
+
+  font-size: 0.68rem;
+  font-weight: 600;
+
+  cursor: pointer;
+  transition:
+    color 0.18s ease,
+    opacity 0.18s ease;
+}
+
+.freshmeal-login__password-toggle:hover:not(:disabled) {
+  color: #198754;
+}
+
+.freshmeal-login__password-toggle:focus-visible {
+  outline: 2px solid rgba(25, 135, 84, 0.35);
+  outline-offset: 2px;
+  border-radius: 0.25rem;
+}
+
+.freshmeal-login__password-toggle:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* =============================================================================
+   Validation
+   ============================================================================= */
+
+.freshmeal-login__field .invalid-feedback {
+  margin-top: 0.3rem;
+  font-size: 0.68rem;
+}
+
+/* =============================================================================
+   Remember Me
+   ============================================================================= */
+
+.freshmeal-login__card .form-check {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.freshmeal-login__card .form-check-input {
+  width: 0.9rem;
+  height: 0.9rem;
+  margin-top: 0;
+  cursor: pointer;
+}
+
+.freshmeal-login__card .form-check-label {
+  color: #6c757d;
+  font-size: 0.7rem;
+  cursor: pointer;
+}
+
+/* =============================================================================
+   Links
+   ============================================================================= */
+
+.freshmeal-login__link {
+  color: #198754;
+  font-size: 0.7rem;
+  transition:
+    color 0.18s ease,
+    opacity 0.18s ease;
+}
+
+.freshmeal-login__link:hover {
+  color: #146c43;
+}
+
+.freshmeal-login__link:focus-visible {
+  outline: 2px solid rgba(25, 135, 84, 0.3);
+  outline-offset: 3px;
+  border-radius: 0.2rem;
+}
+
+/* =============================================================================
+   Submit Button
+   ============================================================================= */
+
+.freshmeal-login__submit {
+  min-height: 43px;
+  border-radius: 0.55rem;
+  font-size: 0.76rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.freshmeal-login__submit:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 0.35rem 0.9rem rgba(25, 135, 84, 0.16);
+}
+
+.freshmeal-login__submit:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+/* =============================================================================
+   Registration
+   ============================================================================= */
+
+.freshmeal-login__register {
+  font-size: 0.7rem;
+}
+
+.freshmeal-login__register-text {
+  color: #6c757d;
+}
+
+/* =============================================================================
+   Alert
+   ============================================================================= */
+
+.freshmeal-login__card .alert {
+  border-radius: 0.55rem;
+  border-width: 1px;
+}
+
+.freshmeal-login__card .alert .small {
+  font-size: 0.7rem;
+}
+
+/* =============================================================================
+   Mobile Brand
+   ============================================================================= */
+
+.freshmeal-login__mobile-logo {
+  width: 125px;
+  max-height: 48px;
+  object-fit: contain;
+}
+
+/* =============================================================================
+   Tablet
+   ============================================================================= */
+
+@media (max-width: 991.98px) {
+  .freshmeal-login {
+    background: #f7f8f6;
+  }
+
+  .freshmeal-login__panel {
+    min-height: auto;
+    padding: 2.5rem 2rem;
+    border-radius: 1rem;
+    box-shadow: 0 0.75rem 2rem rgba(33, 37, 41, 0.06);
+  }
+
+  .freshmeal-login__card {
+    max-width: 410px;
+  }
+}
+
+/* =============================================================================
+   Mobile
+   ============================================================================= */
+
+@media (max-width: 575.98px) {
+  .freshmeal-login .container-fluid {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+
+  .freshmeal-login__panel {
+    padding: 1.75rem 1.25rem;
+    border-radius: 0.85rem;
+  }
+
+  .freshmeal-login__title {
+    font-size: 1.4rem;
+  }
+
+  .freshmeal-login__subtitle {
+    font-size: 0.76rem;
+  }
+
+  .freshmeal-login__field .form-control {
+    min-height: 42px;
+  }
+
+  .freshmeal-login__submit {
+    min-height: 42px;
+  }
+
+  .freshmeal-login__register {
+    margin-top: 1.25rem !important;
+  }
+}
+
+/* =============================================================================
+   Reduced Motion
+   ============================================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .freshmeal-login__field .form-control,
+  .freshmeal-login__password-toggle,
+  .freshmeal-login__link,
+  .freshmeal-login__submit {
+    transition: none;
+  }
+
+  .freshmeal-login__submit:hover:not(:disabled) {
+    transform: none;
+  }
+}

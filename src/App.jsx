@@ -1,129 +1,71 @@
-import { useState } from "react";
-import { Route, Routes } from "react-router-dom";
-import { ToastContainer } from "react-toastify";
-
-import Menubar from "./shell/Menubar/Menubar";
-import Sidebar from "./shell/Sidebar/Sidebar";
-
-import ROUTES from "./global/constants/RouteConstants";
-
-import {
-  AddFood,
-  ArchivedFoods,
-  EditFood,
-  FoodList,
-  ViewFood,
-} from "./features/foods/pages";
-
-import Orders from "./features/orders/pages/orders";
-
-import {
-  ArchivedFoodProvider,
-  FoodListProvider,
-} from "./features/foods/context";
-import "./global/styles/appLayout.css";
-
 /**
  * =============================================================================
- * Component : App
+ * FreshMeal - Application Root
  * =============================================================================
  *
- * Purpose
- * -------
- * Root component responsible for rendering the complete admin layout.
+ * <p>
+ * Root component of the FreshMeal frontend application.
+ * </p>
  *
- * Responsibilities
- * ----------------
- * • Render fixed sidebar.
- * • Render fixed top navigation bar.
- * • Render application routes.
- * • Maintain sidebar toggle state.
- * • Provide global toast notifications.
+ * <h3>Purpose</h3>
+ * <p>
+ * Provides the top-level composition boundary for the application and
+ * delegates route configuration to {@link AppRoutes}.
+ * </p>
  *
- * Layout Structure
- * ----------------
- * Sidebar (Fixed)
- *        +
- * Menubar (Fixed)
- *        +
- * Main Content (Scrollable)
+ * <h3>Architecture Responsibility</h3>
+ * <ul>
+ *     <li>Acts as the application's root composition component.</li>
+ *     <li>Delegates all route declarations to {@link AppRoutes}.</li>
+ *     <li>Does not contain Admin-specific shell logic.</li>
+ *     <li>Does not contain authentication or authorization logic.</li>
+ *     <li>Does not manage Sidebar or Menubar state.</li>
+ * </ul>
  *
+ * <h3>Application Flow</h3>
+ * <pre>
+ * main.jsx
+ *     |
+ *     +-- BrowserRouter
+ *             |
+ *             +-- App
+ *                    |
+ *                    +-- AppRoutes
+ *                           |
+ *                           +-- Public Routes
+ *                           |
+ *                           +-- Admin Routes
+ *                                  |
+ *                                  +-- AdminLayout
+ * </pre>
+ *
+ * <h3>Design Principle</h3>
+ * <p>
+ * The application root intentionally remains lightweight. Domain-specific
+ * behavior belongs to feature modules, application-shell behavior belongs to
+ * layouts, and route declarations belong to the routing layer.
+ * </p>
+ *
+ * @module App
  * =============================================================================
  */
 
+import AppRoutes from "./routes/AppRoutes";
+
+/**
+ * =============================================================================
+ * App
+ * =============================================================================
+ *
+ * <p>
+ * Root composition component for FreshMeal.
+ * </p>
+ *
+ * @returns {JSX.Element} FreshMeal application routes.
+ * =============================================================================
+ */
 const App = () => {
-  const [getSidebarVisible, setSidebarVisible] = useState(true);
-
-  /**
-   * Toggles sidebar visibility.
-   */
-  const toggleSidebar = () => {
-    setSidebarVisible((previous) => !previous);
-  };
-
-  return (
-    <FoodListProvider>
-      <ArchivedFoodProvider>
-        <div
-          className="d-flex"
-          id="wrapper">
-          {/* ================= Sidebar ================= */}
-          <Sidebar getSidebarVisible={getSidebarVisible} />
-
-          {/* ================= Main Layout ================= */}
-          <div
-            id="page-content-wrapper"
-            className={getSidebarVisible ? "sidebar-open" : "sidebar-closed"}>
-            {/* Top Navigation */}
-            <Menubar toggleSidebar={toggleSidebar} />
-
-            {/* Toast Notifications */}
-            <ToastContainer />
-
-            {/* Main Page Content */}
-            <main className="container-fluid app-content">
-              <Routes>
-                <Route
-                  path={ROUTES.HOME}
-                  element={<FoodList />}
-                />
-
-                <Route
-                  path={ROUTES.ADD_FOOD}
-                  element={<AddFood />}
-                />
-
-                <Route
-                  path={ROUTES.FETCH_ALL_FOODS}
-                  element={<FoodList />}
-                />
-
-                <Route
-                  path={ROUTES.FETCH_ALL_ORDERS}
-                  element={<Orders />}
-                />
-
-                <Route
-                  path={ROUTES.VIEW_FOOD}
-                  element={<ViewFood />}
-                />
-
-                <Route
-                  path={ROUTES.EDIT_FOOD}
-                  element={<EditFood />}
-                />
-
-                <Route
-                  path={ROUTES.GET_ARCHIVED_FOODS}
-                  element={<ArchivedFoods />}
-                />
-              </Routes>
-            </main>
-          </div>
-        </div>
-      </ArchivedFoodProvider>
-    </FoodListProvider>
-  );
+  return <AppRoutes />;
 };
 
 export default App;
