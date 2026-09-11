@@ -29,10 +29,10 @@
  * Backend /api/auth/login
  *     |
  *     v
- * LoginResponse
+ * ApiResponse&lt;LoginResponse&gt;
  *     |
  *     v
- * response.token
+ * response.data.token
  *     |
  *     v
  * AuthenticationContext.authenticate()
@@ -45,7 +45,7 @@
  * <ul>
  * <li>Call the AuthenticationService login operation.</li>
  * <li>Pass login credentials to the authentication service.</li>
- * <li>Store the successful login response in hook state.</li>
+ * <li>Store the successful backend login response in hook state.</li>
  * <li>Establish the authenticated frontend session after successful login.</li>
  * <li>Pass the Remember Me decision to the authentication boundary.</li>
  * <li>Translate known authentication errors into safe UI messages.</li>
@@ -73,7 +73,9 @@
 import { useCallback, useState } from "react";
 
 import { useAuthentication } from "../context/AuthenticationContext";
+
 import AuthenticationService from "../services/AuthenticationService";
+
 import { getAuthenticationErrorMessage } from "../utils/AuthenticationErrorUtils";
 
 /**
@@ -119,12 +121,35 @@ const useLogin = () => {
    * authentication boundary without implementing storage behavior itself.
    * </p>
    *
+   * <h3>Backend Response Contract</h3>
+   *
+   * <pre>
+   * {
+   *   "success": true,
+   *   "data": {
+   *     "token": {
+   *       "accessToken": "...",
+   *       "refreshToken": "...",
+   *       "tokenType": "Bearer",
+   *       "expiresIn": 900,
+   *       "loginSessionId": "..."
+   *     }
+   *   }
+   * }
+   * </pre>
+   *
+   * <p>
+   * The hook extracts the authentication session from
+   * {@code response.data.token}. The API response envelope itself is preserved
+   * in hook state and returned to the caller.
+   * </p>
+   *
    * @param {Object} credentials login credentials
    * @param {string} credentials.identifier username or email
    * @param {string} credentials.password password
    * @param {boolean} credentials.rememberMe whether the session should survive
    *        browser restart
-   * @returns {Promise<Object>} backend login response
+   * @returns {Promise&lt;Object&gt;} backend login response
    * @throws {Error} original authentication error from the service
    */
   const login = useCallback(
@@ -137,26 +162,34 @@ const useLogin = () => {
           identifier,
           password,
         });
-
-        /*
-         * The backend response contract contains the authentication session
-         * under the "token" property:
-         *
-         * {
-         *   "token": {
-         *     "accessToken": "...",
-         *     "refreshToken": "...",
-         *     "tokenType": "Bearer",
-         *     "expiresIn": 3600,
-         *     "loginSessionId": "..."
-         *   }
-         * }
+        console.log(
+          "FreshMeal login response keys:",
+          Object.keys(loginResponse || {}),
+        );
+        console.log(
+          "FreshMeal login data keys:",
+          Object.keys(loginResponse?.data || {}),
+        );
+        console.log(
+          "FreshMeal token keys:",
+          Object.keys(loginResponse?.data?.token || {}),
+        );
+        console.log("FreshMeal token presence:", {
+          accessToken: Boolean(loginResponse?.data?.token?.accessToken),
+          refreshToken: Boolean(loginResponse?.data?.token?.refreshToken),
+          tokenType: Boolean(loginResponse?.data?.token?.tokenType),
+          loginSessionId: Boolean(loginResponse?.data?.token?.loginSessionId),
+        });
+        /**
+         * The backend wraps the LoginResponse inside the common API response
+         * envelope. Therefore, the authentication session is available under
+         * "data.token".
          *
          * The hook deliberately does not reconstruct or modify this session.
          */
-        const authenticationSession = loginResponse?.token;
+        const authenticationSession = loginResponse?.data?.token;
 
-        /*
+        /**
          * A successful HTTP response without a usable token payload must not
          * establish an authenticated frontend state.
          */
@@ -166,7 +199,7 @@ const useLogin = () => {
           );
         }
 
-        /*
+        /**
          * Establish runtime authentication state and persist the session
          * according to the user's Remember Me preference.
          */
@@ -176,7 +209,7 @@ const useLogin = () => {
 
         return loginResponse;
       } catch (loginError) {
-        /*
+        /**
          * Convert the backend authentication error into a safe message for
          * presentation while preserving the original error for callers.
          *
@@ -188,7 +221,7 @@ const useLogin = () => {
 
         setError(authenticationErrorMessage);
 
-        /*
+        /**
          * Login.jsx may use the original error for logging or future workflow
          * handling. The hook therefore does not replace the original error.
          */
