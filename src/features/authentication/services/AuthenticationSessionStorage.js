@@ -236,7 +236,7 @@ const AuthenticationSessionStorage = Object.freeze({
       }
 
       return session;
-    } catch (error) {
+    } catch {
       /*
        * Invalid JSON must never prevent application startup.
        */

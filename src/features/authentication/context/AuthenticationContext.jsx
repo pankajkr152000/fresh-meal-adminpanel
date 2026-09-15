@@ -316,6 +316,9 @@ export const AuthenticationProvider = ({ children }) => {
  * @returns {Object} current authentication context
  * @throws {Error} when used outside {@link AuthenticationProvider}
  */
+// This hook is intentionally colocated with the context because it depends on
+// the private context instance. The provider remains the only component export.
+// eslint-disable-next-line react-refresh/only-export-components
 export const useAuthentication = () => {
   const context = useContext(AuthenticationContext);
 
