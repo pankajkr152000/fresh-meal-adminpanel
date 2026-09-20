@@ -1,4 +1,3 @@
-import axios from "axios";
 import apiClient from "../../../api/apiClient";
 import { API } from "../../../global/constants/ApiConstants";
 
@@ -31,7 +30,7 @@ const FoodService = {
    * @returns {Promise<Object>}
    */
   addFood: async (formData) => {
-    const response = await axios.post(API.FOOD.ADD_FOOD, formData);
+    const response = await apiClient.post(API.FOOD.ADD_FOOD, formData);
     return response.data;
   },
 

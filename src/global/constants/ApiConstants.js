@@ -37,6 +37,11 @@ export const API = {
     LOGIN: `${BASE_URL}/api/auth/login`,
 
     /**
+     * Logout a FreshMeal user.
+     */
+    LOGOUT: `${BASE_URL}/api/auth/logout`,
+
+    /**
      * Refreshes the authentication token pair using a valid refresh token.
      */
     REFRESH_TOKEN: `${BASE_URL}/api/auth/refresh-token`,

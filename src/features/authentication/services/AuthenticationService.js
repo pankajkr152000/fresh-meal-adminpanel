@@ -1,5 +1,6 @@
 import apiClient from "../../../api/apiClient";
 import { API } from "../../../global/constants/ApiConstants";
+import AuthenticationSessionStorage from "./AuthenticationSessionStorage";
 
 /**
  * =============================================================================
@@ -101,6 +102,30 @@ const AuthenticationService = {
       password,
     });
 
+    return response.data;
+  },
+
+  /**
+   * ---------------------------------------------------------------------------
+   * Logout
+   * ---------------------------------------------------------------------------
+   *
+   * Terminates the currently authenticated FreshMeal login session.
+   *
+   * The access token is automatically attached by the centralized apiClient.
+   *
+   * @returns {Promise<Object>}
+   *          Backend logout response.
+   *
+   * @throws
+   *          Propagates the Axios error to the authentication layer.
+   */
+  logout: async () => {
+    const authenticationSession = AuthenticationSessionStorage.get();
+
+    const response = await apiClient.post(API.AUTHENTICATION.LOGOUT, {
+      loginSessionId: authenticationSession.loginSessionId,
+    });
     return response.data;
   },
 };

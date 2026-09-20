@@ -39,6 +39,7 @@ export const ROUTES = {
 
   LOGIN: "/login",
   REGISTER: "/register",
+  LOGOUT: "/logout",
   FORGOT_PASSWORD: "/forgot-password",
   VERIFY_EMAIL_OTP: "/verify-email-otp",
   VERIFY_OTP: "/verify-otp",
