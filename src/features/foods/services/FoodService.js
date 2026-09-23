@@ -30,7 +30,11 @@ const FoodService = {
    * @returns {Promise<Object>}
    */
   addFood: async (formData) => {
-    const response = await apiClient.post(API.FOOD.ADD_FOOD, formData);
+    const response = await apiClient.post(API.FOOD.ADD_FOOD, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
     return response.data;
   },
 
