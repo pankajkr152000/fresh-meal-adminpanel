@@ -1,93 +1,113 @@
 /**
  * ============================================================================
- * API Constants
+ * Constants : ApiConstants
  * ============================================================================
  *
  * <p>
- * Centralized API endpoint definitions for the FreshMeal frontend.
+ * Centralized definitions for backend API endpoints used by the FreshMeal
+ * frontend.
  * </p>
  *
  * <p>
- * Authentication endpoints are maintained here so that authentication services
- * never need to hard-code backend URLs.
+ * API endpoints are defined as relative paths. The environment-specific backend
+ * URL is configured separately through Vite environment variables.
+ * </p>
+ *
+ * <p>
+ * Frontend navigation paths must be defined in RouteConstants instead.
  * </p>
  *
  * ============================================================================
+ *
+ * @author Pankaj Kumar
+ * @since 1.0
  */
 
-export const BASE_URL = "http://localhost:8030";
+/**
+ * Base URL of the Spring Boot backend.
+ *
+ * <p>
+ * Retained for compatibility with existing imports. API endpoint definitions
+ * should use relative paths and rely on the configured Axios base URL.
+ * </p>
+ */
+// export const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+/**
+ * Backend Base URL.
+ *
+ * <p>
+ * Centralized configuration for the Spring Boot backend.
+ * </p>
+ */
+// export const BASE_URL = "http://localhost:8030";
 
-export const API = {
-  // ===========================================================================
+/**
+ * Centralized backend API endpoint definitions.
+ *
+ * <p>
+ * All endpoint values are relative paths so they can be resolved against the
+ * environment-specific base URL configured in the Axios client.
+ * </p>
+ */
+export const API = Object.freeze({
+  // --------------------------------------------------------------------------
   // Authentication
-  // ===========================================================================
+  // --------------------------------------------------------------------------
 
-  /**
-   * Authentication API endpoints.
-   *
-   * <p>
-   * These paths correspond to the FreshMeal Authentication controller
-   * endpoints.
-   * </p>
-   */
-  AUTHENTICATION: {
-    /**
-     * Authenticates a FreshMeal user.
-     */
-    LOGIN: `${BASE_URL}/api/auth/login`,
+  AUTHENTICATION: Object.freeze({
+    LOGIN: "/api/auth/login",
+    LOGOUT: "/api/auth/logout",
+    REFRESH_TOKEN: "/api/auth/refresh-token",
+  }),
 
-    /**
-     * Logout a FreshMeal user.
-     */
-    LOGOUT: `${BASE_URL}/api/auth/logout`,
+  // --------------------------------------------------------------------------
+  // Food Management
+  // --------------------------------------------------------------------------
 
-    /**
-     * Refreshes the authentication token pair using a valid refresh token.
-     */
-    REFRESH_TOKEN: `${BASE_URL}/api/auth/refresh-token`,
-  },
+  FOOD: Object.freeze({
+    FOOD_METADATA: "/api/foods/foodCategoryMetadata",
 
-  // ===========================================================================
-  // Food
-  // ===========================================================================
+    ADD_FOOD: "/api/foods/add",
+    CREATE: "/api/foods/add",
 
-  FOOD: {
-    FOOD_METADATA: `${BASE_URL}/api/foods/foodCategoryMetadata`,
-    ADD_FOOD: `${BASE_URL}/api/foods/add`,
-    CREATE: `${BASE_URL}/api/foods/add`,
-    GET_ALL_FOODS: `${BASE_URL}/api/foods/readAllFoods`,
-    GET_FOOD_BY_ID: `${BASE_URL}/api/foods/view`,
-    EDIT_FOOD: `${BASE_URL}/api/foods/edit`,
+    GET_ALL_FOODS: "/api/foods/readAllFoods",
+    GET_FOOD_BY_ID: "/api/foods/view",
+    EDIT_FOOD: "/api/foods/edit",
+
     UPDATE: (id) => `/api/v1/foods/${id}`,
-    UPDATE_FOOD_STATUS: (id) => `${BASE_URL}/api/foods/${id}/status`,
+    UPDATE_FOOD_STATUS: (id) => `/api/foods/${id}/status`,
+
     DELETE: (id) => `/api/v1/foods/${id}`,
-    GET_ARCHIVED_FOODS: `${BASE_URL}/api/foods/archived`,
-    ARCHIVE_FOOD: `${BASE_URL}/api/foods/archive`,
-    BULK_ARCHIVE_FOOD: `${BASE_URL}/api/foods/bulkArchive`,
-    RESTORE_FOOD: `${BASE_URL}/api/foods/restore`,
-    BULK_RESTORE_FOOD: `${BASE_URL}/api/foods/bulkRestore`,
-    PERMANENT_DELETE_FOOD: `${BASE_URL}/api/foods/permanentDelete`,
-    BULK_PERMANENT_DELETE_FOOD: `${BASE_URL}/api/foods/bulkPermanentDelete`,
-  },
 
-  // ===========================================================================
-  // Order
-  // ===========================================================================
+    GET_ARCHIVED_FOODS: "/api/foods/archived",
+    ARCHIVE_FOOD: "/api/foods/archive",
+    BULK_ARCHIVE_FOOD: "/api/foods/bulkArchive",
 
-  ORDER: {
+    RESTORE_FOOD: "/api/foods/restore",
+    BULK_RESTORE_FOOD: "/api/foods/bulkRestore",
+
+    PERMANENT_DELETE_FOOD: "/api/foods/permanentDelete",
+    BULK_PERMANENT_DELETE_FOOD: "/api/foods/bulkPermanentDelete",
+  }),
+
+  // --------------------------------------------------------------------------
+  // Order Management
+  // --------------------------------------------------------------------------
+
+  ORDER: Object.freeze({
     GET_ALL: "/api/v1/orders",
     GET_BY_ID: (id) => `/api/v1/orders/${id}`,
     UPDATE_STATUS: (id) => `/api/v1/orders/${id}/status`,
-  },
+  }),
 
-  // ===========================================================================
-  // Image
-  // ===========================================================================
+  // --------------------------------------------------------------------------
+  // Image Management
+  // --------------------------------------------------------------------------
 
-  IMAGE: {
+  IMAGE: Object.freeze({
     UPLOAD: "/api/v1/images/upload",
     DELETE: (imageId) => `/api/v1/images/${imageId}`,
-  },
-};
+  }),
+});
 
 export default API;

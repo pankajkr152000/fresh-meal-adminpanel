@@ -86,6 +86,7 @@
 
 import axios from "axios";
 
+import { API_BASE_URL } from "../../../config/ApiConfig";
 import { API } from "../../../global/constants/ApiConstants";
 
 /**
@@ -97,8 +98,8 @@ import { API } from "../../../global/constants/ApiConstants";
  * </p>
  */
 const authenticationTokenClient = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL,
-  timeout: 30000,
+  baseURL: API_BASE_URL,
+  timeout: 300000,
   headers: {
     "Content-Type": "application/json",
     Accept: "application/json",

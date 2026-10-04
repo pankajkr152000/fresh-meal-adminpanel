@@ -94,6 +94,7 @@
 
 import axios from "axios";
 
+import { API_BASE_URL } from "../config/ApiConfig";
 import AuthenticationSessionStorage from "../features/authentication/services/AuthenticationSessionStorage";
 import AuthenticationTokenRefreshManager from "../features/authentication/services/AuthenticationTokenRefreshManager";
 import { API } from "../global/constants/ApiConstants";
@@ -108,6 +109,31 @@ import { API } from "../global/constants/ApiConstants";
 const RETRY_PROPERTY = "_freshMealAuthRetry";
 
 /**
+ * Normalizes an Axios request URL to its pathname.
+ *
+ * <p>
+ * Supports both relative and absolute request URLs, ensuring that endpoint
+ * comparisons remain consistent regardless of how the request was configured.
+ * Query parameters and URL fragments are excluded from the comparison.
+ * </p>
+ *
+ * @param {string} requestUrl Axios request URL
+ * @param {string} baseURL Axios base URL
+ * @returns {string} normalized request pathname
+ */
+const getRequestPath = (requestUrl, baseURL) => {
+  if (!requestUrl) {
+    return "";
+  }
+
+  try {
+    return new URL(requestUrl, baseURL).pathname;
+  } catch {
+    return requestUrl.split(/[?#]/)[0];
+  }
+};
+
+/**
  * Centralized Axios client for FreshMeal API communication.
  *
  * <p>
@@ -116,8 +142,10 @@ const RETRY_PROPERTY = "_freshMealAuthRetry";
  * </p>
  */
 const apiClient = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL,
-  timeout: 30000,
+  // baseURL: import.meta.env.VITE_API_BASE_URL,
+  // baseURl: BASE_URL,
+  baseURL: API_BASE_URL,
+  timeout: 300000,
   headers: {
     "Content-Type": "application/json",
     Accept: "application/json",
@@ -189,11 +217,19 @@ apiClient.interceptors.response.use(
       return Promise.reject(error);
     }
 
-    const requestUrl = originalRequest.url || "";
+    const requestPath = getRequestPath(
+      originalRequest.url,
+      originalRequest.baseURL || apiClient.defaults.baseURL,
+    );
+
+    console.log(
+      "[FreshMeal] Configured API Base URL:",
+      apiClient.defaults.baseURL,
+    );
 
     if (
-      requestUrl === API.AUTHENTICATION.LOGIN ||
-      requestUrl === API.AUTHENTICATION.REFRESH_TOKEN
+      requestPath === API.AUTHENTICATION.LOGIN ||
+      requestPath === API.AUTHENTICATION.REFRESH_TOKEN
     ) {
       return Promise.reject(error);
     }
