@@ -194,22 +194,22 @@ export const AuthenticationProvider = ({ children }) => {
   /**
    * Stores a newly authenticated session and updates the runtime state.
    *
-   * <p>
-   * The callback is memoized so its reference remains stable between provider
-   * renders.
-   * </p>
-   *
-   * @param {Object} authenticationSession authenticated session returned by
-   * the authentication service
-   * @param {boolean} rememberMe whether the session should persist beyond the
-   * current browser session
+   * @param {Object} authenticationSession authenticated session
+   * @param {boolean} rememberMe persistence preference
    * @returns {void}
    */
   const authenticate = useCallback(
     (authenticationSession, rememberMe = false) => {
-      AuthenticationSessionStorage.save(authenticationSession, rememberMe);
+      const normalizedSession = {
+        ...authenticationSession,
+        roles: Array.isArray(authenticationSession?.roles)
+          ? authenticationSession.roles
+          : [],
+      };
 
-      setSession(authenticationSession);
+      AuthenticationSessionStorage.save(normalizedSession, rememberMe);
+
+      setSession(normalizedSession);
     },
     [],
   );
@@ -219,25 +219,31 @@ export const AuthenticationProvider = ({ children }) => {
    * change such as token refresh.
    *
    * <p>
-   * The existing persistence preference is preserved so that refreshing a
-   * token does not unexpectedly change a user's Remember Me selection.
-   * </p>
-   *
-   * <p>
-   * The callback is memoized so its reference remains stable between provider
-   * renders.
+   * The existing persistence preference and role metadata are preserved
+   * when the updated session does not explicitly provide them.
    * </p>
    *
    * @param {Object} authenticationSession updated authentication session
    * @returns {void}
    */
-  const updateSession = useCallback((authenticationSession) => {
-    const rememberMe = AuthenticationSessionStorage.isRemembered();
+  const updateSession = useCallback(
+    (authenticationSession) => {
+      const rememberMe = AuthenticationSessionStorage.isRemembered();
 
-    AuthenticationSessionStorage.save(authenticationSession, rememberMe);
+      const updatedSession = {
+        ...session,
+        ...authenticationSession,
+        roles: Array.isArray(authenticationSession?.roles)
+          ? authenticationSession.roles
+          : (session?.roles ?? []),
+      };
 
-    setSession(authenticationSession);
-  }, []);
+      AuthenticationSessionStorage.save(updatedSession, rememberMe);
+
+      setSession(updatedSession);
+    },
+    [session],
+  );
 
   /**
    * Terminates the current authentication session.

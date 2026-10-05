@@ -180,28 +180,36 @@ const useLogin = () => {
           tokenType: Boolean(loginResponse?.data?.token?.tokenType),
           loginSessionId: Boolean(loginResponse?.data?.token?.loginSessionId),
         });
-        /**
-         * The backend wraps the LoginResponse inside the common API response
-         * envelope. Therefore, the authentication session is available under
-         * "data.token".
-         *
-         * The hook deliberately does not reconstruct or modify this session.
-         */
-        const authenticationSession = loginResponse?.data?.token;
 
         /**
-         * A successful HTTP response without a usable token payload must not
-         * establish an authenticated frontend state.
+         * The backend returns the token payload and user roles separately
+         * within the LoginResponse.
+         *
+         * AuthenticationContext owns the complete frontend authentication
+         * session, so the roles are included as session metadata before
+         * establishing the authenticated state.
+         *
+         * Roles are not authorization credentials. The backend remains the
+         * authoritative source for access control.
          */
-        if (!authenticationSession) {
+        const tokenResponse = loginResponse?.data?.token;
+
+        if (!tokenResponse) {
           throw new Error(
             "Authentication response did not contain a valid token session.",
           );
         }
 
+        const authenticationSession = {
+          ...tokenResponse,
+          roles: Array.isArray(loginResponse?.data?.roles)
+            ? loginResponse.data.roles
+            : [],
+        };
+
         /**
-         * Establish runtime authentication state and persist the session
-         * according to the user's Remember Me preference.
+         * Establish runtime authentication state and persist the complete
+         * session according to the user's Remember Me preference.
          */
         authenticate(authenticationSession, rememberMe);
 

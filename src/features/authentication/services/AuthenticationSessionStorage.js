@@ -150,12 +150,19 @@ const AuthenticationSessionStorage = Object.freeze({
    * Individual token fields are therefore not persisted independently.
    * </p>
    *
+   * <p>
+   * Role identifiers are persisted as non-authoritative session metadata
+   * to support portal selection and session restoration. They must never
+   * be treated as proof of authorization.
+   * </p>
+   *
    * @param {Object} session authentication session
    * @param {string} session.accessToken access token
    * @param {string} session.refreshToken refresh token
    * @param {string} session.tokenType token type, normally Bearer
    * @param {number} session.expiresIn access-token lifetime in seconds
    * @param {string} session.loginSessionId backend authentication-session ID
+   * @param {string[]} [session.roles] user role identifiers
    * @param {boolean} rememberMe whether the session should survive browser restart
    * @returns {void}
    * @throws {TypeError} when the supplied session is invalid
@@ -177,15 +184,22 @@ const AuthenticationSessionStorage = Object.freeze({
       );
     }
 
+    const roles = Array.isArray(session.roles)
+      ? session.roles.filter(
+          (role) => typeof role === "string" && role.trim().length > 0,
+        )
+      : [];
+
     const persistedSession = {
       accessToken: session.accessToken,
       refreshToken: session.refreshToken,
       tokenType: session.tokenType || "Bearer",
       expiresIn: session.expiresIn,
       loginSessionId: session.loginSessionId,
+      roles,
     };
 
-    /*
+    /**
      * Authentication must have exactly one persisted browser session.
      */
     removeFromAllStorage();
@@ -207,6 +221,12 @@ const AuthenticationSessionStorage = Object.freeze({
    * <p>
    * Corrupted persisted data is treated as an invalid authentication session
    * rather than allowing malformed state to propagate into the application.
+   * </p>
+   *
+   * <p>
+   * Role metadata is optional for backward compatibility. Invalid or missing
+   * role metadata is normalized to an empty array without invalidating
+   * otherwise valid authentication tokens.
    * </p>
    *
    * @returns {Object|null} persisted authentication session
@@ -235,9 +255,18 @@ const AuthenticationSessionStorage = Object.freeze({
         return null;
       }
 
-      return session;
+      const roles = Array.isArray(session.roles)
+        ? session.roles.filter(
+            (role) => typeof role === "string" && role.trim().length > 0,
+          )
+        : [];
+
+      return {
+        ...session,
+        roles,
+      };
     } catch {
-      /*
+      /**
        * Invalid JSON must never prevent application startup.
        */
       removeFromAllStorage();

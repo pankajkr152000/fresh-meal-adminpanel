@@ -62,7 +62,7 @@
  */
 
 import { useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { assets } from "../../../assets/assets";
 
@@ -75,6 +75,11 @@ import { ROUTES } from "../../../global/constants/RouteConstants";
 
 import useLogin from "../hooks/useLogin";
 
+import { useAuthentication } from "../context/AuthenticationContext";
+import {
+  POST_LOGIN_ACTION,
+  resolvePostLoginRedirect,
+} from "../utils/PostLoginRedirect";
 import "./Login.css";
 
 /**
@@ -96,13 +101,17 @@ const Login = () => {
   // ===========================================================================
 
   const navigate = useNavigate();
-  const location = useLocation();
+  // const location = useLocation();
 
   // ===========================================================================
   // Authentication
   // ===========================================================================
 
   const { login, isLoading, error: authenticationError } = useLogin();
+
+  const { unauthenticate } = useAuthentication();
+
+  const [portalError, setPortalError] = useState(null);
 
   // ===========================================================================
   // Form State
@@ -221,11 +230,8 @@ const Login = () => {
   /**
    * Handles login form submission.
    *
-   * <p>
-   * Authentication is delegated entirely to {@link useLogin}. This component
-   * remains responsible only for form interaction, validation, presentation,
-   * and post-authentication navigation.
-   * </p>
+   * Authentication is delegated to useLogin. After successful authentication,
+   * the returned roles determine the next navigation destination.
    *
    * @param {React.FormEvent<HTMLFormElement>} event
    *        Form submission event.
@@ -237,23 +243,52 @@ const Login = () => {
       return;
     }
 
+    setPortalError(null);
+
     try {
-      await login({
+      const loginResponse = await login({
         identifier: formData.identifier.trim(),
         password: formData.password,
         rememberMe: formData.rememberMe,
       });
 
-      navigate(getPostLoginDestination(), {
-        replace: true,
-      });
+      const roles = loginResponse?.data?.roles ?? [];
+
+      const redirectDecision = resolvePostLoginRedirect(roles);
+
+      switch (redirectDecision.action) {
+        case POST_LOGIN_ACTION.REDIRECT:
+          navigate(redirectDecision.redirectTo, {
+            replace: true,
+          });
+          break;
+
+        case POST_LOGIN_ACTION.SELECT_PORTAL:
+          navigate(ROUTES.PORTAL_SELECTION, {
+            replace: true,
+            state: {
+              portals: redirectDecision.portals,
+            },
+          });
+          break;
+
+        case POST_LOGIN_ACTION.DENY:
+          unauthenticate();
+
+          setPortalError(
+            "Your account does not have access to any supported FreshMeal portal. Please contact support.",
+          );
+          break;
+
+        default:
+          unauthenticate();
+
+          setPortalError(
+            "Unable to determine your application access. Please try again or contact support.",
+          );
+          break;
+      }
     } catch (error) {
-      /*
-       * The authentication hook has already translated the backend error
-       * into a safe UI-facing message.
-       *
-       * The original error is intentionally not rendered here.
-       */
       console.error("FreshMeal login failed:", error);
     }
   };
@@ -338,12 +373,14 @@ const Login = () => {
                     Authentication Error
                     ----------------------------------------------------------- */}
 
-                {authenticationError && (
+                {(authenticationError || portalError) && (
                   <div
                     className="alert alert-danger py-2 px-3 mb-3"
                     role="alert"
                     aria-live="polite">
-                    <span className="small">{authenticationError}</span>
+                    <span className="small">
+                      {authenticationError || portalError}
+                    </span>
                   </div>
                 )}
 
