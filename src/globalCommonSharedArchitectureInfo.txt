@@ -1,43 +1,356 @@
 src/
 │
 ├── api/
-│   │
 │   ├── apiClient.js
-│   ├── interceptors.js                (future)
-│   ├── request.js                     (future)
-│   ├── response.js                    (future)
 │   └── index.js
 │
 ├── assets/
+│   ├── assets.js
 │   │
 │   ├── icons/
+│   │   ├── index.js
+│   │   ├── SortAscending.jsx
+│   │   ├── SortDescending.jsx
+│   │   └── SortNeutral.jsx
 │   │
 │   ├── images/
+│   │   ├── all-category-placeholder.png
+│   │   ├── allImage.png
+│   │   ├── category-placeholder.png
+│   │   ├── default-user-placeholder.png
+│   │   ├── female-user-placeholder.png
+│   │   ├── female-users-placeholder.png
+│   │   ├── food-placeholder.png
+│   │   ├── foods-placeholder.png
+│   │   ├── freshmealBrandLogo.png
+│   │   ├── freshmeal_logo.png
+│   │   ├── male-user-placeholder.png
+│   │   ├── offer-placeholder.png
+│   │   ├── parcel.png
+│   │   ├── restaurant-placeholder.png
+│   │   └── upload.png
 │   │
-│   ├── fonts/
+│   └── styles/
+│       ├── global.css
+│       ├── utilities.css
+│       └── variables.css
+│
+├── config/
+│   ├── ApiConfig.js
+│   └── ...
+│
+├── features/
 │   │
-│   ├── styles/
-│   │      global.css
-│   │      utilities.css
-│   │      variables.css
+│   ├── authentication/
+│   │   ├── authenticationArchitectureInfo.txt
+│   │   │
+│   │   ├── assets/
+│   │   │
+│   │   ├── components/
+│   │   │   ├── login/
+│   │   │   ├── otp/
+│   │   │   ├── password/
+│   │   │   └── index.js
+│   │   │
+│   │   ├── constants/
+│   │   ├── context/
+│   │   ├── hooks/
+│   │   ├── pages/
+│   │   ├── routes/
+│   │   ├── services/
+│   │   ├── types/
+│   │   ├── utils/
+│   │   └── index.js
+│   │
+│   ├── foods/
+│   │   ├── foodArchitectueInfo.txt
+│   │   │
+│   │   ├── assets/
+│   │   ├── components/
+│   │   ├── constants/
+│   │   ├── context/
+│   │   ├── hooks/
+│   │   ├── services/
+│   │   ├── styles/
+│   │   ├── types/
+│   │   ├── utils/
+│   │   └── index.js
+│   │
+│   ├── restaurants/
+│   │   ├── restaurantArchitectureInfo.txt
+│   │   ├── components/
+│   │   ├── constants/
+│   │   ├── context/
+│   │   ├── hooks/
+│   │   ├── services/
+│   │   ├── styles/
+│   │   ├── types/
+│   │   ├── utils/
+│   │   └── index.js
+│   │
+│   ├── orders/
+│   │   ├── orderArchitectureInfo.txt
+│   │   ├── assets/
+│   │   ├── components/
+│   │   ├── constants/
+│   │   ├── context/
+│   │   ├── hooks/
+│   │   ├── services/
+│   │   ├── styles/
+│   │   ├── types/
+│   │   ├── utils/
+│   │   └── index.js
+│   │
+│   ├── cart/
+│   │   ├── cartArchitectureInfo.txt
+│   │   ├── components/
+│   │   ├── constants/
+│   │   ├── context/
+│   │   ├── hooks/
+│   │   ├── services/
+│   │   ├── styles/
+│   │   ├── types/
+│   │   ├── utils/
+│   │   └── index.js
+│   │
+│   ├── checkout/
+│   │   ├── checkoutArchitectureInfo.txt
+│   │   ├── components/
+│   │   ├── constants/
+│   │   ├── context/
+│   │   ├── hooks/
+│   │   ├── services/
+│   │   ├── styles/
+│   │   ├── types/
+│   │   ├── utils/
+│   │   └── index.js
+│   │
+│   ├── payments/
+│   │   ├── paymentArchitectureInfo.txt
+│   │   ├── components/
+│   │   ├── constants/
+│   │   ├── context/
+│   │   ├── hooks/
+│   │   ├── services/
+│   │   ├── styles/
+│   │   ├── types/
+│   │   ├── utils/
+│   │   └── index.js
+│   │
+│   ├── users/
+│   │   ├── userArchitectureInfo.txt
+│   │   ├── components/
+│   │   ├── constants/
+│   │   ├── context/
+│   │   ├── hooks/
+│   │   ├── services/
+│   │   ├── styles/
+│   │   ├── types/
+│   │   ├── utils/
+│   │   └── index.js
+│   │
+│   ├── profiles/
+│   │   ├── components/
+│   │   ├── constants/
+│   │   ├── hooks/
+│   │   ├── services/
+│   │   ├── styles/
+│   │   ├── types/
+│   │   ├── utils/
+│   │   └── index.js
+│   │
+│   └── delivery/
+│       ├── deliveryArchitectureInfo.txt
+│       ├── components/
+│       ├── constants/
+│       ├── context/
+│       ├── hooks/
+│       ├── services/
+│       ├── styles/
+│       ├── types/
+│       ├── utils/
+│       └── index.js
+│
+├── portals/
+│   │
+│   ├── admin/
+│   │   ├── adminArchitectureInfo.txt
+│   │   │
+│   │   ├── assets/
+│   │   │
+│   │   ├── components/
+│   │   │   ├── dashboard/
+│   │   │   ├── navigation/
+│   │   │   ├── profile/
+│   │   │   ├── foods/
+│   │   │   ├── orders/
+│   │   │   └── index.js
+│   │   │
+│   │   ├── constants/
+│   │   │   ├── AdminRouteConstants.js
+│   │   │   ├── AdminNavigationConstants.js
+│   │   │   └── index.js
+│   │   │
+│   │   ├── hooks/
+│   │   ├── pages/
+│   │   │   ├── dashboard/
+│   │   │   │   └── AdminDashboard.jsx
+│   │   │   │
+│   │   │   ├── foods/
+│   │   │   │   ├── FoodList.jsx
+│   │   │   │   ├── AddFood.jsx
+│   │   │   │   ├── EditFood.jsx
+│   │   │   │   ├── ViewFood.jsx
+│   │   │   │   └── ArchivedFoods.jsx
+│   │   │   │
+│   │   │   ├── orders/
+│   │   │   │   └── Orders.jsx
+│   │   │   │
+│   │   │   └── profile/
+│   │   │
+│   │   ├── services/
+│   │   ├── types/
+│   │   ├── utils/
+│   │   └── index.js
+│   │
+│   ├── customer/
+│   │   ├── customerArchitectureInfo.txt
+│   │   ├── assets/
+│   │   ├── components/
+│   │   │   ├── home/
+│   │   │   ├── navigation/
+│   │   │   ├── restaurants/
+│   │   │   ├── foods/
+│   │   │   ├── cart/
+│   │   │   ├── checkout/
+│   │   │   ├── orders/
+│   │   │   ├── profile/
+│   │   │   └── index.js
+│   │   ├── constants/
+│   │   │   ├── CustomerRouteConstants.js
+│   │   │   ├── CustomerNavigationConstants.js
+│   │   │   └── index.js
+│   │   ├── hooks/
+│   │   ├── pages/
+│   │   │   ├── home/
+│   │   │   │   └── CustomerHome.jsx
+│   │   │   ├── restaurants/
+│   │   │   ├── foods/
+│   │   │   ├── cart/
+│   │   │   ├── checkout/
+│   │   │   ├── orders/
+│   │   │   └── profile/
+│   │   ├── services/
+│   │   ├── types/
+│   │   ├── utils/
+│   │   └── index.js
+│   │
+│   ├── restaurant/
+│   │   ├── restaurantArchitectureInfo.txt
+│   │   ├── assets/
+│   │   ├── components/
+│   │   │   ├── dashboard/
+│   │   │   ├── navigation/
+│   │   │   ├── menu/
+│   │   │   ├── foods/
+│   │   │   ├── orders/
+│   │   │   ├── profile/
+│   │   │   └── index.js
+│   │   ├── constants/
+│   │   │   ├── RestaurantRouteConstants.js
+│   │   │   ├── RestaurantNavigationConstants.js
+│   │   │   └── index.js
+│   │   ├── hooks/
+│   │   ├── pages/
+│   │   │   ├── dashboard/
+│   │   │   │   └── RestaurantDashboard.jsx
+│   │   │   ├── menu/
+│   │   │   ├── foods/
+│   │   │   ├── orders/
+│   │   │   └── profile/
+│   │   ├── services/
+│   │   ├── types/
+│   │   ├── utils/
+│   │   └── index.js
+│   │
+│   └── delivery/
+│       ├── deliveryArchitectureInfo.txt
+│       ├── assets/
+│       ├── components/
+│       │   ├── dashboard/
+│       │   ├── navigation/
+│       │   ├── deliveries/
+│       │   ├── orders/
+│       │   ├── profile/
+│       │   └── index.js
+│       ├── constants/
+│       │   ├── DeliveryRouteConstants.js
+│       │   ├── DeliveryNavigationConstants.js
+│       │   └── index.js
+│       ├── hooks/
+│       ├── pages/
+│       │   ├── dashboard/
+│       │   ├── deliveries/
+│       │   ├── orders/
+│       │   └── profile/
+│       ├── services/
+│       ├── types/
+│       ├── utils/
+│       └── index.js
+│
+├── layouts/
+│   │
+│   ├── AdminLayout/
+│   │   ├── AdminLayout.jsx
+│   │   ├── adminLayout.css
+│   │   └── index.js
+│   │
+│   ├── CustomerLayout/
+│   │   ├── CustomerLayout.jsx
+│   │   ├── customerLayout.css
+│   │   └── index.js
+│   │
+│   ├── RestaurantLayout/
+│   │   ├── RestaurantLayout.jsx
+│   │   ├── restaurantLayout.css
+│   │   └── index.js
+│   │
+│   ├── DeliveryLayout/
+│   │   ├── DeliveryLayout.jsx
+│   │   ├── deliveryLayout.css
+│   │   └── index.js
+│   │
+│   └── AuthLayout/
+│       ├── AuthLayout.jsx
+│       ├── authLayout.css
+│       └── index.js
+│
+├── routes/
+│   │
+│   ├── AppRoutes.jsx
+│   ├── ProtectedRoute.jsx
+│   ├── RoleRoute.jsx
+│   │
+│   ├── AuthRoutes.jsx
+│   ├── AdminRoutes.jsx
+│   ├── CustomerRoutes.jsx
+│   ├── RestaurantRoutes.jsx
+│   ├── DeliveryRoutes.jsx
 │   │
 │   └── index.js
 │
-├── components/
+├── global/
 │   │
-│   ├── Common/
-│   │
-│   │   ├── data-display/
+│   ├── components/
 │   │   │
+│   │   ├── data-display/
 │   │   │   ├── badges/
 │   │   │   ├── cards/
 │   │   │   ├── pagination/
 │   │   │   ├── skeletons/
-│   │   │   ├── tables/
-│   │   │   └── index.js
+│   │   │   └── tables/
 │   │   │
 │   │   ├── details/
-│   │   │
 │   │   │   ├── audit/
 │   │   │   ├── card/
 │   │   │   ├── display/
@@ -45,13 +358,13 @@ src/
 │   │   │   ├── header/
 │   │   │   ├── layout/
 │   │   │   ├── media/
-│   │   │   ├── utils/
-│   │   │   └── index.js
+│   │   │   └── utils/
+│   │   │
+│   │   ├── editImage/
 │   │   │
 │   │   ├── feedback/
 │   │   │
 │   │   ├── forms/
-│   │   │
 │   │   │   ├── buttons/
 │   │   │   ├── checkbox/
 │   │   │   ├── date/
@@ -67,105 +380,49 @@ src/
 │   │   │   └── index.js
 │   │   │
 │   │   ├── layout/
+│   │   │   ├── PageHeader.jsx
+│   │   │   ├── PageLayout.jsx
+│   │   │   └── index.js
 │   │   │
-│   │   ├── overlay/
-│   │   │
+│   │   └── overlay/
+│   │       └── ConfirmationModal.jsx
+│   │
+│   ├── constants/
+│   │   ├── AppConstants.js
+│   │   ├── HttpStatusConstants.js
+│   │   ├── MessageConstants.js
+│   │   ├── detailFieldFactory.js
+│   │   ├── detailFieldTypes.js
 │   │   └── index.js
 │   │
-│   ├── Menubar/
+│   ├── hooks/
+│   │   ├── useDebounce.js
+│   │   └── index.js
 │   │
-│   ├── Sidebar/
+│   ├── prop-types/
+│   │   ├── displayOptionPropType.js
+│   │   └── index.js
 │   │
-│   └── index.js
+│   ├── services/
+│   │   └── index.js
+│   │
+│   ├── styles/
+│   │   └── appLayout.css
+│   │
+│   └── utils/
+│       ├── DateUtils.js
+│       ├── DisplayOptionUtils.jsx
+│       ├── formatCurrency.js
+│       ├── formatDate.js
+│       ├── formatDateTime.js
+│       ├── formatFileSize.js
+│       ├── formatNumber.js
+│       ├── getNestedValue.js
+│       ├── ImageUtils.js
+│       ├── themeChangeScriptButton.js
+│       └── index.js
 │
-├── constants/
-│   │
-│   ├── ApiConstants.js
-│   ├── AppConstants.js
-│   ├── HttpStatusConstants.js
-│   ├── MessageConstants.js
-│   ├── RouteConstants.js
-│   ├── FoodStatus.js
-│   ├── detailFieldFactory.js
-│   ├── detailFieldTypes.js
-│   └── index.js
-│
-├── features/
-│   │
-│   ├── foods/
-│   │
-│   ├── orders/
-│   │
-│   ├── customers/
-│   │
-│   ├── restaurants/
-│   │
-│   ├── categories/
-│   │
-│   ├── offers/
-│   │
-│   ├── users/
-│   │
-│   └── index.js
-│
-├── hooks/
-│   │
-│   ├── useDebounce.js
-│   ├── useLocalStorage.js             (future)
-│   ├── usePagination.js               (future)
-│   ├── useTheme.js                    (future)
-│   ├── useModal.js                    (future)
-│   └── index.js
-│
-├── layouts/
-│   │
-│   ├── AdminLayout.jsx
-│   ├── AuthLayout.jsx
-│   ├── PageLayout.jsx
-│   └── index.js
-│
-├── prop-types/
-│   │
-│   ├── displayOptionPropType.js
-│   ├── commonPropTypes.js             (future)
-│   └── index.js
-│
-├── routes/
-│   │
-│   ├── AppRoutes.jsx
-│   ├── ProtectedRoute.jsx
-│   └── index.js
-│
-├── services/
-│   │
-│   ├── ApiClient.js
-│   ├── StorageService.js              (future)
-│   ├── AuthService.js                 (future)
-│   └── index.js
-│
-├── styles/
-│   │
-│   ├── appLayout.css
-│   ├── theme.css                      (future)
-│   └── index.js
-│
-├── utils/
-│   │
-│   ├── DateUtils.js
-│   ├── DisplayOptionUtils.jsx
-│   ├── FoodStatusUtils.js             ❌ move into foods
-│   ├── FoodFormDataUtil.js            ❌ move into foods
-│   ├── formatCurrency.js
-│   ├── formatDate.js
-│   ├── formatDateTime.js
-│   ├── formatFileSize.js
-│   ├── formatNumber.js
-│   ├── getNestedValue.js
-│   ├── ImageUtils.js
-│   ├── themeChangeScriptButton.js
-│   └── index.js
-│
-├── App.jsx
 ├── App.css
+├── App.jsx
 ├── index.css
 └── main.jsx
