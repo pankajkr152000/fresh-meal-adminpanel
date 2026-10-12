@@ -9,12 +9,6 @@ export * from "./detailFieldTypes";
 
 export * from "./../../features/foods";
 
-// export * from "./food";
-
-// --------------------------------------------------------------------------
-// Portal Configuration
-// --------------------------------------------------------------------------
-
 export {
   getPortalConfig,
   default as PORTAL_CONFIG,
