@@ -15,7 +15,7 @@ const FoodHero = ({ food, onBack, onEdit, onStatusChange }) => {
   if (!food) return null;
 
   return (
-    <PageDetailHeader
+    <PageDetailHeader 
       title={food.foodName}
       subtitle={`Food No : ${food.foodNumber}`}
       onBack={onBack}

@@ -1,0 +1,993 @@
+
+
+============================================================
+FILE: src\global\layouts\AuthLayout.jsx
+============================================================
+
+
+
+============================================================
+FILE: src\global\components\forms\input\CommonInput.jsx
+============================================================
+
+import PropTypes from "prop-types";
+import { memo } from "react";
+
+/**
+ * =============================================================================
+ * Component : CommonInput
+ * =============================================================================
+ *
+ * Purpose
+ * -------
+ * Enterprise reusable input component for text, number, email, password,
+ * search and other HTML input types.
+ *
+ * Responsibilities
+ * ----------------
+ * • Render a Bootstrap styled input.
+ * • Display label and required indicator.
+ * • Display validation errors.
+ * • Support controlled component usage.
+ * • Delegate all business logic to the parent.
+ *
+ * Notes
+ * -----
+ * • Contains no business logic.
+ * • Suitable for Add/Edit forms across the application.
+ *
+ * @author Pankaj Kumar
+ * @since 1.0
+ * =============================================================================
+ */
+
+const CommonInput = ({
+  label,
+  name,
+
+  value,
+
+  onChange,
+
+  type = "text",
+
+  placeholder = "",
+
+  required = false,
+
+  disabled = false,
+
+  readOnly = false,
+
+  min,
+
+  max,
+
+  step,
+
+  error = "",
+
+  className = "",
+}) => {
+  const handleChange = (event) => {
+    onChange(name, event.target.value);
+  };
+  return (
+    <div className={className}>
+      {label && (
+        <label
+          htmlFor={name}
+          className="form-label fw-semibold">
+          {label}
+
+          {required && <span className="text-danger ms-1">*</span>}
+        </label>
+      )}
+
+      <input
+        id={name}
+        name={name}
+        type={type}
+        value={value}
+        placeholder={placeholder}
+        required={required}
+        disabled={disabled}
+        readOnly={readOnly}
+        min={min}
+        max={max}
+        step={step}
+        onChange={handleChange}
+        className={`form-control ${error ? "is-invalid" : ""}`}
+      />
+
+      {error && <div className="invalid-feedback">{error}</div>}
+    </div>
+  );
+};
+
+CommonInput.propTypes = {
+  label: PropTypes.string,
+
+  name: PropTypes.string.isRequired,
+
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+
+  onChange: PropTypes.func.isRequired,
+
+  type: PropTypes.oneOf([
+    "text",
+    "number",
+    "email",
+    "password",
+    "search",
+    "tel",
+    "url",
+    "date",
+    "time",
+    "datetime-local",
+  ]),
+
+  placeholder: PropTypes.string,
+
+  required: PropTypes.bool,
+
+  disabled: PropTypes.bool,
+
+  readOnly: PropTypes.bool,
+
+  min: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+
+  max: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+
+  step: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+
+  error: PropTypes.string,
+
+  className: PropTypes.string,
+};
+
+export default memo(CommonInput);
+
+
+============================================================
+FILE: src\global\components\forms\input\TextInput.jsx
+============================================================
+
+import PropTypes from "prop-types";
+import { memo } from "react";
+
+/**
+ * =============================================================================
+ * Component : TextInput
+ * =============================================================================
+ *
+ * Purpose
+ * -------
+ * Generic reusable Bootstrap text input component.
+ *
+ * Responsibilities
+ * ----------------
+ * • Render a labeled input field.
+ * • Display validation feedback.
+ * • Forward change events.
+ *
+ * Notes
+ * -----
+ * This component intentionally contains no business logic and can be reused
+ * throughout the application.
+ * =============================================================================
+ */
+
+const TextInput = ({
+  id,
+  name,
+  label,
+  value,
+  onChange,
+  placeholder = "",
+  type = "text",
+  disabled = false,
+  required = false,
+  readOnly = false,
+  error = "",
+  autoComplete = "off",
+  className = "",
+}) => {
+  return (
+    <div className={className}>
+      {label && (
+        <label
+          htmlFor={id}
+          className="form-label fw-semibold">
+          {label}
+
+          {required && <span className="text-danger ms-1">*</span>}
+        </label>
+      )}
+
+      <input
+        id={id}
+        name={name}
+        type={type}
+        className={`form-control ${error ? "is-invalid" : ""}`}
+        value={value}
+        onChange={onChange}
+        placeholder={placeholder}
+        disabled={disabled}
+        readOnly={readOnly}
+        required={required}
+        autoComplete={autoComplete}
+        aria-invalid={Boolean(error)}
+        aria-describedby={error ? `${id}-error` : undefined}
+      />
+
+      {error && (
+        <div
+          id={`${id}-error`}
+          className="invalid-feedback">
+          {error}
+        </div>
+      )}
+    </div>
+  );
+};
+
+TextInput.propTypes = {
+  /**
+   * Input id.
+   */
+  id: PropTypes.string.isRequired,
+
+  /**
+   * Input name.
+   */
+  name: PropTypes.string.isRequired,
+
+  /**
+   * Label text.
+   */
+  label: PropTypes.string,
+
+  /**
+   * Input value.
+   */
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+
+  /**
+   * Change handler.
+   */
+  onChange: PropTypes.func.isRequired,
+
+  /**
+   * Placeholder text.
+   */
+  placeholder: PropTypes.string,
+
+  /**
+   * HTML input type.
+   */
+  type: PropTypes.oneOf([
+    "text",
+    "number",
+    "email",
+    "password",
+    "search",
+    "url",
+    "tel",
+    "date",
+  ]),
+
+  /**
+   * Disabled state.
+   */
+  disabled: PropTypes.bool,
+
+  /**
+   * Required state.
+   */
+  required: PropTypes.bool,
+
+  /**
+   * Read-only state.
+   */
+  readOnly: PropTypes.bool,
+
+  /**
+   * Validation message.
+   */
+  error: PropTypes.string,
+
+  /**
+   * Browser autocomplete.
+   */
+  autoComplete: PropTypes.string,
+
+  /**
+   * Additional wrapper CSS classes.
+   */
+  className: PropTypes.string,
+};
+
+export default memo(TextInput);
+
+
+============================================================
+FILE: src\global\components\forms\buttons\PrimaryButton.jsx
+============================================================
+
+import PropTypes from "prop-types";
+import { memo } from "react";
+
+import "./primaryButton.css";
+
+/**
+ * =============================================================================
+ * Component : PrimaryButton
+ * =============================================================================
+ *
+ * Purpose
+ * -------
+ * Generic reusable button component for the application.
+ *
+ * Responsibilities
+ * ----------------
+ * • Render Bootstrap button variants.
+ * • Support loading state.
+ * • Prevent interaction while loading.
+ * • Support disabled state.
+ * • Support custom CSS classes.
+ * • Provide consistent button press animation.
+ *
+ * Supported Variants
+ * ------------------
+ * • primary
+ * • secondary
+ * • success
+ * • danger
+ * • warning
+ * • info
+ * • light
+ * • dark
+ * • link
+ * • outline-primary
+ * • outline-secondary
+ * • outline-success
+ * • outline-danger
+ * • outline-warning
+ * • outline-info
+ * • outline-light
+ * • outline-dark
+ *
+ * Notes
+ * -----
+ * This component contains no business logic.
+ * It can be reused throughout the application.
+ *
+ * =============================================================================
+ */
+
+const PrimaryButton = ({
+  children,
+
+  onClick,
+
+  type = "button",
+
+  disabled = false,
+
+  loading = false,
+
+  variant = "primary",
+
+  className = "",
+
+  loadingText,
+
+  title,
+}) => {
+  /**
+   * ---------------------------------------------------------------------------
+   * Button Classes
+   * ---------------------------------------------------------------------------
+   */
+
+  const buttonClassName = ["btn", `btn-${variant}`, "primary-button", className]
+    .filter(Boolean)
+    .join(" ");
+
+  /**
+   * ---------------------------------------------------------------------------
+   * Render
+   * ---------------------------------------------------------------------------
+   */
+
+  return (
+    <button
+      type={type}
+      className={buttonClassName}
+      onClick={onClick}
+      disabled={disabled || loading}
+      title={title}>
+      {loading && (
+        <span
+          className="spinner-border spinner-border-sm me-2"
+          role="status"
+          aria-hidden="true"
+        />
+      )}
+
+      {loading && loadingText ? loadingText : children}
+    </button>
+  );
+};
+
+/**
+ * =============================================================================
+ * PropTypes
+ * =============================================================================
+ */
+
+PrimaryButton.propTypes = {
+  /**
+   * Button content.
+   */
+  children: PropTypes.node.isRequired,
+
+  /**
+   * Click handler.
+   */
+  onClick: PropTypes.func,
+
+  /**
+   * HTML button type.
+   */
+  type: PropTypes.oneOf(["button", "submit", "reset"]),
+
+  /**
+   * Disabled state.
+   */
+  disabled: PropTypes.bool,
+
+  /**
+   * Loading state.
+   */
+  loading: PropTypes.bool,
+
+  /**
+   * Bootstrap button variant.
+   */
+  variant: PropTypes.oneOf([
+    "primary",
+    "secondary",
+    "success",
+    "danger",
+    "warning",
+    "info",
+    "light",
+    "dark",
+    "link",
+
+    "outline-primary",
+    "outline-secondary",
+    "outline-success",
+    "outline-danger",
+    "outline-warning",
+    "outline-info",
+    "outline-light",
+    "outline-dark",
+  ]),
+
+  /**
+   * Additional CSS classes.
+   */
+  className: PropTypes.string,
+
+  /**
+   * Optional text displayed while loading.
+   */
+  loadingText: PropTypes.string,
+
+  /**
+   * Optional tooltip/title.
+   */
+  title: PropTypes.string,
+};
+
+export default memo(PrimaryButton);
+
+
+============================================================
+FILE: src\global\components\forms\checkbox\CommonCheckbox.jsx
+============================================================
+
+import PropTypes from "prop-types";
+import { memo, useEffect, useRef } from "react";
+import "./commonCheckboxStyle.css";
+/**
+ * ============================================================================
+ * Component : CommonCheckbox
+ * ============================================================================
+ *
+ * Enterprise reusable controlled checkbox component.
+ *
+ * Responsibilities
+ * ----------------
+ * • Render Bootstrap checkbox.
+ * • Display label.
+ * • Display validation error.
+ * • Support controlled checked state.
+ * • Support indeterminate state.
+ *
+ * Contains no business logic.
+ * ============================================================================
+ */
+
+const CommonCheckbox = ({
+  label,
+  name,
+  checked,
+  onChange,
+
+  disabled = false,
+  required = false,
+  error = "",
+  className = "",
+  indeterminate = false,
+}) => {
+  const checkboxRef = useRef(null);
+
+  /**
+   * Synchronize native checkbox indeterminate state.
+   *
+   * The indeterminate property is not a normal HTML attribute,
+   * therefore it must be assigned directly to the DOM element.
+   */
+  useEffect(() => {
+    if (checkboxRef.current) {
+      checkboxRef.current.indeterminate = indeterminate;
+    }
+  }, [indeterminate]);
+
+  const handleChange = (event) => {
+    onChange(name, event.target.checked);
+  };
+
+  return (
+    <div className={`form-check ${className}`}>
+      <input
+        ref={checkboxRef}
+        id={name}
+        name={name}
+        type="checkbox"
+        className={`form-check-input freshmeal-checkbox ${error ? "is-invalid" : ""}`}
+        checked={checked}
+        onChange={handleChange}
+        disabled={disabled}
+        required={required}
+      />
+
+      {label && (
+        <label
+          htmlFor={name}
+          className="form-check-label">
+          {label}
+        </label>
+      )}
+
+      {error && <div className="invalid-feedback d-block">{error}</div>}
+    </div>
+  );
+};
+
+CommonCheckbox.propTypes = {
+  label: PropTypes.string,
+
+  name: PropTypes.string.isRequired,
+
+  checked: PropTypes.bool.isRequired,
+
+  onChange: PropTypes.func.isRequired,
+
+  disabled: PropTypes.bool,
+
+  required: PropTypes.bool,
+
+  error: PropTypes.string,
+
+  className: PropTypes.string,
+
+  indeterminate: PropTypes.bool,
+};
+
+export default memo(CommonCheckbox);
+
+
+============================================================
+FILE: src\global\components\feedback\ErrorAlert.jsx
+============================================================
+
+const ErrorAlert = ({ message, onRetry }) => {
+  return (
+    <div className="alert alert-danger">
+      <h5>Unable to load foods</h5>
+
+      <p>{message}</p>
+
+      <button
+        className="btn btn-danger"
+        onClick={onRetry}>
+        Retry
+      </button>
+    </div>
+  );
+};
+
+export default ErrorAlert;
+
+
+============================================================
+FILE: src\global\components\feedback\LoadingSpinner.jsx
+============================================================
+
+const LoadingSpinner = () => {
+  return (
+    <div className="text-center py-5">
+      <div
+        className="spinner-border text-primary"
+        role="status">
+        <span className="visually-hidden">Loading...</span>
+      </div>
+    </div>
+  );
+};
+
+export default LoadingSpinner;
+
+
+============================================================
+FILE: src\global\constants\RouteConstants.js
+============================================================
+
+/**
+ * ============================================================================
+ * FreshMeal
+ * ============================================================================
+ *
+ * Application Route Constants
+ *
+ * Centralized route definitions for the FreshMeal Admin Panel.
+ *
+ * Notes:
+ * -------
+ * • These are frontend React Router routes.
+ * • API endpoints belong in ApiConstants.js.
+ * • Dynamic routes use :foodId.
+ *
+ * RouteConstants.js
+ *       ↓
+ * React pages/navigation only
+ *
+ * ApiConstants.js
+ *       ↓
+ *Backend API endpoints only
+ *
+ * ============================================================================
+ */
+
+export const ROUTES = {
+  // ==========================================================================
+  // Dashboard
+  // ==========================================================================
+
+  HOME: "/",
+
+  // ==========================================================================
+  // Food Routes
+  // ==========================================================================
+
+  ADD_FOOD: "/api/foods/add",
+
+  FETCH_ALL_FOODS: "/api/foods/readAllFoods",
+
+  VIEW_FOOD: "/foods/view/:foodId",
+
+  EDIT_FOOD: "/foods/edit/:foodId",
+
+  // ==========================================================================
+  // Archived Food Routes
+  // ==========================================================================
+
+  GET_ARCHIVED_FOODS: "/api/foods/archived",
+
+  // ==========================================================================
+  // Food Archive Actions
+  // ==========================================================================
+  //
+  // These routes are useful if these operations are ever handled through
+  // React Router navigation.
+  //
+  // Actual API endpoints are maintained separately in ApiConstants.js.
+  // ==========================================================================
+
+  ARCHIVE_FOOD: "/api/foods/archive",
+
+  BULK_ARCHIVE_FOOD: "/api/foods/bulkArchive",
+
+  RESTORE_FOOD: "/api/foods/restore",
+
+  BULK_RESTORE_FOOD: "/api/foods/bulkRestore",
+
+  PERMANENT_DELETE_FOOD: "/api/foods/permanentDelete",
+
+  BULK_PERMANENT_DELETE_FOOD: "/api/foods/bulkPermanentDelete",
+
+  // ==========================================================================
+  // Order Routes
+  // ==========================================================================
+
+  FETCH_ALL_ORDERS: "/orders",
+
+  // ==========================================================================
+  // Future / Other Admin Routes
+  // ==========================================================================
+
+  PROFILE: "/profile",
+
+  STATUS: "/status",
+};
+
+export default ROUTES;
+
+
+============================================================
+FILE: src\global\constants\MessageConstants.js
+============================================================
+
+// src/constants/MessageConstants.js
+
+export const MESSAGES = {
+  COMMON: {
+    LOADING: "Loading...",
+    NO_DATA_FOUND: "No data found.",
+    SOMETHING_WENT_WRONG: "Something went wrong.",
+    OPERATION_SUCCESSFUL: "Operation completed successfully.",
+  },
+
+  FOOD: {
+    CREATED_SUCCESSFULLY: "Food added successfully.",
+    UPDATED_SUCCESSFULLY: "Food updated successfully.",
+    DELETED_SUCCESSFULLY: "Food deleted successfully.",
+    FETCH_FAILED: "Failed to fetch food list.",
+  },
+
+  ORDER: {
+    STATUS_UPDATED: "Order status updated successfully.",
+    FETCH_FAILED: "Failed to fetch orders.",
+  },
+
+  IMAGE: {
+    UPLOAD_SUCCESSFUL: "Image uploaded successfully.",
+    UPLOAD_FAILED: "Image upload failed.",
+  },
+
+  VALIDATION: {
+    REQUIRED_FIELD: "This field is required.",
+    INVALID_PRICE: "Please enter a valid price.",
+    INVALID_IMAGE: "Please select a valid image.",
+  },
+};
+
+export default MESSAGES;
+
+
+============================================================
+FILE: src\global\constants\ApiConstants.js
+============================================================
+
+// src/constants/ApiConstants.js
+
+/**
+ * Backend Base URL.   localhost:8030/api/foods/foodCategoryMetadata
+ */
+export const BASE_URL = "http://localhost:8030";
+
+export const API = {
+  FOOD: {
+    FOOD_METADATA: `${BASE_URL}/api/foods/foodCategoryMetadata`,
+    ADD_FOOD: `${BASE_URL}/api/foods/add`,
+    CREATE: `${BASE_URL}/api/foods/add`,
+    GET_ALL_FOODS: `${BASE_URL}/api/foods/readAllFoods`,
+    // GET_FOOD_BY_ID: (foodId) => `${BASE_URL}/api/foods/view/${foodId}`,
+    GET_FOOD_BY_ID: `${BASE_URL}/api/foods/view`,
+    EDIT_FOOD: `${BASE_URL}/api/foods/edit`,
+    UPDATE: (id) => `/api/v1/foods/${id}`,
+    UPDATE_FOOD_STATUS: (id) => `${BASE_URL}/api/foods/${id}/status`,
+    DELETE: (id) => `/api/v1/foods/${id}`,
+
+    // =========================================================================
+    // Archive / Restore / Permanent Delete
+    // =========================================================================
+
+    GET_ARCHIVED_FOODS: `${BASE_URL}/api/foods/archived`,
+
+    ARCHIVE_FOOD: `${BASE_URL}/api/foods/archive`,
+
+    BULK_ARCHIVE_FOOD: `${BASE_URL}/api/foods/bulkArchive`,
+
+    RESTORE_FOOD: `${BASE_URL}/api/foods/restore`,
+
+    BULK_RESTORE_FOOD: `${BASE_URL}/api/foods/bulkRestore`,
+
+    PERMANENT_DELETE_FOOD: `${BASE_URL}/api/foods/permanentDelete`,
+
+    BULK_PERMANENT_DELETE_FOOD: `${BASE_URL}/api/foods/bulkPermanentDelete`,
+  },
+
+  ORDER: {
+    GET_ALL: "/api/v1/orders",
+    GET_BY_ID: (id) => `/api/v1/orders/${id}`,
+    UPDATE_STATUS: (id) => `/api/v1/orders/${id}/status`,
+  },
+
+  IMAGE: {
+    UPLOAD: "/api/v1/images/upload",
+    DELETE: (imageId) => `/api/v1/images/${imageId}`,
+  },
+};
+
+export default API;
+
+
+============================================================
+FILE: src\assets\assets.js
+============================================================
+
+import logo from "./images/freshmeal_logo.png";
+import brandLogo from "./images/freshmealBrandLogo.png";
+import parcel from "./images/parcel.png";
+import upload from "./images/upload.png";
+
+export const assets = {
+  logo,
+  parcel,
+  upload,
+  brandLogo,
+};
+
+
+============================================================
+FILE: src\features\authentication\services\AuthenticationService.js
+============================================================
+
+[FILE DOES NOT EXIST]
+
+
+============================================================
+FILE: src\features\authentication\services\TokenService.js
+============================================================
+
+[FILE DOES NOT EXIST]
+
+
+============================================================
+FILE: src\features\authentication\hooks\useLogin.js
+============================================================
+
+[FILE DOES NOT EXIST]
+
+
+============================================================
+FILE: src\features\authentication\context\AuthContext.jsx
+============================================================
+
+[FILE DOES NOT EXIST]
+
+
+============================================================
+FILE: src\api\apiClient.js
+============================================================
+
+import axios from "axios";
+
+/**
+ * =============================================================================
+ * API Client
+ * =============================================================================
+ *
+ * Purpose
+ * -------
+ * Provides a centralized Axios instance for all HTTP communication.
+ *
+ * Responsibilities
+ * ----------------
+ * • Configure the application's base URL.
+ * • Apply default request headers.
+ * • Set request timeout.
+ * • Handle global request/response interception.
+ *
+ * Notes
+ * -----
+ * All services (FoodService, RestaurantService, OrderService, etc.)
+ * must use this client instead of creating their own Axios instances.
+ * =============================================================================
+ */
+
+const apiClient = axios.create({
+  baseURL: import.meta.env.VITE_API_BASE_URL,
+  timeout: 30000,
+  headers: {
+    "Content-Type": "application/json",
+    Accept: "application/json",
+  },
+});
+
+/**
+ * =============================================================================
+ * Request Interceptor
+ * =============================================================================
+ *
+ * Used to:
+ * • Attach authentication tokens.
+ * • Add correlation IDs.
+ * • Log outgoing requests.
+ * */
+
+apiClient.interceptors.request.use(
+  (config) => {
+    // Example:
+    // const token = localStorage.getItem("accessToken");
+    //
+    // if (token) {
+    //   config.headers.Authorization = `Bearer ${token}`;
+    // }
+
+    return config;
+  },
+  (error) => Promise.reject(error),
+);
+
+/**
+ * =============================================================================
+ * Response Interceptor
+ * =============================================================================
+ *
+ * Used to:
+ * • Handle unauthorized responses.
+ * • Normalize API errors.
+ * • Log failed requests.
+ * */
+
+apiClient.interceptors.response.use(
+  (response) => response,
+
+  (error) => {
+    if (error.response?.status === 401) {
+      // Future:
+      // Redirect to login page.
+      // Clear authentication.
+    }
+
+    return Promise.reject(error);
+  },
+);
+
+export default apiClient;
+
+
+============================================================
+FILE: src\global\services\ApiClient.js
+============================================================
+
+import axios from "axios";
+import { BASE_URL } from "../constants/ApiConstants";
+
+const apiClient = axios.create({
+  baseURL: BASE_URL,
+  timeout: 45000,
+
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
+
+export default apiClient;

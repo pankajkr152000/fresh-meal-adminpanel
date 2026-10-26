@@ -1,0 +1,541 @@
+src/
+│
+├── App.css
+├── App.jsx
+├── globalCommonSharedArchitectureInfo.txt
+├── index.css
+├── main.jsx
+│
+├── api/
+│   ├── apiClient.js
+│   └── index.js
+│
+├── assets/
+│   ├── assets.js
+│   │
+│   ├── icons/
+│   │   ├── index.js
+│   │   ├── SortAscending.jsx
+│   │   ├── SortDescending.jsx
+│   │   └── SortNeutral.jsx
+│   │
+│   ├── images/
+│   │   ├── all-category-placehodler.png
+│   │   ├── allImage.png
+│   │   ├── category-placeholder.png
+│   │   ├── default-user-placeholder.png
+│   │   ├── female-user-placeholder.png
+│   │   ├── female-users-placeholder.png
+│   │   ├── food-placeholder.png
+│   │   ├── foods-placeholder.png
+│   │   ├── freshmealBrandLogo.png
+│   │   ├── freshmeal_logo.png
+│   │   ├── male-user-placeholder.png
+│   │   ├── offer-placeholder.png
+│   │   ├── parcel.png
+│   │   ├── restaurant-placeholder.png
+│   │   └── upload.png
+│   │
+│   └── styles/
+│       ├── global.css
+│       ├── utilities.css
+│       └── variables.css
+│
+├── features/
+│   │
+│   ├── authentication/
+│   │   ├── authenticationArchitectureInfo.txt
+│   │   │
+│   │   ├── assets/
+│   │   │
+│   │   ├── components/
+│   │   │   ├── login/
+│   │   │   │   ├── LoginForm.jsx
+│   │   │   │   └── index.js
+│   │   │   │
+│   │   │   ├── otp/
+│   │   │   │   ├── OtpInput.jsx
+│   │   │   │   ├── OtpTimer.jsx
+│   │   │   │   └── index.js
+│   │   │   │
+│   │   │   ├── password/
+│   │   │   │   ├── PasswordInput.jsx
+│   │   │   │   ├── PasswordRequirements.jsx
+│   │   │   │   └── index.js
+│   │   │   │
+│   │   │   └── index.js
+│   │   │
+│   │   ├── constants/
+│   │   │   ├── AuthenticationRouteConstants.js
+│   │   │   ├── AuthenticationStatus.js
+│   │   │   ├── OtpConstants.js
+│   │   │   ├── PasswordConstants.js
+│   │   │   └── index.js
+│   │   │
+│   │   ├── context/
+│   │   │   ├── AuthenticationContext.jsx
+│   │   │   └── index.js
+│   │   │
+│   │   ├── hooks/
+│   │   │   ├── useAuthentication.js
+│   │   │   ├── useLogin.js
+│   │   │   ├── useLogout.js
+│   │   │   ├── useOtp.js
+│   │   │   ├── usePasswordReset.js
+│   │   │   └── index.js
+│   │   │
+│   │   ├── pages/
+│   │   │   ├── Login.jsx
+│   │   │   ├── ForgotPassword.jsx
+│   │   │   ├── VerifyEmailOtp.jsx
+│   │   │   ├── VerifyOtp.jsx
+│   │   │   ├── ResetPassword.jsx
+│   │   │   └── index.js
+│   │   │
+│   │   ├── services/
+│   │   │   ├── AuthenticationService.js
+│   │   │   ├── TokenService.js
+│   │   │   └── index.js
+│   │   │
+│   │   ├── types/
+│   │   │   ├── AuthenticationTypes.js
+│   │   │   ├── LoginTypes.js
+│   │   │   ├── OtpTypes.js
+│   │   │   ├── PasswordResetTypes.js
+│   │   │   └── index.js
+│   │   │
+│   │   ├── utils/
+│   │   │   ├── AuthenticationUtils.js
+│   │   │   ├── OtpUtils.js
+│   │   │   ├── PasswordUtils.js
+│   │   │   └── index.js
+│   │   │
+│   │   └── index.js
+│   │
+│   │
+│   ├── admin/
+│   │   ├── adminArchitectureInfo.txt
+│   │   │
+│   │   ├── assets/
+│   │   │
+│   │   ├── components/
+│   │   │   ├── dashboard/
+│   │   │   ├── navigation/
+│   │   │   ├── profile/
+│   │   │   └── index.js
+│   │   │
+│   │   ├── constants/
+│   │   │   ├── AdminRouteConstants.js
+│   │   │   └── index.js
+│   │   │
+│   │   ├── hooks/
+│   │   │   └── index.js
+│   │   │
+│   │   ├── pages/
+│   │   │   ├── AdminDashboard.jsx
+│   │   │   └── index.js
+│   │   │
+│   │   ├── services/
+│   │   │   └── index.js
+│   │   │
+│   │   ├── types/
+│   │   │   └── index.js
+│   │   │
+│   │   ├── utils/
+│   │   │   └── index.js
+│   │   │
+│   │   └── index.js
+│   │
+│   │
+│   ├── restaurant/
+│   │   ├── restaurantArchitectureInfo.txt
+│   │   │
+│   │   ├── assets/
+│   │   │
+│   │   ├── components/
+│   │   │   ├── dashboard/
+│   │   │   ├── navigation/
+│   │   │   ├── menu/
+│   │   │   ├── orders/
+│   │   │   ├── profile/
+│   │   │   └── index.js
+│   │   │
+│   │   ├── constants/
+│   │   │   ├── RestaurantRouteConstants.js
+│   │   │   └── index.js
+│   │   │
+│   │   ├── hooks/
+│   │   │   └── index.js
+│   │   │
+│   │   ├── pages/
+│   │   │   ├── RestaurantDashboard.jsx
+│   │   │   └── index.js
+│   │   │
+│   │   ├── services/
+│   │   │   └── index.js
+│   │   │
+│   │   ├── types/
+│   │   │   └── index.js
+│   │   │
+│   │   ├── utils/
+│   │   │   └── index.js
+│   │   │
+│   │   └── index.js
+│   │
+│   │
+│   ├── customer/
+│   │   ├── customerArchitectureInfo.txt
+│   │   │
+│   │   ├── assets/
+│   │   │
+│   │   ├── components/
+│   │   │   ├── home/
+│   │   │   ├── navigation/
+│   │   │   ├── restaurants/
+│   │   │   ├── food/
+│   │   │   ├── cart/
+│   │   │   ├── orders/
+│   │   │   ├── profile/
+│   │   │   └── index.js
+│   │   │
+│   │   ├── constants/
+│   │   │   ├── CustomerRouteConstants.js
+│   │   │   └── index.js
+│   │   │
+│   │   ├── hooks/
+│   │   │   └── index.js
+│   │   │
+│   │   ├── pages/
+│   │   │   ├── CustomerHome.jsx
+│   │   │   └── index.js
+│   │   │
+│   │   ├── services/
+│   │   │   └── index.js
+│   │   │
+│   │   ├── types/
+│   │   │   └── index.js
+│   │   │
+│   │   ├── utils/
+│   │   │   └── index.js
+│   │   │
+│   │   └── index.js
+│   │
+│   │
+│   ├── foods/
+│   │   ├── foodArchitectueInfo.txt
+│   │   │
+│   │   ├── assets/
+│   │   │
+│   │   ├── components/
+│   │   │   ├── details/
+│   │   │   │   ├── FoodHero.jsx
+│   │   │   │   ├── NavigationCard.jsx
+│   │   │   │   └── index.js
+│   │   │   │
+│   │   │   ├── form/
+│   │   │   │   └── FoodForm.jsx
+│   │   │   │
+│   │   │   ├── statistics/
+│   │   │   │   ├── FoodStatistics.jsx
+│   │   │   │   └── index.js
+│   │   │   │
+│   │   │   ├── status/
+│   │   │   │   ├── FoodStatusBadge.jsx
+│   │   │   │   ├── FoodStatusDropDown.jsx
+│   │   │   │   ├── StatusConfirmationModal.jsx
+│   │   │   │   └── index.js
+│   │   │   │
+│   │   │   ├── table/
+│   │   │   │   ├── ArchivedFoodTable.jsx
+│   │   │   ├── ArchivedFoodTableRow.jsx
+│   │   │   │   ├── FoodTable.jsx
+│   │   │   │   ├── FoodTableRow.jsx
+│   │   │   │   └── index.js
+│   │   │   │
+│   │   │   ├── toolbar/
+│   │   │   │   ├── FoodFilters.jsx
+│   │   │   │   ├── FoodSearch.jsx
+│   │   │   │   ├── FoodToolbar.jsx
+│   │   │   │   └── index.js
+│   │   │   │
+│   │   │   └── index.js
+│   │   │
+│   │   ├── constants/
+│   │   │   ├── archivedFoodColumns.js
+│   │   │   ├── columns.js
+│   │   │   ├── defaults.js
+│   │   │   ├── editFood.config.js
+│   │   │   ├── filterConfig.js
+│   │   │   ├── foodDetails.config.js
+│   │   │   ├── FoodStatus.js
+│   │   │   ├── foodValidation.js
+│   │   │   ├── index.js
+│   │   │   ├── status.js
+│   │   │   └── validation.js
+│   │   │
+│   │   ├── context/
+│   │   │   ├── ArchivedFoodContext.jsx
+│   │   │   ├── FoodListContext.jsx
+│   │   │   └── index.js
+│   │   │
+│   │   ├── hooks/
+│   │   │   ├── useArchivedFoodList.js
+│   │   │   ├── useFoodDetails.js
+│   │   │   ├── useFoodEdit.js
+│   │   │   ├── useFoodForm.js
+│   │   │   ├── useFoodList.js
+│   │   │   ├── useFoodMetadata.js
+│   │   │   └── index.js
+│   │   │
+│   │   ├── pages/
+│   │   │   ├── AddFood.jsx
+│   │   │   ├── ArchivedFoods.jsx
+│   │   │   ├── EditFood.jsx
+│   │   │   ├── FoodList.jsx
+│   │   │   ├── ViewFood.jsx
+│   │   │   └── index.js
+│   │   │
+│   │   ├── services/
+│   │   │   ├── FoodMetadataService.js
+│   │   │   ├── FoodService.js
+│   │   │   └── index.js
+│   │   │
+│   │   ├── styles/
+│   │   ├── types/
+│   │   └── utils/
+│   │       ├── FoodFormDataUtil.js
+│   │       ├── FoodStatusUtils.js
+│   │       ├── renderFoodField.js
+│   │       └── index.js
+│   │
+│   │
+│   └── orders/
+│       ├── orderArchitectureInfo.txt
+│       ├── assets/
+│       ├── components/
+│       ├── constants/
+│       ├── context/
+│       ├── hooks/
+│       ├── pages/
+│       │   └── orders.jsx
+│       ├── services/
+│       ├── styles/
+│       ├── types/
+│       ├── utils/
+│       └── index.js
+│
+│
+├── global/
+│   │
+│   ├── components/
+│   │   ├── data-display/
+│   │   │   ├── badges/
+│   │   │   │   ├── Badge.jsx
+│   │   │   │   └── index.js
+│   │   │   │
+│   │   │   ├── cards/
+│   │   │   │   ├── CommonCard.jsx
+│   │   │   │   └── StatisticsCard.jsx
+│   │   │   │
+│   │   │   ├── pagination/
+│   │   │   │   ├── Pagination.jsx
+│   │   │   │   └── index.js
+│   │   │   │
+│   │   │   ├── skeletons/
+│   │   │   │   ├── TableSkeleton.jsx
+│   │   │   │   └── index.js
+│   │   │   │
+│   │   │   └── tables/
+│   │   │       ├── DataTable.jsx
+│   │   │       ├── TableContainer.jsx
+│   │   │       ├── TableHeader.jsx
+│   │   │       ├── TablePagination.jsx
+│   │   │       └── index.js
+│   │   │
+│   │   ├── details/
+│   │   │   ├── audit/
+│   │   │   │   ├── AuditCard.jsx
+│   │   │   │   └── index.js
+│   │   │   ├── card/
+│   │   │   │   ├── DetailBody.jsx
+│   │   │   │   ├── DetailFooter.jsx
+│   │   │   │   ├── DetailHeader.jsx
+│   │   │   │   └── index.js
+│   │   │   ├── display/
+│   │   │   │   ├── DetailActions.jsx
+│   │   │   │   ├── DetailBadge.jsx
+│   │   │   │   ├── DetailCardRenderer.jsx
+│   │   │   │   ├── DetailDivider.jsx
+│   │   │   │   ├── DetailLabel.jsx
+│   │   │   │   ├── DetailRow.jsx
+│   │   │   │   ├── DetailSection.jsx
+│   │   │   │   ├── DetailValue.jsx
+│   │   │   │   ├── EmptyValue.jsx
+│   │   │   │   └── index.js
+│   │   │   ├── feedback/
+│   │   │   │   ├── EmptyState.jsx
+│   │   │   │   ├── ErrorAlert.jsx
+│   │   │   │   ├── LoadingSpinner.jsx
+│   │   │   │   ├── Skeleton.jsx
+│   │   │   │   └── index.js
+│   │   │   ├── header/
+│   │   │   │   ├── PageDetailHeader.jsx
+│   │   │   │   └── index.js
+│   │   │   ├── layout/
+│   │   │   │   ├── DetailCard.jsx
+│   │   │   │   ├── DetailColumn.jsx
+│   │   │   │   ├── DetailContainer.jsx
+│   │   │   │   ├── DetailGrid.jsx
+│   │   │   │   ├── DetailPage.jsx
+│   │   │   │   └── index.js
+│   │   │   ├── media/
+│   │   │   │   ├── ImagePlaceholder.jsx
+│   │   │   │   ├── ImagePreview.jsx
+│   │   │   │   ├── ImageViewerModal.jsx
+│   │   │   │   └── index.js
+│   │   │   ├── utils/
+│   │   │   │   └── buildDetailCardClass.js
+│   │   │   └── index.js
+│   │   │
+│   │   ├── editImage/
+│   │   │   ├── EditableImage.jsx
+│   │   │   └── index.js
+│   │   │
+│   │   ├── feedback/
+│   │   │   ├── EmptyState.jsx
+│   │   │   ├── ErrorAlert.jsx
+│   │   │   ├── LoadingSpinner.jsx
+│   │   │   ├── Skeleton.jsx
+│   │   │   └── index.js
+│   │   │
+│   │   ├── forms/
+│   │   │   ├── buttons/
+│   │   │   │   ├── PrimaryButton.jsx
+│   │   │   │   ├── primaryButton.css
+│   │   │   │   └── index.js
+│   │   │   ├── checkbox/
+│   │   │   │   ├── CommonCheckbox.jsx
+│   │   │   │   ├── commonCheckboxStyle.css
+│   │   │   │   └── index.js
+│   │   │   ├── date/
+│   │   │   │   ├── CommonDatePicker.jsx
+│   │   │   │   └── index.js
+│   │   │   ├── dropdowns/
+│   │   │   │   ├── SelectField.jsx
+│   │   │   │   └── index.js
+│   │   │   ├── file/
+│   │   │   │   ├── CommonFileUpload.jsx
+│   │   │   │   └── index.js
+│   │   │   ├── filters/
+│   │   │   │   ├── FilterPanel.jsx
+│   │   │   │   ├── FilterSelect.jsx
+│   │   │   │   └── index.js
+│   │   │   ├── input/
+│   │   │   │   ├── CommonInput.jsx
+│   │   │   │   ├── TextInput.jsx
+│   │   │   │   └── index.js
+│   │   │   ├── radio/
+│   │   │   │   ├── CommonRadioGroup.jsx
+│   │   │   │   └── index.js
+│   │   │   ├── search/
+│   │   │   │   ├── SearchBox.jsx
+│   │   │   │   └── index.js
+│   │   │   ├── select/
+│   │   │   │   ├── CommonSelect.jsx
+│   │   │   │   ├── CommonSelect.css
+│   │   │   │   └── index.js
+│   │   │   ├── switch/
+│   │   │   │   ├── CommonSwitch.jsx
+│   │   │   │   └── index.js
+│   │   │   ├── textarea/
+│   │   │   │   └── CommonTextarea.jsx
+│   │   │   └── index.js
+│   │   │
+│   │   ├── layout/
+│   │   │   ├── PageHeader.jsx
+│   │   │   ├── PageLayout.jsx
+│   │   │   └── index.js
+│   │   │
+│   │   └── overlay/
+│   │       ├── ConfirmationModal.jsx
+│   │       └── index.js
+│   │
+│   ├── constants/
+│   │   ├── ApiConstants.js
+│   │   ├── AppConstants.js
+│   │   ├── HttpStatusConstants.js
+│   │   ├── MessageConstants.js
+│   │   ├── RouteConstants.js
+│   │   ├── detailFieldFactory.js
+│   │   ├── detailFieldTypes.js
+│   │   └── index.js
+│   │
+│   ├── hooks/
+│   │   ├── useDebounce.js
+│   │   └── index.js
+│   │
+│   ├── layouts/
+│   │   ├── AuthLayout.jsx
+│   │   ├── AdminLayout.jsx
+│   │   ├── RestaurantLayout.jsx
+│   │   ├── CustomerLayout.jsx
+│   │   ├── PageLayout.jsx
+│   │   └── index.js
+│   │
+│   ├── pages/
+│   │
+│   ├── prop-types/
+│   │   └── displayOptionPropType.js
+│   │
+│   ├── services/
+│   │   ├── ApiClient.js
+│   │   └── index.js
+│   │
+│   ├── styles/
+│   │   └── appLayout.css
+│   │
+│   └── utils/
+│       ├── DateUtils.js
+│       ├── DisplayOptionUtils.jsx
+│       ├── DateUtils.js
+│       ├── formatCurrency.js
+│       ├── formatDate.js
+│       ├── formatDateTime.js
+│       ├── formatFileSize.js
+│       ├── formatNumber.js
+│       ├── getNestedValue.js
+│       ├── ImageUtils.js
+│       ├── index.js
+│       └── themeChangeScriptButton.js
+│
+│
+├── routes/
+│   ├── AppRoutes.jsx
+│   ├── ProtectedRoute.jsx
+│   ├── RoleRoute.jsx
+│   ├── AuthRoutes.jsx
+│   ├── AdminRoutes.jsx
+│   ├── RestaurantRoutes.jsx
+│   ├── CustomerRoutes.jsx
+│   └── index.js
+│
+│
+└── shell/
+    │
+    ├── admin/
+    │   ├── Menubar/
+    │   │   ├── Menubar.jsx
+    │   │   ├── menubarStyle.css
+    │   │   └── index.js
+    │   │
+    │   └── Sidebar/
+    │       ├── Sidebar.jsx
+    │       ├── sidebarStyle.css
+    │       └── index.js
+    │
+    ├── restaurant/
+    │   ├── Menubar/
+    │   └── Sidebar/
+    │
+    └── customer/
+        └── Navbar/

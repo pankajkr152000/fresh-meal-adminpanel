@@ -1,89 +1,48 @@
 /**
  * ============================================================================
- * FreshMeal
+ * Constants: RouteConstants
  * ============================================================================
  *
- * Application Route Constants
+ * Centralized definitions for frontend navigation routes in FreshMeal.
  *
- * Centralized route definitions for the FreshMeal Admin Panel.
+ * These constants represent client-side React Router paths. Backend API
+ * endpoints belong in ApiConstants.
  *
- * Notes:
- * -------
- * • These are frontend React Router routes.
- * • API endpoints belong in ApiConstants.js.
- * • Dynamic routes use :foodId.
+ * Portal-specific routes use explicit prefixes to avoid collisions between
+ * role-specific application experiences.
  *
- * RouteConstants.js
- *       ↓
- * React pages/navigation only
+ * Compatibility aliases are retained temporarily while existing consumers
+ * are migrated to the canonical route names.
  *
- * ApiConstants.js
- *       ↓
- *Backend API endpoints only
- *
+ * @author Pankaj Kumar
+ * @since 1.0
  * ============================================================================
  */
 
-export const ROUTES = {
-  // ==========================================================================
-  // Dashboard
-  // ==========================================================================
-
+export const ROUTES = Object.freeze({
+  // Application entry
   HOME: "/",
 
-  // ==========================================================================
-  // Food Routes
-  // ==========================================================================
+  // Authentication
+  LOGIN: "/login",
+  REGISTER: "/register",
+  FORGOT_PASSWORD: "/forgot-password",
+  VERIFY_EMAIL_OTP: "/verify-email-otp",
+  VERIFY_OTP: "/verify-otp",
+  RESET_PASSWORD: "/reset-password",
+  LOGOUT: "/logout",
 
-  ADD_FOOD: "/api/foods/add",
+  // Portal selection
+  PORTAL_SELECTION: "/select-portal",
 
-  FETCH_ALL_FOODS: "/api/foods/readAllFoods",
+  // Portal entry paths
+  ADMIN: "/admin",
+  CUSTOMER: "/customer",
+  RESTAURANT: "/restaurant",
+  DELIVERY_PARTNER: "/delivery",
 
-  VIEW_FOOD: "/foods/view/:foodId",
-
-  EDIT_FOOD: "/foods/edit/:foodId",
-
-  // ==========================================================================
-  // Archived Food Routes
-  // ==========================================================================
-
-  GET_ARCHIVED_FOODS: "/api/foods/archived",
-
-  // ==========================================================================
-  // Food Archive Actions
-  // ==========================================================================
-  //
-  // These routes are useful if these operations are ever handled through
-  // React Router navigation.
-  //
-  // Actual API endpoints are maintained separately in ApiConstants.js.
-  // ==========================================================================
-
-  ARCHIVE_FOOD: "/api/foods/archive",
-
-  BULK_ARCHIVE_FOOD: "/api/foods/bulkArchive",
-
-  RESTORE_FOOD: "/api/foods/restore",
-
-  BULK_RESTORE_FOOD: "/api/foods/bulkRestore",
-
-  PERMANENT_DELETE_FOOD: "/api/foods/permanentDelete",
-
-  BULK_PERMANENT_DELETE_FOOD: "/api/foods/bulkPermanentDelete",
-
-  // ==========================================================================
-  // Order Routes
-  // ==========================================================================
-
-  FETCH_ALL_ORDERS: "/orders",
-
-  // ==========================================================================
-  // Future / Other Admin Routes
-  // ==========================================================================
-
+  // Shared application pages
   PROFILE: "/profile",
-
-  STATUS: "/status",
-};
+});
 
 export default ROUTES;

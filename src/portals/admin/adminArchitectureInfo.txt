@@ -1,0 +1,1129 @@
+===============================================================================
+FreshMeal - Admin Portal Architecture
+===============================================================================
+
+Version: 1.0
+Module: Admin Portal
+Application: FreshMeal
+Architecture: Feature + Portal + Layout + Route Separation
+Status: LOCKED BASELINE
+
+===============================================================================
+1. PURPOSE
+===============================================================================
+
+The Admin Portal provides the role-specific application experience for users
+authenticated with the ADMIN role.
+
+The Admin Portal is responsible for:
+
+- Admin-specific pages.
+- Admin-specific navigation.
+- Admin-specific UI components.
+- Admin-specific layouts.
+- Admin-specific route composition.
+- Admin-specific workflows.
+- Admin-specific presentation of shared business capabilities.
+
+The Admin Portal must remain independent from Customer, Restaurant, and
+Delivery Portal presentation concerns.
+
+The Admin Portal consumes reusable business capabilities from the
+features layer but must never be consumed by the features layer.
+
+
+===============================================================================
+2. ARCHITECTURAL PRINCIPLE
+===============================================================================
+
+FreshMeal follows the following high-level dependency direction:
+
+    routes
+       |
+       v
+    portals
+       |
+       v
+    features
+       |
+       v
+    global
+
+
+The Admin Portal therefore follows:
+
+    Admin Routes
+         |
+         v
+    Admin Portal
+         |
+         +-------------------+
+         |                   |
+         v                   v
+    Admin Layout       Shared Features
+                             |
+                             v
+                           Global
+
+
+IMPORTANT:
+
+Features represent business/domain capabilities.
+
+Portals represent role-specific user experiences.
+
+Layouts represent application shells.
+
+Routes represent route composition and access control.
+
+Global contains genuinely reusable/shared infrastructure and UI.
+
+
+===============================================================================
+3. ADMIN PORTAL RESPONSIBILITIES
+===============================================================================
+
+The Admin Portal owns:
+
+- Admin Dashboard.
+- Admin Navigation.
+- Admin Sidebar.
+- Admin Menubar.
+- Admin-specific page composition.
+- Admin-specific page-level components.
+- Admin-specific navigation configuration.
+- Admin-specific route constants.
+- Admin-specific navigation constants.
+- Admin-specific presentation logic.
+- Admin-specific layout integration.
+- Admin-specific workflows.
+
+The Admin Portal does NOT own:
+
+- Authentication business logic.
+- JWT generation or validation.
+- Food domain business logic.
+- Order domain business logic.
+- Cart domain business logic.
+- Checkout domain business logic.
+- Restaurant domain business logic.
+- Delivery domain business logic.
+- Shared API infrastructure.
+- Generic application utilities.
+
+
+===============================================================================
+4. ADMIN PORTAL DIRECTORY STRUCTURE
+===============================================================================
+
+The target Admin Portal structure is:
+
+src/
+└── portals/
+    └── admin/
+        ├── adminArchitectureInfo.txt
+        │
+        ├── assets/
+        │
+        ├── components/
+        │   ├── dashboard/
+        │   ├── navigation/
+        │   ├── profile/
+        │   ├── foods/
+        │   └── orders/
+        │
+        ├── constants/
+        │   ├── AdminRouteConstants.js
+        │   ├── AdminNavigationConstants.js
+        │   └── index.js
+        │
+        ├── hooks/
+        │
+        ├── pages/
+        │   ├── dashboard/
+        │   │   └── AdminDashboard.jsx
+        │   │
+        │   ├── foods/
+        │   │   ├── FoodList.jsx
+        │   │   ├── AddFood.jsx
+        │   │   ├── EditFood.jsx
+        │   │   ├── ViewFood.jsx
+        │   │   └── ArchivedFoods.jsx
+        │   │
+        │   ├── orders/
+        │   │   └── Orders.jsx
+        │   │
+        │   └── profile/
+        │
+        ├── services/
+        │
+        ├── types/
+        │
+        ├── utils/
+        │
+        └── index.js
+
+
+===============================================================================
+5. ADMIN LAYOUT
+===============================================================================
+
+The Admin Layout is the application shell for the Admin Portal.
+
+Target location:
+
+src/layouts/AdminLayout/
+
+Structure:
+
+AdminLayout/
+├── AdminLayout.jsx
+├── adminLayout.css
+└── index.js
+
+
+The Admin Layout is responsible for:
+
+- Rendering Admin Sidebar.
+- Rendering Admin Menubar.
+- Maintaining Sidebar visibility state.
+- Providing Sidebar toggle behavior.
+- Rendering Admin-specific notifications.
+- Rendering nested Admin route content.
+- Providing Admin-level feature contexts where required.
+
+
+Conceptual structure:
+
+AdminLayout
+│
+├── Admin Feature Providers
+│
+└── Admin Shell
+    │
+    ├── Admin Sidebar
+    │
+    └── Admin Main Area
+        │
+        ├── Admin Menubar
+        │
+        ├── Toast Notifications
+        │
+        └── Main Content
+            │
+            └── Outlet
+
+
+The Admin Layout must NOT be used by:
+
+- Authentication pages.
+- Customer Portal.
+- Restaurant Portal.
+- Delivery Portal.
+
+
+===============================================================================
+6. ADMIN NAVIGATION
+===============================================================================
+
+Admin navigation is Admin-specific.
+
+Navigation components belong to:
+
+src/portals/admin/components/navigation/
+
+Examples:
+
+- Menubar.
+- Sidebar.
+- Navigation items.
+- Admin navigation sections.
+- Admin profile/navigation actions.
+
+Admin navigation must not be placed inside:
+
+src/global/
+
+unless a component is genuinely reusable by multiple unrelated portals.
+
+
+===============================================================================
+7. ADMIN PAGES
+===============================================================================
+
+Admin pages belong to:
+
+src/portals/admin/pages/
+
+
+Current Admin food pages:
+
+- FoodList
+- AddFood
+- EditFood
+- ViewFood
+- ArchivedFoods
+
+
+Current Admin order page:
+
+- Orders
+
+
+Planned Admin dashboard:
+
+- AdminDashboard
+
+
+Future Admin pages may include:
+
+- Restaurant management.
+- User management.
+- Delivery partner management.
+- Order management.
+- Reports.
+- Analytics.
+- Profile.
+- System configuration.
+
+
+Pages must represent the Admin user experience.
+
+They may consume one or more feature capabilities.
+
+Example:
+
+Admin Food List
+        |
+        v
+features/foods
+        |
+        v
+Food services / hooks / domain logic
+
+
+The Food feature must never import:
+
+portals/admin/
+
+
+===============================================================================
+8. FEATURES VS ADMIN PORTAL
+===============================================================================
+
+This distinction is mandatory.
+
+FEATURES:
+
+    features/foods/
+    features/orders/
+    features/cart/
+    features/checkout/
+    features/restaurants/
+    features/delivery/
+
+Features contain reusable business/domain capabilities.
+
+PORTAL:
+
+    portals/admin/
+
+The Admin Portal determines how those capabilities are presented to an
+Administrator.
+
+
+Example:
+
+features/foods/
+    |
+    +-- FoodService
+    +-- Food hooks
+    +-- Food contexts
+    +-- Food DTO/view models
+    +-- Food utilities
+    +-- Food components that are genuinely reusable
+    |
+    v
+portals/admin/
+    |
+    +-- Admin Food List page
+    +-- Admin Add Food page
+    +-- Admin Edit Food page
+    +-- Admin View Food page
+    +-- Admin Archived Food page
+
+
+The same Food feature may later be consumed differently by:
+
+Admin
+Customer
+Restaurant
+
+
+Therefore:
+
+features/foods/
+    |
+    +----> portals/admin/
+    |
+    +----> portals/customer/
+    |
+    +----> portals/restaurant/
+
+
+But never:
+
+portals/admin/
+    |
+    X----> features/foods/portal-specific code
+
+
+===============================================================================
+9. FOOD MODULE BOUNDARY
+===============================================================================
+
+The existing Food module contains reusable business logic as well as
+Admin-oriented presentation.
+
+During refactoring, responsibility must be determined before moving files.
+
+Do NOT blindly move every file from:
+
+features/foods/pages/
+
+into:
+
+portals/admin/pages/foods/
+
+
+Instead:
+
+1. Identify whether the file is a domain capability.
+2. Identify whether the file is Admin-specific presentation.
+3. Preserve reusable logic in features/foods.
+4. Move Admin-specific pages into portals/admin.
+5. Avoid rewriting working business logic merely for relocation.
+
+
+Examples:
+
+Reusable:
+
+- FoodService
+- FoodMetadataService
+- useFoodList
+- useFoodDetails
+- Food status utilities
+- Food validation that represents domain rules
+- Food contexts when they are truly feature-level
+
+Admin-specific:
+
+- Admin Food List page.
+- Admin Add Food page.
+- Admin Edit Food page.
+- Admin View Food page.
+- Admin Archived Food page.
+- Admin-specific food toolbar.
+- Admin-specific food navigation.
+
+
+===============================================================================
+10. ORDER MODULE BOUNDARY
+===============================================================================
+
+Order domain logic belongs to:
+
+features/orders/
+
+
+Admin-specific order presentation belongs to:
+
+portals/admin/
+
+
+Example:
+
+features/orders/
+    |
+    +-- Order services
+    +-- Order hooks
+    +-- Order domain logic
+    +-- Reusable order components
+    |
+    v
+portals/admin/pages/orders/
+    |
+    +-- Orders.jsx
+
+
+===============================================================================
+11. ADMIN ROUTING
+===============================================================================
+
+Admin routing belongs to:
+
+src/routes/AdminRoutes.jsx
+
+
+Admin routes are responsible for composing:
+
+- Admin authorization.
+- Admin layout.
+- Admin pages.
+
+
+Conceptual structure:
+
+AdminRoutes
+    |
+    v
+RoleRoute(ADMIN)
+    |
+    v
+AdminLayout
+    |
+    +-- AdminDashboard
+    +-- FoodList
+    +-- AddFood
+    +-- EditFood
+    +-- ViewFood
+    +-- ArchivedFoods
+    +-- Orders
+    +-- Future Admin pages
+
+
+Admin route configuration must not be scattered throughout feature modules.
+
+
+===============================================================================
+12. AUTHENTICATION AND AUTHORIZATION
+===============================================================================
+
+Authentication belongs to:
+
+features/authentication/
+
+
+Authentication is cross-role.
+
+The Admin Portal must not implement its own authentication mechanism.
+
+Authorization is enforced primarily by the backend.
+
+Frontend Admin route protection exists for:
+
+- Navigation protection.
+- User experience.
+- Preventing unauthorized portal access.
+- Preventing unnecessary rendering of inaccessible pages.
+
+
+The frontend must never be considered the final security boundary.
+
+
+===============================================================================
+13. ROLE
+===============================================================================
+
+Backend canonical role:
+
+ADMIN
+
+
+Frontend portal:
+
+ADMIN
+    |
+    v
+Admin Portal
+
+
+Users with multiple supported roles must first see Portal Selection after
+login.
+
+The Admin Portal must not assume that every authenticated user is an Admin.
+
+
+===============================================================================
+14. PORTAL SWITCHING
+===============================================================================
+
+A user with multiple supported roles may switch between available portals
+without logging out and logging in again.
+
+The Admin Portal must therefore:
+
+- Respect the current authenticated session.
+- Never modify authentication state merely because the user enters Admin.
+- Never create a separate Admin authentication system.
+- Allow the application-level portal selection mechanism to control
+  navigation between portals.
+
+
+===============================================================================
+15. ADMIN CONSTANTS
+===============================================================================
+
+Admin-specific constants belong to:
+
+src/portals/admin/constants/
+
+
+Examples:
+
+AdminRouteConstants.js
+AdminNavigationConstants.js
+
+
+AdminRouteConstants should contain Admin route definitions.
+
+AdminNavigationConstants should contain Admin navigation metadata.
+
+
+Generic application constants belong elsewhere.
+
+Do not duplicate global constants inside Admin merely to avoid an import.
+
+
+===============================================================================
+16. ADMIN ASSETS
+===============================================================================
+
+Admin-only assets belong to:
+
+src/portals/admin/assets/
+
+
+Examples:
+
+- Admin-specific images.
+- Admin-specific illustrations.
+- Admin-specific icons.
+- Admin-specific visual resources.
+
+
+Assets shared by multiple application areas belong under:
+
+src/assets/
+
+
+Do not duplicate shared assets unnecessarily.
+
+
+===============================================================================
+17. ADMIN COMPONENT RULES
+===============================================================================
+
+A component belongs in:
+
+portals/admin/components/
+
+when it exists specifically for the Admin experience.
+
+Examples:
+
+- AdminSidebar.
+- AdminMenubar.
+- AdminDashboardCard.
+- AdminNavigation.
+- AdminProfileMenu.
+- Admin-specific order controls.
+
+
+A component belongs in:
+
+features/<feature>/components/
+
+when it represents reusable presentation for that business capability.
+
+
+A component belongs in:
+
+global/components/
+
+only when it is genuinely application-wide and reusable.
+
+
+===============================================================================
+18. GLOBAL COMPONENT RULE
+===============================================================================
+
+The following rule is mandatory:
+
+Do not put something in global merely because it is used frequently.
+
+It belongs in global only if it is conceptually shared across independent
+application areas.
+
+
+For example:
+
+Admin Sidebar
+    -> NOT global
+
+Customer Navigation
+    -> NOT global
+
+Restaurant Navigation
+    -> NOT global
+
+Delivery Navigation
+    -> NOT global
+
+
+A genuinely generic Button, Modal, Spinner, or ErrorBoundary may belong in
+global.
+
+
+===============================================================================
+19. ADMIN SERVICES
+===============================================================================
+
+Admin-specific orchestration services may live under:
+
+src/portals/admin/services/
+
+
+However, domain/business services should remain in the appropriate feature.
+
+For example:
+
+FoodService
+    -> features/foods/services/
+
+AdminFoodDashboardService
+    -> portals/admin/services/
+
+
+The Admin Portal should not duplicate domain services merely to access them.
+
+
+===============================================================================
+20. ADMIN HOOKS
+===============================================================================
+
+Admin-specific hooks belong to:
+
+src/portals/admin/hooks/
+
+
+Feature-level hooks remain inside their feature.
+
+Example:
+
+useFoodList
+    -> features/foods/hooks/
+
+
+useAdminDashboard
+    -> portals/admin/hooks/
+
+
+A hook must be placed according to its responsibility, not merely according
+to which page currently uses it.
+
+
+===============================================================================
+21. ADMIN TYPES
+===============================================================================
+
+Admin-specific types/view models belong to:
+
+src/portals/admin/types/
+
+
+Feature/domain types belong to the corresponding feature.
+
+Do not duplicate domain types inside the Admin Portal unless the Admin Portal
+requires a genuinely different presentation model.
+
+
+===============================================================================
+22. ADMIN UTILS
+===============================================================================
+
+Admin-specific utilities belong to:
+
+src/portals/admin/utils/
+
+
+Generic utilities belong to:
+
+src/global/utils/
+
+
+Feature-specific utilities belong to their feature.
+
+
+===============================================================================
+23. DEPENDENCY RULES
+===============================================================================
+
+ALLOWED:
+
+routes
+    -> portals
+    -> features
+    -> global
+
+
+ALLOWED:
+
+portals/admin
+    -> features/foods
+    -> features/orders
+    -> features/users
+    -> global
+
+
+NOT ALLOWED:
+
+features/foods
+    -> portals/admin
+
+
+NOT ALLOWED:
+
+features/orders
+    -> portals/admin
+
+
+NOT ALLOWED:
+
+global
+    -> portals/admin
+
+
+NOT ALLOWED:
+
+global
+    -> any specific portal
+
+
+This prevents architectural coupling.
+
+
+===============================================================================
+24. ADMIN LAYOUT PROVIDERS
+===============================================================================
+
+Feature providers may be mounted at the Admin Layout level when the provider
+represents state that must remain available across multiple Admin pages.
+
+Current examples:
+
+- FoodListProvider.
+- ArchivedFoodProvider.
+
+
+These providers must remain feature-owned.
+
+The Admin Layout may consume them.
+
+Conceptually:
+
+features/foods/context/
+        |
+        v
+layouts/AdminLayout/
+        |
+        v
+Admin pages
+
+
+The feature must not know that the Admin Layout exists.
+
+
+===============================================================================
+25. ADMIN TOAST NOTIFICATIONS
+===============================================================================
+
+Toast notifications are currently rendered by the Admin Layout.
+
+This is acceptable when the notification container represents the Admin shell.
+
+The notification implementation must remain reusable if the application later
+requires the same mechanism across other portals.
+
+Do not duplicate notification infrastructure unnecessarily.
+
+
+===============================================================================
+26. RESPONSIVE DESIGN
+===============================================================================
+
+The Admin Portal must support:
+
+- Desktop.
+- Tablet.
+- Mobile.
+
+The Admin shell must support responsive Sidebar behavior.
+
+The UI should remain usable at normal browser zoom and standard desktop
+resolution.
+
+Responsive behavior must be implemented at the appropriate shell/component
+level rather than duplicated across individual pages.
+
+
+===============================================================================
+27. ACCESSIBILITY
+===============================================================================
+
+Admin UI must follow accessibility best practices.
+
+Important considerations:
+
+- Semantic navigation.
+- Accessible Sidebar controls.
+- Accessible Menubar controls.
+- Keyboard navigation.
+- Meaningful aria-label values where required.
+- Visible focus states.
+- Proper heading hierarchy.
+- Accessible dialogs/modals.
+- Meaningful button labels.
+- Avoiding navigation through non-semantic anchor elements when a router
+  Link is appropriate.
+
+
+===============================================================================
+28. REFACTORING RULES
+===============================================================================
+
+The Admin architecture refactor must follow these rules:
+
+1. Do not rewrite working business logic unnecessarily.
+2. Move responsibility before improving implementation.
+3. Refactor one logical boundary at a time.
+4. Verify the application after every meaningful change.
+5. Do not refactor unrelated modules simultaneously.
+6. Do not introduce speculative abstractions.
+7. Do not duplicate existing business logic.
+8. Do not move files solely because their names look incorrect.
+9. Determine architectural responsibility before relocating a file.
+10. Remove obsolete files only after all imports are migrated.
+11. Preserve current functionality during structural refactoring.
+12. Keep the dependency direction intact.
+
+
+===============================================================================
+29. ADMIN REFACTORING ORDER
+===============================================================================
+
+The Admin Portal should be refactored in the following order:
+
+STEP 1
+    Create Admin Portal boundary.
+
+STEP 2
+    Create Admin Layout boundary.
+
+STEP 3
+    Move Admin Layout styling.
+
+STEP 4
+    Move Admin navigation components.
+
+STEP 5
+    Establish Admin navigation constants.
+
+STEP 6
+    Move Admin-specific pages.
+
+STEP 7
+    Separate reusable Food feature logic from Admin presentation.
+
+STEP 8
+    Separate reusable Order feature logic from Admin presentation.
+
+STEP 9
+    Create Admin route composition.
+
+STEP 10
+    Update AppRoutes.
+
+STEP 11
+    Remove obsolete Admin-specific files from old locations.
+
+STEP 12
+    Remove obsolete shell/global Admin dependencies.
+
+STEP 13
+    Clean barrel exports.
+
+STEP 14
+    Run ESLint.
+
+STEP 15
+    Run production build.
+
+STEP 16
+    Perform final Admin architecture audit.
+
+
+===============================================================================
+30. CURRENT ADMIN FUNCTIONALITY
+===============================================================================
+
+The currently implemented Admin functionality includes:
+
+Food:
+
+- Food List.
+- Add Food.
+- Edit Food.
+- View Food.
+- Archived Foods.
+
+Orders:
+
+- Orders.
+
+
+Existing Admin shell includes:
+
+- Sidebar.
+- Menubar.
+- Sidebar visibility toggle.
+- Toast notifications.
+- Nested route rendering.
+
+
+===============================================================================
+31. FUTURE ADMIN FUNCTIONALITY
+===============================================================================
+
+Potential future Admin capabilities include:
+
+Dashboard
+    - System statistics.
+    - Food statistics.
+    - Order statistics.
+    - Revenue statistics.
+    - User statistics.
+
+Food Management
+    - Food CRUD.
+    - Food status management.
+    - Archived food.
+    - Food availability.
+
+Restaurant Management
+    - Restaurant list.
+    - Restaurant approval.
+    - Restaurant status.
+    - Restaurant branches.
+
+Order Management
+    - Order monitoring.
+    - Order status.
+    - Cancellation management.
+    - Order history.
+
+User Management
+    - Customer management.
+    - Restaurant owner management.
+    - Delivery partner management.
+    - Role management.
+
+Reports
+    - Revenue.
+    - Orders.
+    - Food performance.
+    - Restaurant performance.
+
+Profile
+    - Admin profile.
+    - Password management.
+    - Account settings.
+
+
+These features must be introduced only when their corresponding business
+modules are implemented.
+
+
+===============================================================================
+32. WHAT MUST NOT HAPPEN
+===============================================================================
+
+DO NOT:
+
+- Put Admin pages in global/pages.
+- Put Admin navigation in global/components.
+- Put Admin navigation in global/shell.
+- Put Admin business logic in global.
+- Put Admin-specific logic inside Food domain services.
+- Make features depend on Admin Portal.
+- Make Customer pages reuse Admin pages merely because the domain is similar.
+- Make Restaurant pages reuse Admin pages merely because the domain is similar.
+- Create duplicate authentication mechanisms.
+- Create separate JWT handling for Admin.
+- Treat frontend authorization as backend security.
+- Refactor unrelated modules during Admin migration.
+- Delete old files before imports are migrated and verified.
+
+
+===============================================================================
+33. ARCHITECTURAL END STATE
+===============================================================================
+
+The desired end state is:
+
+                         ROUTES
+                            |
+             +--------------+--------------+
+             |              |              |
+             v              v              v
+          ADMIN          CUSTOMER      RESTAURANT
+          PORTAL          PORTAL         PORTAL
+             |              |              |
+             |              |              |
+             +--------------+--------------+
+                            |
+                            v
+                         FEATURES
+                            |
+             +--------------+--------------+
+             |              |              |
+             v              v              v
+           FOODS          ORDERS          CART
+                            |
+                         CHECKOUT
+                            |
+                         PAYMENTS
+
+
+All portals consume shared business capabilities.
+
+No business feature depends on a specific portal.
+
+
+===============================================================================
+34. ARCHITECTURE LOCK
+===============================================================================
+
+This document is the Admin Portal architecture baseline.
+
+Any future architectural change should be explicitly discussed before
+implementation.
+
+Do not silently change:
+
+- Feature boundaries.
+- Portal boundaries.
+- Layout responsibilities.
+- Route responsibilities.
+- Dependency direction.
+- Authentication ownership.
+- Authorization strategy.
+
+If a new requirement conflicts with this architecture, discuss the
+architectural exception before implementing it.
+
+
+===============================================================================
+END OF ADMIN ARCHITECTURE
+===============================================================================

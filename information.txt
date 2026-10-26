@@ -865,6 +865,39 @@ src
 │      └── FoodService.js               ← Existing Service (extended)
 
 
+======================================================================================
+**********************   lost track prompt chatgpt prompt frontend prompt  ***********
+======================================================================================
+
+We are continuing the **FreshMeal Frontend Authentication & Role-Based Routing** project.
+
+Before answering or implementing anything, reconstruct our current project status using the established master implementation workflow and any available conversation context or saved project information.
+
+Follow these instructions strictly:
+
+1. Identify the current phase and the exact task we were working on.
+2. Summarize all completed phases, files reviewed, and changes implemented.
+3. Identify confirmed architectural decisions and requirements that must not be changed.
+4. Identify pending tasks, unresolved questions, and known risks.
+5. State the exact next action required to continue.
+6. Do not repeat completed work or ask me to resend files already available in the conversation or project context.
+7. Do not invent progress, decisions, files, or implementation details.
+8. If any information is genuinely missing, clearly identify the gap rather than making assumptions.
+9. Preserve our agreed architecture and work incrementally, one focused file or logical change at a time.
+10. Do not begin implementation until you have presented the recap and confirmed our current position.
+
+Use the following structure for your response:
+
+- Project objective
+- Master workflow and current phase
+- Completed work
+- Confirmed architectural decisions
+- Current task
+- Pending work
+- Known risks
+- Exact next action
+
+**Our guiding principle: No lost decisions, no skipped prerequisites, no unnecessary rewrites, and no moving forward without validation.**
 
 
 

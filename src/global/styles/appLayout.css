@@ -1,7 +1,43 @@
+/**
+ * ============================================================================
+ * App Layout
+ * ============================================================================
+ *
+ * Global layout foundation for role-specific application shells.
+ *
+ * Responsibilities:
+ * - Application viewport management
+ * - Sidebar/content relationship
+ * - Main content spacing
+ * - Responsive behavior
+ * - Compact enterprise UI density
+ *
+ * ============================================================================
+ */
+
 /* =============================================================================
-   App Layout
-   =============================================================================
-*/
+   Layout Variables
+   ============================================================================= */
+
+:root {
+  --app-sidebar-width: 240px;
+  --app-navbar-height: 56px;
+
+  --app-content-padding: 16px;
+  --app-content-padding-mobile: 12px;
+
+  --app-layout-transition: 0.25s ease;
+}
+
+/* =============================================================================
+   Global Layout Safety
+   ============================================================================= */
+
+#wrapper {
+  width: 100%;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
 
 /* =============================================================================
    Page Content Wrapper
@@ -9,8 +45,12 @@
 
 #page-content-wrapper {
   flex: 1;
+  min-width: 0;
   min-height: 100vh;
-  transition: margin-left 0.25s ease;
+
+  transition:
+    margin-left var(--app-layout-transition),
+    width var(--app-layout-transition);
 }
 
 /* =============================================================================
@@ -18,7 +58,7 @@
    ============================================================================= */
 
 .sidebar-open {
-  margin-left: 240px; /* Must match sidebar width */
+  margin-left: var(--app-sidebar-width);
 }
 
 .sidebar-closed {
@@ -26,13 +66,101 @@
 }
 
 /* =============================================================================
-   Main Content
+   Application Header
+   ============================================================================= */
+
+#page-content-wrapper > header {
+  position: relative;
+  z-index: 1020;
+}
+
+/* =============================================================================
+   Main Application Content
    ============================================================================= */
 
 .app-content {
-  margin-top: 56px; /* Navbar height */
+  width: 100%;
+  min-height: calc(100vh - var(--app-navbar-height));
 
-  min-height: calc(100vh - 56px);
+  margin-top: var(--app-navbar-height);
+  padding: var(--app-content-padding);
 
-  padding: 20px;
+  /*
+   * Keep the default application density compact.
+   * Individual components can override this when necessary.
+   */
+  font-size: 0.875rem;
+  line-height: 1.45;
+}
+
+/* =============================================================================
+   Content Width Safety
+   ============================================================================= */
+
+.app-content > * {
+  max-width: 100%;
+}
+
+/* =============================================================================
+   Responsive Layout
+   ============================================================================= */
+
+/*
+ * Tablet
+ * ---------------------------------------------------------------------------
+ * Keep the sidebar behavior available while reducing content spacing.
+ */
+
+@media (max-width: 991.98px) {
+  :root {
+    --app-content-padding: 14px;
+  }
+
+  .app-content {
+    padding: var(--app-content-padding);
+  }
+}
+
+/*
+ * Mobile
+ * ---------------------------------------------------------------------------
+ * The sidebar is expected to behave as an off-canvas/drawer component.
+ * The content area therefore must not reserve desktop sidebar space.
+ */
+
+@media (max-width: 767.98px) {
+  .sidebar-open,
+  .sidebar-closed {
+    margin-left: 0;
+  }
+
+  .app-content {
+    padding: var(--app-content-padding-mobile);
+  }
+}
+
+/*
+ * Small Mobile
+ * ---------------------------------------------------------------------------
+ */
+
+@media (max-width: 575.98px) {
+  :root {
+    --app-content-padding-mobile: 10px;
+  }
+
+  .app-content {
+    padding: var(--app-content-padding-mobile);
+    font-size: 0.8125rem;
+  }
+}
+
+/* =============================================================================
+   Reduced Motion
+   ============================================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  #page-content-wrapper {
+    transition: none;
+  }
 }

@@ -8,6 +8,7 @@ import {
 import ROUTES from "../../global/constants/RouteConstants";
 import { initializeTheme } from "../../global/utils/themeChangeScriptButton";
 
+import useLogout from "../../features/authentication/hooks/useLogout";
 import "./menubarStyle.css";
 
 /**
@@ -30,6 +31,8 @@ import "./menubarStyle.css";
  */
 
 const Menubar = ({ toggleSidebar }) => {
+  const { logout, isLoggingOut } = useLogout();
+
   const location = useLocation();
 
   // ==========================================================================
@@ -61,6 +64,15 @@ const Menubar = ({ toggleSidebar }) => {
   const shouldShowActions = isAllFoodsPage || isArchivedFoodPage;
 
   const hasSelection = selectedCount > 0;
+
+  // Logout handler
+  const handleLogout = async () => {
+    try {
+      await logout();
+    } catch (error) {
+      console.error("Failed to logout.", error);
+    }
+  };
 
   // ==========================================================================
   // Theme Initialization
@@ -120,6 +132,19 @@ const Menubar = ({ toggleSidebar }) => {
                 to={ROUTES.HOME}>
                 Home
               </Link>
+            </li>
+
+            {/* ============================================================
+                Logout
+            ============================================================ */}
+            <li className="nav-item">
+              <button
+                type="button"
+                className="nav-link btn btn-link"
+                onClick={handleLogout}
+                disabled={isLoggingOut}>
+                {isLoggingOut ? "Logging out..." : "Logout"}
+              </button>
             </li>
 
             {/* ============================================================

@@ -1,0 +1,31 @@
+/**
+ * =============================================================================
+ * FreshMeal - Admin Layout Styles
+ * =============================================================================
+ *
+ * Styles responsible for the FreshMeal Admin application shell.
+ *
+ * This stylesheet belongs exclusively to the Admin Layout and therefore must
+ * not be placed inside the global styling layer.
+ * =============================================================================
+ */
+
+#page-content-wrapper {
+  flex: 1;
+  min-height: 100vh;
+  transition: margin-left 0.25s ease;
+}
+
+.sidebar-open {
+  margin-left: 240px;
+}
+
+.sidebar-closed {
+  margin-left: 0;
+}
+
+.app-content {
+  margin-top: 56px;
+  min-height: calc(100vh - 56px);
+  padding: 20px;
+}
