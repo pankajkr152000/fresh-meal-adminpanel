@@ -72,7 +72,7 @@ export const resolvePostLoginRedirect = (roles = []) => {
 
   return {
     action: POST_LOGIN_ACTION.REDIRECT,
-    redirectTo: portal.path,
+    redirectTo: portal.basePath,
     portals: resolution.portals,
     roles: resolution.roles,
     reason: null,

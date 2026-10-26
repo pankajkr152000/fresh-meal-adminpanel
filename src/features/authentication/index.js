@@ -28,7 +28,7 @@ export { default as PortalSelection } from "./pages/PortalSelection";
 // Route Guards
 // ---------------------------------------------------------------------------
 
-export { default as RoleRoute } from "./routes/RoleRoute";
+export { default as RoleRoute } from "../../routes/RoleRoute";
 
 // ---------------------------------------------------------------------------
 // Utilities

@@ -62,7 +62,7 @@
  */
 
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 import { assets } from "../../../assets/assets";
 
@@ -101,7 +101,7 @@ const Login = () => {
   // ===========================================================================
 
   const navigate = useNavigate();
-  // const location = useLocation();
+  const location = useLocation();
 
   // ===========================================================================
   // Authentication
@@ -255,7 +255,7 @@ const Login = () => {
       const roles = loginResponse?.data?.roles ?? [];
 
       const redirectDecision = resolvePostLoginRedirect(roles);
-
+      console.log("Post-login redirect decision:", redirectDecision);
       switch (redirectDecision.action) {
         case POST_LOGIN_ACTION.REDIRECT:
           navigate(redirectDecision.redirectTo, {

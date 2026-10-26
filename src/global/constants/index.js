@@ -7,8 +7,6 @@ export * from "./RouteConstants";
 export * from "./detailFieldFactory";
 export * from "./detailFieldTypes";
 
-export * from "./../../features/foods";
-
 export {
   getPortalConfig,
   default as PORTAL_CONFIG,

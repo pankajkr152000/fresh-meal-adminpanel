@@ -1,130 +1,80 @@
 /**
  * ============================================================================
- * Component : AppRoutes
- * ============================================================================
+ * Component: AppRoutes
+ * Description: Composes application-level and portal-specific routes.
  *
- * <p>
- * Centralized route configuration for the FreshMeal frontend application.
- * </p>
- *
- * <p>
- * This component composes public routes, authentication-protected routes,
- * role-protected routes, and role-specific application layouts.
- * </p>
- *
- * <p>
- * Authentication and authorization are intentionally separated:
- * ProtectedRoute verifies authentication, while RoleRoute verifies
- * frontend role access.
- * </p>
- *
- * ============================================================================
+ * Responsibilities:
+ * - Redirect the application entry to portal selection.
+ * - Delegate public authentication routes to AuthRoutes.
+ * - Apply the authentication boundary to protected routes.
+ * - Delegate portal-specific routing to dedicated route modules.
  *
  * @author Pankaj Kumar
  * @since 1.0
+ * ============================================================================
  */
 
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 
-// ---------------------------------------------------------------------------
-// Layouts
-// ---------------------------------------------------------------------------
+import { PortalSelection } from "../features/authentication";
+import { ROUTES } from "../global/constants/RouteConstants";
 
-// ---------------------------------------------------------------------------
-// Authentication
-// ---------------------------------------------------------------------------
-
-import { PortalSelection, RoleRoute } from "../features/authentication";
-
-import Login from "../features/authentication/pages/Login";
-
-// ---------------------------------------------------------------------------
-// Admin Pages
-// ---------------------------------------------------------------------------
-
-import {
-  AddFood,
-  ArchivedFoods,
-  EditFood,
-  FoodList,
-  ViewFood,
-} from "../features/foods";
-
-import Orders from "../features/orders/pages/Orders";
-
-// ---------------------------------------------------------------------------
-// Constants
-// ---------------------------------------------------------------------------
-
-import { ROUTES } from "../global/constants";
-import AdminLayout from "../global/layouts/AdminLayout";
+import AdminRoutes from "./AdminRoutes";
+import AuthRoutes from "./AuthRoutes";
+import CustomerRoutes from "./CustomerRoutes";
+import DeliveryRoutes from "./DeliveryRoutes";
 import ProtectedRoute from "./ProtectedRoute";
+import RestaurantRoutes from "./RestaurantRoutes";
 
 const AppRoutes = () => {
   return (
     <Routes>
-      {/* ================================================================
-          Public Routes
-         ================================================================ */}
-
+      {/* Application entry */}
       <Route
-        path={ROUTES.LOGIN}
-        element={<Login />}
+        path={ROUTES.HOME}
+        element={
+          <Navigate
+            to={ROUTES.PORTAL_SELECTION}
+            replace
+          />
+        }
       />
 
-      {/* ================================================================
-          Authenticated Routes
-         ================================================================ */}
+      {/* Public authentication routes */}
+      <Route
+        path="/*"
+        element={<AuthRoutes />}
+      />
 
+      {/* Authentication boundary */}
       <Route element={<ProtectedRoute />}>
-        {/* Portal selection is available to authenticated users. */}
         <Route
           path={ROUTES.PORTAL_SELECTION}
           element={<PortalSelection />}
         />
 
-        {/* ============================================================
-            Admin Portal
-           ============================================================ */}
+        {/* Admin portal */}
+        <Route
+          path={`${ROUTES.ADMIN}/*`}
+          element={<AdminRoutes />}
+        />
 
-        <Route element={<RoleRoute allowedRoles={["ADMIN"]} />}>
-          <Route element={<AdminLayout />}>
-            <Route
-              path={ROUTES.HOME}
-              element={<FoodList />}
-            />
+        {/* Customer portal */}
+        <Route
+          path={`${ROUTES.CUSTOMER}/*`}
+          element={<CustomerRoutes />}
+        />
 
-            <Route
-              path={ROUTES.ADD_FOOD}
-              element={<AddFood />}
-            />
+        {/* Restaurant portal */}
+        <Route
+          path={`${ROUTES.RESTAURANT}/*`}
+          element={<RestaurantRoutes />}
+        />
 
-            <Route
-              path={ROUTES.FETCH_ALL_FOODS}
-              element={<FoodList />}
-            />
-
-            <Route
-              path={ROUTES.FETCH_ALL_ORDERS}
-              element={<Orders />}
-            />
-
-            <Route
-              path={ROUTES.VIEW_FOOD}
-              element={<ViewFood />}
-            />
-
-            <Route
-              path={ROUTES.EDIT_FOOD}
-              element={<EditFood />}
-            />
-
-            <Route
-              path={ROUTES.GET_ARCHIVED_FOODS}
-              element={<ArchivedFoods />}
-            />
-          </Route>
-        </Route>
+        <Route
+          path={`${ROUTES.DELIVERY_PARTNER}/*`}
+          element={<DeliveryRoutes />}
+        />
       </Route>
     </Routes>
   );

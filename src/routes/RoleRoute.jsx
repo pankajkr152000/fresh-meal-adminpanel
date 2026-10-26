@@ -27,11 +27,11 @@
 
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 
-import { useAuthentication } from "../context/AuthenticationContext";
+import { useAuthentication } from "../features/authentication/context/AuthenticationContext";
 
-import { resolveUserPortals } from "../utils/RoleResolver";
+import { resolveUserPortals } from "../features/authentication/utils/RoleResolver";
 
-import { ROUTES } from "../../../global/constants";
+import { ROUTES } from "../global/constants";
 
 /**
  * Normalizes a role identifier for comparison.

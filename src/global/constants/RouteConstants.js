@@ -1,80 +1,48 @@
 /**
  * ============================================================================
- * Constants : RouteConstants
+ * Constants: RouteConstants
  * ============================================================================
  *
- * <p>
- * Centralized definitions for frontend navigation routes in the FreshMeal
- * application.
- * </p>
+ * Centralized definitions for frontend navigation routes in FreshMeal.
  *
- * <p>
- * These constants represent client-side routes handled by React Router.
- * Backend API endpoints must be defined separately in ApiConstants.
- * </p>
+ * These constants represent client-side React Router paths. Backend API
+ * endpoints belong in ApiConstants.
  *
- * <p>
- * Keeping frontend navigation paths separate from backend API endpoints
- * prevents responsibility overlap and improves maintainability.
- * </p>
+ * Portal-specific routes use explicit prefixes to avoid collisions between
+ * role-specific application experiences.
  *
- * ============================================================================
+ * Compatibility aliases are retained temporarily while existing consumers
+ * are migrated to the canonical route names.
  *
  * @author Pankaj Kumar
  * @since 1.0
+ * ============================================================================
  */
 
-/**
- * Frontend navigation routes.
- *
- * <p>
- * These paths are consumed by React Router, navigation components, and
- * application-level redirects.
- * </p>
- */
 export const ROUTES = Object.freeze({
-  // --------------------------------------------------------------------------
-  // Public Routes
-  // --------------------------------------------------------------------------
-
+  // Application entry
   HOME: "/",
+
+  // Authentication
   LOGIN: "/login",
   REGISTER: "/register",
   FORGOT_PASSWORD: "/forgot-password",
   VERIFY_EMAIL_OTP: "/verify-email-otp",
   VERIFY_OTP: "/verify-otp",
   RESET_PASSWORD: "/reset-password",
-
-  // --------------------------------------------------------------------------
-  // Authentication Routes
-  // --------------------------------------------------------------------------
-
   LOGOUT: "/logout",
 
-  // --------------------------------------------------------------------------
-  // Food Management Routes
-  // --------------------------------------------------------------------------
-
-  VIEW_FOOD: "/foods/view/:foodId",
-  EDIT_FOOD: "/foods/edit/:foodId",
-
-  // --------------------------------------------------------------------------
-  // Order Management Routes
-  // --------------------------------------------------------------------------
-
-  FETCH_ALL_ORDERS: "/orders",
-
-  // --------------------------------------------------------------------------
-  // User Routes
-  // --------------------------------------------------------------------------
-
-  PROFILE: "/profile",
-
-  // --------------------------------------------------------------------------
-  // Portal Navigation Routes
-  // --------------------------------------------------------------------------
-
+  // Portal selection
   PORTAL_SELECTION: "/select-portal",
+
+  // Portal entry paths
+  ADMIN: "/admin",
+  CUSTOMER: "/customer",
+  RESTAURANT: "/restaurant",
+  DELIVERY_PARTNER: "/delivery",
+
+  // Shared application pages
+  PROFILE: "/profile",
 });
 
 export default ROUTES;
