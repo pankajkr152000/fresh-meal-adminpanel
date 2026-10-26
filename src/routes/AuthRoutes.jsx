@@ -21,18 +21,22 @@ import { Route, Routes } from "react-router-dom";
 import Login from "../features/authentication/pages/Login";
 
 import { ROUTES } from "../global/constants/RouteConstants";
+import { AuthLayout } from "../layouts/AuthLayout";
 
 const AuthRoutes = () => {
   return (
     <Routes>
-      {/* Login */}
-      <Route
-        path={ROUTES.LOGIN}
-        element={<Login />}
-      />
+      <Route element={<AuthLayout />}>
+        {/* Keep all existing authentication routes here. */}
 
-      {/* Password recovery */}
-      {/* <Route
+        {/* Login */}
+        <Route
+          path={ROUTES.LOGIN}
+          element={<Login />}
+        />
+
+        {/* Password recovery */}
+        {/* <Route
         path={ROUTES.FORGOT_PASSWORD}
         element={<ForgotPassword />}
       />
@@ -41,8 +45,8 @@ const AuthRoutes = () => {
         element={<ResetPassword />}
       /> */}
 
-      {/* OTP verification */}
-      {/* <Route
+        {/* OTP verification */}
+        {/* <Route
         path={ROUTES.VERIFY_EMAIL_OTP}
         element={<VerifyEmailOtp />}
       />
@@ -51,7 +55,8 @@ const AuthRoutes = () => {
         element={<VerifyOtp />}
       /> */}
 
-      {/* Unknown paths handled by the parent application router. */}
+        {/* Unknown paths handled by the parent application router. */}
+      </Route>
     </Routes>
   );
 };

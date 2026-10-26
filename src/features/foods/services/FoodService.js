@@ -1,5 +1,5 @@
 import apiClient from "../../../api/apiClient";
-import { API } from "../../../global/constants/ApiConstants";
+import { API } from "../../../config/apiEndpoints";
 
 /**
  * ============================================================================

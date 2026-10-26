@@ -1,54 +1,33 @@
 /**
  * ============================================================================
- * Constants : ApiConstants
+ * Constants: API Endpoints
  * ============================================================================
  *
- * <p>
- * Centralized definitions for backend API endpoints used by the FreshMeal
- * frontend.
- * </p>
+ * Centralized backend API endpoint definitions for FreshMeal.
  *
- * <p>
- * API endpoints are defined as relative paths. The environment-specific backend
- * URL is configured separately through Vite environment variables.
- * </p>
+ * Endpoint paths are relative to API_BASE_URL, which is configured separately
+ * in ApiConfig.js and used by the shared Axios client.
  *
- * <p>
- * Frontend navigation paths must be defined in RouteConstants instead.
- * </p>
+ * Frontend navigation paths belong in RouteConstants.js.
  *
- * ============================================================================
+ * IMPORTANT:
+ * Endpoint paths must match the actual Spring Boot controller mappings.
+ * Existing paths are retained during this refactor.
  *
  * @author Pankaj Kumar
  * @since 1.0
  */
 
-/**
- * Base URL of the Spring Boot backend.
- *
- * <p>
- * Retained for compatibility with existing imports. API endpoint definitions
- * should use relative paths and rely on the configured Axios base URL.
- * </p>
- */
-// export const BASE_URL = import.meta.env.VITE_API_BASE_URL;
-/**
- * Backend Base URL.
- *
- * <p>
- * Centralized configuration for the Spring Boot backend.
- * </p>
- */
-// export const BASE_URL = "http://localhost:8030";
+const encodePathParameter = (value, parameterName) => {
+  if (value === undefined || value === null || String(value).trim() === "") {
+    throw new TypeError(
+      `${parameterName} is required to build the API endpoint.`,
+    );
+  }
 
-/**
- * Centralized backend API endpoint definitions.
- *
- * <p>
- * All endpoint values are relative paths so they can be resolved against the
- * environment-specific base URL configured in the Axios client.
- * </p>
- */
+  return encodeURIComponent(String(value));
+};
+
 export const API = Object.freeze({
   // --------------------------------------------------------------------------
   // Authentication
@@ -67,18 +46,28 @@ export const API = Object.freeze({
   FOOD: Object.freeze({
     FOOD_METADATA: "/api/foods/foodCategoryMetadata",
 
+    // Create
     ADD_FOOD: "/api/foods/add",
+
+    // Compatibility alias; remove only after migrating existing consumers.
     CREATE: "/api/foods/add",
 
+    // Read
     GET_ALL_FOODS: "/api/foods/readAllFoods",
     GET_FOOD_BY_ID: "/api/foods/view",
+
+    // Update
     EDIT_FOOD: "/api/foods/edit",
 
-    UPDATE: (id) => `/api/v1/foods/${id}`,
-    UPDATE_FOOD_STATUS: (id) => `/api/foods/${id}/status`,
+    UPDATE: (id) => `/api/v1/foods/${encodePathParameter(id, "Food ID")}`,
 
-    DELETE: (id) => `/api/v1/foods/${id}`,
+    UPDATE_FOOD_STATUS: (id) =>
+      `/api/foods/${encodePathParameter(id, "Food ID")}/status`,
 
+    // Delete
+    DELETE: (id) => `/api/v1/foods/${encodePathParameter(id, "Food ID")}`,
+
+    // Archived food management
     GET_ARCHIVED_FOODS: "/api/foods/archived",
     ARCHIVE_FOOD: "/api/foods/archive",
     BULK_ARCHIVE_FOOD: "/api/foods/bulkArchive",
@@ -96,8 +85,11 @@ export const API = Object.freeze({
 
   ORDER: Object.freeze({
     GET_ALL: "/api/v1/orders",
-    GET_BY_ID: (id) => `/api/v1/orders/${id}`,
-    UPDATE_STATUS: (id) => `/api/v1/orders/${id}/status`,
+
+    GET_BY_ID: (id) => `/api/v1/orders/${encodePathParameter(id, "Order ID")}`,
+
+    UPDATE_STATUS: (id) =>
+      `/api/v1/orders/${encodePathParameter(id, "Order ID")}/status`,
   }),
 
   // --------------------------------------------------------------------------
@@ -106,7 +98,9 @@ export const API = Object.freeze({
 
   IMAGE: Object.freeze({
     UPLOAD: "/api/v1/images/upload",
-    DELETE: (imageId) => `/api/v1/images/${imageId}`,
+
+    DELETE: (imageId) =>
+      `/api/v1/images/${encodePathParameter(imageId, "Image ID")}`,
   }),
 });
 

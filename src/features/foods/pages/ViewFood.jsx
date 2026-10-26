@@ -22,7 +22,7 @@ import useFoodDetails from "../hooks/useFoodDetails";
 
 import { FOOD_DETAIL_SECTIONS } from "../constants/foodDetails.config";
 
-import PageLayout from "../../../global/layouts/PageLayout";
+import PageLayout from "../../../layouts/AuthLayout/PageLayout";
 
 import DetailColumn from "../../../global/components/details/layout/DetailColumn";
 import DetailContainer from "../../../global/components/details/layout/DetailContainer";

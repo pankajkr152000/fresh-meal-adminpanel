@@ -18,8 +18,8 @@
 
 import { Route, Routes } from "react-router-dom";
 
-import RestaurantHome from "../features/restaurants/pages/RestaurantHome";
 import RestaurantLayout from "../layouts/RestaurantLayout";
+import RestaurantHome from "../portals/restaurant/pages/RestaurantHome";
 import RoleRoute from "./RoleRoute";
 
 const RestaurantRoutes = () => {

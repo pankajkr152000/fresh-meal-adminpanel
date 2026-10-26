@@ -95,9 +95,9 @@
 import axios from "axios";
 
 import { API_BASE_URL } from "../config/ApiConfig";
+import { API } from "../config/apiEndpoints";
 import AuthenticationSessionStorage from "../features/authentication/services/AuthenticationSessionStorage";
 import AuthenticationTokenRefreshManager from "../features/authentication/services/AuthenticationTokenRefreshManager";
-import { API } from "../global/constants/ApiConstants";
 
 /**
  * Internal Axios request configuration property used to prevent an individual

@@ -1,7 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 
-import DeliveryHome from "../features/delivery/pages/DeliveryHome";
 import DeliveryLayout from "../layouts/DeliveryLayout";
+import DeliveryHome from "../portals/delivery/pages/DeliveryHome";
 import RoleRoute from "./RoleRoute";
 
 /**
