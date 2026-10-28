@@ -2,6 +2,7 @@ import { useCallback, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { ROUTES } from "../../../global/constants/RouteConstants";
+import RestaurantContextStorage from "../../../portals/restaurant/services/RestaurantContextStorage";
 import { useAuthentication } from "../context/AuthenticationContext";
 import AuthenticationService from "../services/AuthenticationService";
 
@@ -70,6 +71,7 @@ const useLogout = () => {
    * @returns {Promise<Object|null>}
    *          Backend logout response.
    */
+
   const logout = useCallback(async () => {
     setIsLoggingOut(true);
     setError(null);
@@ -77,8 +79,13 @@ const useLogout = () => {
     try {
       const response = await AuthenticationService.logout();
 
+      // Clear restaurant-specific context after backend logout succeeds.
+      RestaurantContextStorage.clear();
+
+      // Terminate the local authentication session.
       unauthenticate();
 
+      // Redirect the user to the login page.
       navigate(ROUTES.LOGIN, {
         replace: true,
       });
@@ -88,11 +95,9 @@ const useLogout = () => {
       setError(err);
 
       /**
-       * Do not clear the local session automatically here.
-       *
-       * If the backend logout request fails because of a temporary network
-       * problem, keeping the current session allows the user to remain
-       * authenticated instead of creating an inconsistent client state.
+       * Preserve the existing failure behavior:
+       * if backend logout fails, do not automatically terminate the
+       * authentication session or clear restaurant context.
        */
       throw err;
     } finally {

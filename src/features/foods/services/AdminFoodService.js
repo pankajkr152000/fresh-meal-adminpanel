@@ -3,26 +3,22 @@ import { API } from "../../../config/apiEndpoints";
 
 /**
  * ============================================================================
- * Food Service
+ * Admin Food Service
  * ============================================================================
  *
  * Responsibilities:
- * - Create food
- * - Retrieve foods
- * - Retrieve food details
- * - Update food
- * - Update food status
- * - Retrieve archived foods
- * - Archive food
- * - Bulk archive foods
- * - Restore food
- * - Bulk restore foods
- * - Permanently delete food
- * - Bulk permanently delete foods
+ * - Create and retrieve foods.
+ * - Retrieve food details.
+ * - Update food details and status.
+ * - Retrieve, archive, and restore foods.
+ * - Perform bulk archive and restore operations.
+ * - Permanently delete foods, individually or in bulk.
+ *
+ * Uses the existing shared API client and API endpoint configuration.
  * ============================================================================
  */
 
-const FoodService = {
+const AdminFoodService = {
   /**
    * Create Food
    *
@@ -261,4 +257,4 @@ const FoodService = {
   },
 };
 
-export default FoodService;
+export default AdminFoodService;

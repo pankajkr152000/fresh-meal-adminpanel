@@ -1,61 +1,48 @@
 /**
- * ============================================================================
- * App Layout
- * ============================================================================
- *
- * Global layout foundation for role-specific application shells.
- *
- * Responsibilities:
- * - Application viewport management
- * - Sidebar/content relationship
- * - Main content spacing
- * - Responsive behavior
- * - Compact enterprise UI density
- *
- * ============================================================================
+ * FreshMeal - Global Application Layout
+ * Shared layout foundation for role-specific application shells.
  */
-
-/* =============================================================================
-   Layout Variables
-   ============================================================================= */
 
 :root {
   --app-sidebar-width: 240px;
   --app-navbar-height: 56px;
-
-  --app-content-padding: 16px;
-  --app-content-padding-mobile: 12px;
-
-  --app-layout-transition: 0.25s ease;
+  --app-content-padding: 14px;
+  --app-content-padding-mobile: 10px;
+  --app-layout-transition: 200ms ease;
 }
 
-/* =============================================================================
-   Global Layout Safety
-   ============================================================================= */
+/* Viewport safety */
 
-#wrapper {
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+}
+
+#wrapper,
+#restaurant-wrapper {
   width: 100%;
   min-height: 100vh;
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 
-/* =============================================================================
-   Page Content Wrapper
-   ============================================================================= */
+/* Main content wrappers */
 
-#page-content-wrapper {
-  flex: 1;
+#page-content-wrapper,
+#restaurant-page-content-wrapper {
+  flex: 1 1 auto;
   min-width: 0;
   min-height: 100vh;
-
   transition:
     margin-left var(--app-layout-transition),
-    width var(--app-layout-transition);
+    background-color var(--app-layout-transition);
 }
 
-/* =============================================================================
-   Sidebar States
-   ============================================================================= */
+/* Existing generic sidebar states */
 
 .sidebar-open {
   margin-left: var(--app-sidebar-width);
@@ -65,68 +52,39 @@
   margin-left: 0;
 }
 
-/* =============================================================================
-   Application Header
-   ============================================================================= */
+/* Existing generic application header */
 
 #page-content-wrapper > header {
   position: relative;
   z-index: 1020;
 }
 
-/* =============================================================================
-   Main Application Content
-   ============================================================================= */
+/* Generic page content */
 
 .app-content {
+  box-sizing: border-box;
   width: 100%;
+  min-width: 0;
   min-height: calc(100vh - var(--app-navbar-height));
-
   margin-top: var(--app-navbar-height);
   padding: var(--app-content-padding);
-
-  /*
-   * Keep the default application density compact.
-   * Individual components can override this when necessary.
-   */
   font-size: 0.875rem;
-  line-height: 1.45;
+  line-height: 1.4;
 }
-
-/* =============================================================================
-   Content Width Safety
-   ============================================================================= */
 
 .app-content > * {
   max-width: 100%;
 }
 
-/* =============================================================================
-   Responsive Layout
-   ============================================================================= */
-
-/*
- * Tablet
- * ---------------------------------------------------------------------------
- * Keep the sidebar behavior available while reducing content spacing.
- */
+/* Tablet */
 
 @media (max-width: 991.98px) {
   :root {
-    --app-content-padding: 14px;
-  }
-
-  .app-content {
-    padding: var(--app-content-padding);
+    --app-content-padding: 12px;
   }
 }
 
-/*
- * Mobile
- * ---------------------------------------------------------------------------
- * The sidebar is expected to behave as an off-canvas/drawer component.
- * The content area therefore must not reserve desktop sidebar space.
- */
+/* Mobile drawer layouts */
 
 @media (max-width: 767.98px) {
   .sidebar-open,
@@ -139,28 +97,23 @@
   }
 }
 
-/*
- * Small Mobile
- * ---------------------------------------------------------------------------
- */
+/* Small mobile */
 
 @media (max-width: 575.98px) {
   :root {
-    --app-content-padding-mobile: 10px;
+    --app-content-padding-mobile: 8px;
   }
 
   .app-content {
-    padding: var(--app-content-padding-mobile);
     font-size: 0.8125rem;
   }
 }
 
-/* =============================================================================
-   Reduced Motion
-   ============================================================================= */
+/* Accessibility */
 
 @media (prefers-reduced-motion: reduce) {
-  #page-content-wrapper {
+  #page-content-wrapper,
+  #restaurant-page-content-wrapper {
     transition: none;
   }
 }

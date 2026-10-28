@@ -18,7 +18,7 @@
 // ===========================================================================
 
 import { useCallback, useEffect, useState } from "react";
-import FoodService from "../services/FoodService";
+import AdminFoodService from "../services/AdminFoodService";
 
 // ===========================================================================
 // Hook
@@ -54,7 +54,7 @@ const useFoodDetails = (foodId) => {
       setLoading(true);
       setError(null);
 
-      const response = await FoodService.getFoodById(foodId);
+      const response = await AdminFoodService.getFoodById(foodId);
 
       // ApiResponse
       const viewResponse = response?.data;

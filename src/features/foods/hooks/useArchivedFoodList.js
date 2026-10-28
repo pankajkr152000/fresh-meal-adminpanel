@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { useArchivedFoodContext } from "../context";
-import FoodService from "../services/FoodService";
+import AdminFoodService from "../services/AdminFoodService";
 
 /**
  * =============================================================================
@@ -82,7 +82,7 @@ const useArchivedFoodList = () => {
       setLoading(true);
       setError("");
 
-      const response = await FoodService.getArchivedFoods(signal);
+      const response = await AdminFoodService.getArchivedFoods(signal);
 
       if (!response.success) {
         throw new Error(response.message || "Unable to load archived foods.");
@@ -292,7 +292,7 @@ const useArchivedFoodList = () => {
         setActionLoading(true);
         setActionError("");
 
-        const response = await FoodService.restoreFood(foodId);
+        const response = await AdminFoodService.restoreFood(foodId);
 
         if (!response.success) {
           throw new Error(response.message || "Unable to restore food.");
@@ -338,7 +338,7 @@ const useArchivedFoodList = () => {
       setActionLoading(true);
       setActionError("");
 
-      const response = await FoodService.bulkRestoreFoods(foodIds);
+      const response = await AdminFoodService.bulkRestoreFoods(foodIds);
 
       if (!response.success) {
         throw new Error(
@@ -384,7 +384,7 @@ const useArchivedFoodList = () => {
         setActionLoading(true);
         setActionError("");
 
-        const response = await FoodService.deleteFood(foodId);
+        const response = await AdminFoodService.deleteFood(foodId);
 
         if (!response.success) {
           throw new Error(
@@ -432,7 +432,7 @@ const useArchivedFoodList = () => {
       setActionLoading(true);
       setActionError("");
 
-      const response = await FoodService.bulkDeleteFoods(foodIds);
+      const response = await AdminFoodService.bulkDeleteFoods(foodIds);
 
       if (!response.success) {
         throw new Error(

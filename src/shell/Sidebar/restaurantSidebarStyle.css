@@ -1,0 +1,218 @@
+.restaurant-sidebar {
+  --restaurant-sidebar-width: 232px;
+  --restaurant-sidebar-bg: #172b45;
+  --restaurant-sidebar-bg-hover: #243b58;
+  --restaurant-sidebar-active: #1769e0;
+  --restaurant-sidebar-text: #e8eef7;
+  --restaurant-sidebar-muted: #a8b7cb;
+
+  position: fixed;
+  top: 54px;
+  bottom: 0;
+  left: 0;
+  z-index: 1040;
+
+  display: flex;
+  flex-direction: column;
+
+  width: var(--restaurant-sidebar-width);
+  max-width: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+
+  color: var(--restaurant-sidebar-text);
+  background: var(--restaurant-sidebar-bg);
+  border-right: 1px solid #263d59;
+
+  transition:
+    transform 200ms ease,
+    visibility 200ms ease;
+
+  scrollbar-width: thin;
+  scrollbar-color: #536781 transparent;
+}
+
+.restaurant-sidebar,
+.restaurant-sidebar * {
+  box-sizing: border-box;
+}
+
+.restaurant-sidebar-brand-container {
+  flex-shrink: 0;
+  padding: 12px;
+  border-bottom: 1px solid rgb(255 255 255 / 10%);
+}
+
+.restaurant-sidebar-brand {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  gap: 9px;
+
+  color: #ffffff;
+  text-decoration: none;
+  border-radius: 6px;
+}
+
+.restaurant-sidebar-brand-logo {
+  display: block;
+  flex: 0 0 32px;
+
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+  border-radius: 5px;
+}
+
+.restaurant-sidebar-brand-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  gap: 2px;
+}
+
+.restaurant-sidebar-brand-name {
+  overflow: hidden;
+
+  font-size: 0.9rem;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.restaurant-sidebar-brand-role {
+  overflow: hidden;
+
+  color: var(--restaurant-sidebar-muted);
+  font-size: 0.64rem;
+  font-weight: 500;
+  line-height: 1.25;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.restaurant-sidebar-navigation {
+  flex: 1;
+  min-height: 0;
+  padding: 10px 9px 16px;
+}
+
+.restaurant-sidebar-section + .restaurant-sidebar-section {
+  margin-top: 15px;
+}
+
+.restaurant-sidebar-section-title {
+  display: block;
+  padding: 0 9px;
+  margin-bottom: 5px;
+
+  color: var(--restaurant-sidebar-muted);
+  font-size: 0.64rem;
+  font-weight: 700;
+  line-height: 1.4;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.restaurant-sidebar-nav-item {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: 34px;
+  gap: 10px;
+  padding: 7px 9px;
+  margin: 2px 0;
+
+  color: var(--restaurant-sidebar-text);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 6px;
+
+  font-size: 0.8rem;
+  font-weight: 500;
+  line-height: 1.3;
+  text-decoration: none;
+
+  transition:
+    color 140ms ease,
+    background-color 140ms ease,
+    border-color 140ms ease;
+}
+
+.restaurant-sidebar-nav-item > i {
+  display: inline-flex;
+  flex: 0 0 18px;
+  align-items: center;
+  justify-content: center;
+
+  width: 18px;
+  font-size: 0.92rem;
+  line-height: 1;
+}
+
+.restaurant-sidebar-nav-item > span {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.restaurant-sidebar-nav-item:hover {
+  color: #ffffff;
+  background: var(--restaurant-sidebar-bg-hover);
+}
+
+.restaurant-sidebar-nav-item.active {
+  color: #ffffff;
+  background: var(--restaurant-sidebar-active);
+  border-color: rgb(255 255 255 / 10%);
+  font-weight: 600;
+}
+
+.restaurant-sidebar-nav-item:focus-visible,
+.restaurant-sidebar-brand:focus-visible {
+  outline: 2px solid #93c5fd;
+  outline-offset: 2px;
+}
+
+.restaurant-sidebar-visible {
+  visibility: visible;
+  transform: translateX(0);
+}
+
+.restaurant-sidebar-hidden {
+  visibility: hidden;
+  transform: translateX(-100%);
+  pointer-events: none;
+}
+
+@media (max-width: 767.98px) {
+  .restaurant-sidebar {
+    width: min(260px, calc(100vw - 44px));
+    box-shadow: 8px 0 24px rgb(10 25 45 / 18%);
+  }
+
+  .restaurant-sidebar-brand-container {
+    padding: 11px 12px;
+  }
+
+  .restaurant-sidebar-navigation {
+    padding: 10px 9px 16px;
+  }
+
+  .restaurant-sidebar-nav-item {
+    min-height: 38px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .restaurant-sidebar,
+  .restaurant-sidebar-nav-item {
+    transition: none;
+  }
+}

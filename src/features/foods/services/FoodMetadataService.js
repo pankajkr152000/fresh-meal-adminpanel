@@ -42,6 +42,14 @@ const FoodMetadataService = {
 
     return response.data;
   },
+
+  async getCuisineMetadata(signal) {
+    const response = await apiClient.get(API.FOOD.FOOD_CUISINE_METADATA, {
+      signal,
+    });
+
+    return response.data;
+  },
 };
 
 export default FoodMetadataService;

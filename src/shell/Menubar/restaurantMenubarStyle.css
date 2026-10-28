@@ -1,0 +1,211 @@
+/*
+ * ============================================================================
+ * FreshMeal - Restaurant Menubar
+ * Description: Responsive, theme-aware navigation bar for the Restaurant Portal.
+ * Theme tokens are defined centrally in global/styles/theme.css.
+ * ============================================================================
+ */
+
+.restaurant-menubar {
+  --restaurant-navbar-height: 54px;
+  --restaurant-navy: var(--fm-text-primary, #172b45);
+  --restaurant-blue: var(--fm-accent, #2563eb);
+  --restaurant-blue-hover: var(--fm-accent-hover, #1d4ed8);
+
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 1050;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+
+  height: var(--restaurant-navbar-height);
+  padding: 0 16px;
+
+  color: var(--fm-text-primary, #172b45);
+  background-color: var(--fm-surface, #ffffff);
+  border-bottom: 1px solid var(--fm-border, #e0e7f0);
+  box-shadow: 0 1px 4px rgb(0 0 0 / 5%);
+
+  transition:
+    background-color 150ms ease,
+    border-color 150ms ease,
+    color 150ms ease;
+}
+
+.restaurant-menubar,
+.restaurant-menubar * {
+  box-sizing: border-box;
+}
+
+.restaurant-menubar-start,
+.restaurant-menubar-actions {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  gap: 10px;
+}
+
+.restaurant-menu-toggle,
+.restaurant-theme-toggle,
+.restaurant-logout-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+
+  min-height: 34px;
+  padding: 6px 10px;
+
+  font: inherit;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  line-height: 1.2;
+  white-space: nowrap;
+
+  border: 1px solid var(--fm-border, #e0e7f0);
+  border-radius: 7px;
+  cursor: pointer;
+
+  transition:
+    background-color 150ms ease,
+    border-color 150ms ease,
+    color 150ms ease,
+    box-shadow 150ms ease;
+}
+
+.restaurant-menu-toggle {
+  width: 36px;
+  padding: 0;
+
+  color: var(--fm-text-primary, #34445b);
+  background-color: var(--fm-surface, #ffffff);
+}
+
+.restaurant-menu-toggle i {
+  font-size: 1.15rem;
+}
+
+.restaurant-menu-toggle:hover,
+.restaurant-theme-toggle:hover {
+  color: var(--fm-text-primary, #172b45);
+  background-color: var(--fm-surface-raised, #f3f7fd);
+  border-color: var(--fm-accent, #2563eb);
+}
+
+.restaurant-menubar-home {
+  display: inline-flex;
+  align-items: center;
+  min-width: 0;
+  gap: 9px;
+
+  color: var(--restaurant-navy);
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.restaurant-menubar-home:hover {
+  color: var(--fm-accent, #2563eb);
+}
+
+.restaurant-menubar-home-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+
+  color: #ffffff;
+  background-color: var(--restaurant-blue);
+  border-radius: 10px;
+}
+
+.restaurant-menubar-home-mark i {
+  font-size: 1rem;
+}
+
+.restaurant-menubar-home-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.restaurant-menubar-actions {
+  flex-shrink: 0;
+}
+
+.restaurant-theme-toggle {
+  color: var(--fm-text-primary, #34445b);
+  background-color: var(--fm-surface, #ffffff);
+}
+
+.restaurant-theme-toggle #theme-icon {
+  font-size: 0.95rem;
+}
+
+.restaurant-logout-button {
+  color: #ffffff;
+  background-color: var(--restaurant-blue);
+  border-color: var(--restaurant-blue);
+}
+
+.restaurant-logout-button:hover:not(:disabled) {
+  color: #ffffff;
+  background-color: var(--restaurant-blue-hover);
+  border-color: var(--restaurant-blue-hover);
+}
+
+.restaurant-logout-button:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.restaurant-menu-toggle:focus-visible,
+.restaurant-theme-toggle:focus-visible,
+.restaurant-logout-button:focus-visible,
+.restaurant-menubar-home:focus-visible {
+  outline: 2px solid var(--fm-accent, #2563eb);
+  outline-offset: 2px;
+}
+
+@media (max-width: 575.98px) {
+  .restaurant-menubar {
+    padding: 0 10px;
+    gap: 6px;
+  }
+
+  .restaurant-menubar-start,
+  .restaurant-menubar-actions {
+    gap: 6px;
+  }
+
+  .restaurant-menubar-home {
+    gap: 6px;
+    font-size: 0.82rem;
+  }
+
+  .restaurant-theme-toggle,
+  .restaurant-logout-button {
+    width: 36px;
+    padding: 0;
+  }
+
+  .restaurant-theme-toggle #theme-text,
+  .restaurant-logout-button span {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .restaurant-menubar,
+  .restaurant-menu-toggle,
+  .restaurant-theme-toggle,
+  .restaurant-logout-button {
+    transition: none;
+  }
+}
