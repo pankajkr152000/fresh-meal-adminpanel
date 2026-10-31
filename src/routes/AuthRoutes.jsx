@@ -20,6 +20,7 @@ import { Route, Routes } from "react-router-dom";
 
 import Login from "../features/authentication/pages/Login";
 
+import Register from "../features/authentication/pages/Register";
 import { ROUTES } from "../global/constants/RouteConstants";
 import { AuthLayout } from "../layouts/AuthLayout";
 
@@ -33,6 +34,12 @@ const AuthRoutes = () => {
         <Route
           path={ROUTES.LOGIN}
           element={<Login />}
+        />
+
+        {/* Register */}
+        <Route
+          path={ROUTES.REGISTER}
+          element={<Register />}
         />
 
         {/* Password recovery */}

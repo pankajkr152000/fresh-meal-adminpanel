@@ -4,13 +4,98 @@ import { useNavigate } from "react-router-dom";
 import usePincodeLookup from "../../../global/hooks/usePincodeLookup";
 import { RESTAURANT_ROUTES } from "../../../routes/RestaurantRouteConstants";
 import useRestaurantCuisineMetadata from "../hooks/useRestaurantCuisineMetadata";
+import RestaurantOnboardingService from "../services/RestaurantOnboardingService";
 
 import "./restaurantOnboarding.css";
 
 const TOTAL_STEPS = 4;
 const DRAFT_STORAGE_KEY = "freshmeal.restaurantOnboarding.draft.v2";
-const COMPLETED_STORAGE_KEY = "freshmeal.restaurantOnboarding.completed.v2";
 const MAX_IMAGE_SIZE_BYTES = 1 * 1024 * 1024;
+const INDIAN_MOBILE_NUMBER_PATTERN = /^[6-9][0-9]{9}$/;
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+const normalizeOptionalText = (value) => value?.trim() || null;
+
+/**
+ * Maps the onboarding wizard state to the backend registration DTO.
+ * Image previews and browser-only fields are intentionally excluded.
+ */
+const buildOnboardingPayload = (formData) => ({
+  registrationRequest: {
+    restaurant: {
+      restaurantName: formData.restaurantName.trim(),
+      description: normalizeOptionalText(formData.description),
+      phoneNumber: formData.phoneNumber.trim()
+        ? { value: formData.phoneNumber.trim() }
+        : null,
+      emailAddress: formData.emailAddress.trim()
+        ? { value: formData.emailAddress.trim() }
+        : null,
+      website: normalizeOptionalText(formData.website),
+      cuisineTypes: [...formData.cuisineTypes],
+    },
+    branch: {
+      branchName: formData.branchName.trim(),
+      contactPhoneNumber: formData.branchContactPhone.trim()
+        ? { value: formData.branchContactPhone.trim() }
+        : null,
+      contactEmailAddress: formData.branchContactEmail.trim()
+        ? { value: formData.branchContactEmail.trim() }
+        : null,
+      address: {
+        houseNumber: normalizeOptionalText(formData.address.houseNumber),
+        apartmentName: normalizeOptionalText(formData.address.apartmentName),
+        street: formData.address.street.trim(),
+        area: formData.address.area.trim(),
+        city: formData.address.city.trim(),
+        district: normalizeOptionalText(formData.address.district),
+        state: formData.address.state.trim(),
+        country: formData.address.country.trim() || "India",
+        pincode: formData.address.pincode.trim(),
+        landmark: normalizeOptionalText(formData.address.landmark),
+        geoLocation: null,
+      },
+      operatingHours: formData.operatingHours.map((item) => ({
+        dayOfWeek: item.dayOfWeek,
+        openingTime: item.openingTime,
+        closingTime: item.closingTime,
+        closed: item.closed,
+      })),
+    },
+  },
+});
+
+const getSubmissionErrorMessage = (error) => {
+  const responseData = error?.response?.data;
+
+  if (
+    typeof responseData?.message === "string" &&
+    responseData.message.trim()
+  ) {
+    return responseData.message;
+  }
+
+  if (typeof responseData?.error === "string" && responseData.error.trim()) {
+    return responseData.error;
+  }
+
+  if (responseData?.errors && typeof responseData.errors === "object") {
+    const validationMessages = Object.values(responseData.errors).filter(
+      Boolean,
+    );
+    if (validationMessages.length) return validationMessages.join(" ");
+  }
+
+  if (error?.code === "ECONNABORTED") {
+    return "The request timed out. Please try submitting your onboarding details again.";
+  }
+
+  if (!error?.response) {
+    return "Unable to reach FreshMeal. Check your connection and try again.";
+  }
+
+  return "We could not submit your restaurant details. Please review the information and try again.";
+};
 
 const INITIAL_FORM_STATE = {
   restaurantName: "",
@@ -79,7 +164,6 @@ const INITIAL_FORM_STATE = {
   phoneNumber: "",
   emailAddress: "",
   website: "",
-  branchContactName: "",
   branchContactPhone: "",
   branchContactEmail: "",
 };
@@ -102,7 +186,7 @@ const STEP_DETAILS = [
   },
   {
     title: "Contact & review",
-    description: "Confirm your details before saving your draft.",
+    description: "Confirm your details before submitting your restaurant.",
     icon: "bi-check2-circle",
   },
 ];
@@ -160,6 +244,8 @@ const RestaurantOnboarding = () => {
   const [validationError, setValidationError] = useState("");
   const [notice, setNotice] = useState("");
   const [savedAt, setSavedAt] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   const address = formData.address;
   const locationVerified =
@@ -167,6 +253,8 @@ const RestaurantOnboarding = () => {
   const progressPercentage = (currentStep / TOTAL_STEPS) * 100;
 
   useEffect(() => {
+    if (isSubmitted) return;
+
     try {
       localStorage.setItem(DRAFT_STORAGE_KEY, JSON.stringify(formData));
       setSavedAt(new Date());
@@ -175,7 +263,7 @@ const RestaurantOnboarding = () => {
         "Your draft could not be saved in this browser. Try removing a large image and saving again.",
       );
     }
-  }, [formData]);
+  }, [formData, isSubmitted]);
 
   const updateField = (field, value) => {
     setFormData((previous) => ({ ...previous, [field]: value }));
@@ -311,31 +399,34 @@ const RestaurantOnboarding = () => {
     if (currentStep === 4) {
       if (
         formData.phoneNumber &&
-        !/^[+()\d\s-]{7,20}$/.test(formData.phoneNumber)
+        !INDIAN_MOBILE_NUMBER_PATTERN.test(formData.phoneNumber.trim())
       )
-        return "Please enter a valid restaurant phone number.";
+        return "Enter a valid 10-digit Indian mobile number for the restaurant.";
       if (
         formData.emailAddress &&
-        !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.emailAddress)
+        !EMAIL_PATTERN.test(formData.emailAddress.trim())
       )
         return "Please enter a valid restaurant email address.";
-      if (formData.website && !/^https?:\/\/.+\..+/.test(formData.website))
+      if (
+        formData.website &&
+        !/^https?:\/\/.+\..+/.test(formData.website.trim())
+      )
         return "Website must start with http:// or https://.";
       if (
         formData.branchContactPhone &&
-        !/^[+()\d\s-]{7,20}$/.test(formData.branchContactPhone)
+        !INDIAN_MOBILE_NUMBER_PATTERN.test(formData.branchContactPhone.trim())
       )
-        return "Please enter a valid branch contact phone number.";
+        return "Enter a valid 10-digit Indian mobile number for the branch.";
       if (
         formData.branchContactEmail &&
-        !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.branchContactEmail)
+        !EMAIL_PATTERN.test(formData.branchContactEmail.trim())
       )
         return "Please enter a valid branch contact email address.";
     }
     return "";
   };
 
-  const handleContinue = (event) => {
+  const handleContinue = async (event) => {
     event.preventDefault();
     const error = validateStep();
     if (error) {
@@ -344,26 +435,31 @@ const RestaurantOnboarding = () => {
     }
     setValidationError("");
     if (currentStep < TOTAL_STEPS) setCurrentStep((step) => step + 1);
-    else handleSaveLocally();
+    else await handleSubmitOnboarding();
   };
 
-  const handleSaveLocally = () => {
+  const handleSubmitOnboarding = async () => {
+    if (isSubmitting || isSubmitted) return;
+
+    setIsSubmitting(true);
+    setValidationError("");
+    setNotice("");
+
     try {
-      const record = {
-        ...formData,
-        restaurantName: formData.restaurantName.trim(),
-        branchName: formData.branchName.trim(),
-        savedAt: new Date().toISOString(),
-      };
-      localStorage.setItem(COMPLETED_STORAGE_KEY, JSON.stringify(record));
+      const payload = buildOnboardingPayload(formData);
+      await RestaurantOnboardingService.onboardRestaurant(payload);
+
+      // Remove the local draft only after the backend confirms success.
       localStorage.removeItem(DRAFT_STORAGE_KEY);
+      setIsSubmitted(true);
+      setSavedAt(null);
       setNotice(
-        "Your onboarding details have been saved in this browser. They have not been submitted to the FreshMeal backend.",
+        "Your restaurant and first branch have been submitted successfully.",
       );
-    } catch {
-      setNotice(
-        "The browser could not save these details. Remove an image or reduce its size and try again.",
-      );
+    } catch (error) {
+      setValidationError(getSubmissionErrorMessage(error));
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -1124,7 +1220,7 @@ const RestaurantOnboarding = () => {
                       <h3>How should people reach you?</h3>
                       <p>
                         Add contact details, then review your setup before
-                        saving locally.
+                        submitting.
                       </p>
                     </div>
                   </div>
@@ -1139,8 +1235,8 @@ const RestaurantOnboarding = () => {
                         name: "phoneNumber",
                         value: formData.phoneNumber,
                         type: "tel",
-                        maxLength: 20,
-                        placeholder: "+91 98765 43210",
+                        maxLength: 10,
+                        placeholder: "9876543210",
                         autoComplete: "tel",
                       })}
                       {renderTextInput({
@@ -1165,24 +1261,18 @@ const RestaurantOnboarding = () => {
                   </div>
                   <div className="contact-group">
                     <h3>
-                      <i className="bi bi-person-badge me-2" />
+                      <i className="bi bi-geo-alt me-2" />
                       Branch contact <span>Optional</span>
                     </h3>
                     <div className="row g-3">
-                      {renderTextInput({
-                        label: "Contact person",
-                        name: "branchContactName",
-                        value: formData.branchContactName,
-                        maxLength: 150,
-                        placeholder: "Manager or point of contact",
-                      })}
                       {renderTextInput({
                         label: "Phone number",
                         name: "branchContactPhone",
                         value: formData.branchContactPhone,
                         type: "tel",
-                        maxLength: 20,
-                        placeholder: "+91 98765 43210",
+                        maxLength: 10,
+                        placeholder: "9876543210",
+                        autoComplete: "tel",
                       })}
                       {renderTextInput({
                         label: "Email address",
@@ -1190,7 +1280,8 @@ const RestaurantOnboarding = () => {
                         value: formData.branchContactEmail,
                         type: "email",
                         maxLength: 254,
-                        placeholder: "manager@yourrestaurant.com",
+                        placeholder: "branch@yourrestaurant.com",
+                        autoComplete: "email",
                       })}
                     </div>
                   </div>
@@ -1313,7 +1404,6 @@ const RestaurantOnboarding = () => {
                       </p>
                       <p>
                         {[
-                          formData.branchContactName,
                           formData.branchContactPhone,
                           formData.branchContactEmail,
                         ]
@@ -1325,11 +1415,12 @@ const RestaurantOnboarding = () => {
                   <div className="local-save-note">
                     <i className="bi bi-shield-lock-fill" />
                     <div>
-                      <strong>Local draft only</strong>
+                      <strong>Ready to submit</strong>
                       <p>
-                        This step saves your details in this browser for now. It
-                        does not create a restaurant in the backend or upload
-                        photos to a server.
+                        Your restaurant and first branch details will be
+                        submitted securely. Photos are retained only as local
+                        previews because image upload is not part of the current
+                        backend contract.
                       </p>
                     </div>
                   </div>
@@ -1346,11 +1437,9 @@ const RestaurantOnboarding = () => {
               )}
               {notice && (
                 <div
-                  className={`alert ${notice.startsWith("Your onboarding") ? "alert-success" : "alert-warning"} onboarding-notice mt-3 mb-0`}
+                  className="alert alert-success onboarding-notice mt-3 mb-0"
                   role="status">
-                  <i
-                    className={`bi ${notice.startsWith("Your onboarding") ? "bi-check-circle-fill" : "bi-info-circle-fill"} me-2`}
-                  />
+                  <i className="bi bi-check-circle-fill me-2" />
                   {notice}
                 </div>
               )}
@@ -1366,22 +1455,31 @@ const RestaurantOnboarding = () => {
                 <div className="actions-right">
                   <span className="save-hint">
                     <i className="bi bi-cloud-check me-1" />
-                    Auto-saved locally
+                    {isSubmitted
+                      ? "Submitted successfully"
+                      : "Draft auto-saved locally"}
                   </span>
                   <button
                     type="submit"
                     className="btn btn-continue"
                     disabled={
+                      isSubmitted ||
+                      isSubmitting ||
                       (currentStep === 1 &&
                         (isLoadingMetadata ||
                           Boolean(metadataError) ||
                           cuisineOptions.length === 0)) ||
                       (currentStep === 2 && isLookingUpPincode)
                     }>
-                    {currentStep === TOTAL_STEPS ? (
+                    {isSubmitting ? (
+                      <>
+                        <span className="spinner-border spinner-border-sm me-2" />
+                        Submitting...
+                      </>
+                    ) : currentStep === TOTAL_STEPS ? (
                       <>
                         <i className="bi bi-check2-circle me-2" />
-                        Save details
+                        Submit onboarding
                       </>
                     ) : (
                       <>
@@ -1395,8 +1493,9 @@ const RestaurantOnboarding = () => {
           </section>
         </div>
         <p className="onboarding-footnote">
-          <i className="bi bi-lock me-1" /> Your progress is stored in this
-          browser on this device until backend integration is added.
+          <i className="bi bi-lock me-1" /> Your progress is auto-saved locally
+          while you complete the form. Submission creates your restaurant and
+          first branch in FreshMeal.
         </p>
       </div>
     </main>

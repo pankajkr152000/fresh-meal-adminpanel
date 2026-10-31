@@ -50,12 +50,24 @@ export const API = Object.freeze({
   // --------------------------------------------------------------------------
 
   AUTHENTICATION: Object.freeze({
+    // Registration
+    REGISTER: "/api/auth/register",
+
+    // Email verification
+    VERIFY_EMAIL_OTP: "/api/auth/verify-email-otp",
+    RESEND_EMAIL_OTP: "/api/auth/resend-email-otp",
+
+    // Authentication
     LOGIN: "/api/auth/login",
     LOGOUT: "/api/auth/logout",
-    REFRESH_TOKEN: "/api/auth/refresh-token",
 
-    // Verify the exact controller mappings before adding registration,
-    // email verification, OTP, password reset, and session endpoints.
+    // Token management
+    REFRESH_TOKEN: "/api/auth/refresh",
+
+    // Password management
+    CHANGE_PASSWORD: "/api/auth/change-password",
+    FORGOT_PASSWORD: "/api/auth/forgot-password",
+    RESET_PASSWORD: "/api/auth/reset-password",
   }),
 
   // --------------------------------------------------------------------------

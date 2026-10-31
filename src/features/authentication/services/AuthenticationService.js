@@ -128,6 +128,15 @@ const AuthenticationService = {
     });
     return response.data;
   },
+
+  register: async (registrationRequest) => {
+    const response = await apiClient.post(
+      API.AUTHENTICATION.REGISTER,
+      registrationRequest,
+    );
+
+    return response.data;
+  },
 };
 
 export default AuthenticationService;

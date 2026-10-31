@@ -1,0 +1,407 @@
+/* ==========================================================================
+   FreshMeal Registration
+   ========================================================================== */
+
+.freshmeal-register {
+  --register-orange: #ff641a;
+  --register-orange-dark: #e94e0b;
+  --register-orange-light: #fff0e5;
+  --register-text: #252525;
+  --register-muted: #777777;
+  --register-border: #e8e8e8;
+
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 36px 20px;
+  background:
+    radial-gradient(circle at 10% 15%, #ffe0ca 0, transparent 32%),
+    radial-gradient(circle at 90% 85%, #ffd9bd 0, transparent 30%), #fff5ed;
+  color: var(--register-text);
+}
+
+/* Registration Card */
+
+.freshmeal-register__card {
+  width: 100%;
+  max-width: 780px;
+  padding: 34px 42px 28px;
+  background: #ffffff;
+  border: 1px solid rgba(255, 100, 26, 0.1);
+  border-radius: 22px;
+  box-shadow:
+    0 22px 60px rgba(112, 54, 20, 0.1),
+    0 4px 14px rgba(112, 54, 20, 0.05);
+  position: relative;
+  overflow: hidden;
+}
+
+.freshmeal-register__card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 5px;
+  background: linear-gradient(90deg, #ff8a42, #ff641a, #e94e0b);
+}
+
+/* Brand */
+
+.freshmeal-register__brand {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.freshmeal-register__logo {
+  width: 142px;
+  max-height: 54px;
+  object-fit: contain;
+}
+
+/* Header */
+
+.freshmeal-register__header {
+  text-align: center;
+  margin-bottom: 26px;
+}
+
+.freshmeal-register__title {
+  font-size: 27px;
+  line-height: 1.25;
+  font-weight: 750;
+  letter-spacing: -0.7px;
+  margin: 0 0 8px;
+  color: #202020;
+}
+
+.freshmeal-register__subtitle {
+  font-size: 13px;
+  color: var(--register-muted);
+  margin: 0;
+  line-height: 1.6;
+}
+
+/* Sections */
+
+.freshmeal-register__section {
+  margin-bottom: 23px;
+}
+
+.freshmeal-register__section-title {
+  font-size: 14px;
+  font-weight: 700;
+  margin: 0 0 15px;
+  padding-bottom: 9px;
+  border-bottom: 1px solid #f1e5dd;
+  position: relative;
+}
+
+.freshmeal-register__section-title::after {
+  content: "";
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 38px;
+  height: 2px;
+  background: var(--register-orange);
+  border-radius: 5px;
+}
+
+/* Form Grid */
+
+.freshmeal-register__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 20px;
+  row-gap: 14px;
+}
+
+.freshmeal-register__field {
+  min-width: 0;
+}
+
+.freshmeal-register__label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #393939;
+}
+
+.freshmeal-register__required {
+  color: var(--register-orange);
+  margin-left: 3px;
+}
+
+.freshmeal-register__select {
+  width: 100%;
+  min-height: 41px;
+  padding: 9px 12px;
+  border: 1px solid var(--register-border);
+  border-radius: 8px;
+  background-color: #fafafa;
+  color: #333333;
+  font-size: 13px;
+  outline: none;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s,
+    background-color 0.2s;
+}
+
+.freshmeal-register__select:focus {
+  border-color: var(--register-orange);
+  background-color: #ffffff;
+  box-shadow: 0 0 0 3px rgba(255, 100, 26, 0.12);
+}
+
+.freshmeal-register__select.is-invalid {
+  border-color: #dc3545;
+}
+
+.freshmeal-register__field-error {
+  display: block;
+  margin-top: 5px;
+  color: #dc3545;
+  font-size: 11px;
+}
+
+/* CommonInput Styling */
+
+.freshmeal-register__card .form-control {
+  min-height: 41px;
+  border: 1px solid var(--register-border);
+  border-radius: 8px;
+  background-color: #fafafa;
+  font-size: 13px;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s,
+    background-color 0.2s;
+}
+
+.freshmeal-register__card .form-control:focus {
+  border-color: var(--register-orange);
+  background-color: #ffffff;
+  box-shadow: 0 0 0 3px rgba(255, 100, 26, 0.12);
+}
+
+.freshmeal-register__card .form-control::placeholder {
+  color: #aaaaaa;
+  font-size: 12px;
+}
+
+/* Password Fields */
+
+.freshmeal-register__password-field {
+  position: relative;
+  min-width: 0;
+}
+
+.freshmeal-register__password-toggle {
+  position: absolute;
+  right: 11px;
+  top: 34px;
+  border: 0;
+  background: transparent;
+  color: #888888;
+  padding: 4px;
+  cursor: pointer;
+  z-index: 2;
+  font-size: 15px;
+  transition: color 0.2s;
+}
+
+.freshmeal-register__password-toggle:hover {
+  color: var(--register-orange);
+}
+
+.freshmeal-register__password-toggle:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.freshmeal-register__helper-text {
+  margin: 9px 0 0;
+  font-size: 11px;
+  color: #999999;
+}
+
+/* API Error */
+
+.freshmeal-register__error {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  padding: 11px 13px;
+  margin-bottom: 18px;
+  border: 1px solid #f5c2c7;
+  border-radius: 8px;
+  background: #fff1f2;
+  color: #b42332;
+  font-size: 12px;
+}
+
+/* Submit */
+
+.freshmeal-register__actions {
+  margin-top: 23px;
+}
+
+.freshmeal-register__submit {
+  width: 100%;
+  min-height: 45px;
+  border-radius: 9px;
+  background: var(--register-orange);
+  border-color: var(--register-orange);
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  box-shadow: 0 5px 13px rgba(255, 100, 26, 0.2);
+  transition:
+    background-color 0.2s,
+    transform 0.2s,
+    box-shadow 0.2s;
+}
+
+.freshmeal-register__submit:hover:not(:disabled) {
+  background: var(--register-orange-dark);
+  border-color: var(--register-orange-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 7px 17px rgba(255, 100, 26, 0.27);
+}
+
+/* Footer */
+
+.freshmeal-register__footer {
+  margin: 21px 0 0;
+  text-align: center;
+  color: #777777;
+  font-size: 12px;
+}
+
+.freshmeal-register__footer a {
+  color: var(--register-orange-dark);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.freshmeal-register__footer a:hover {
+  text-decoration: underline;
+}
+
+.freshmeal-register__terms {
+  text-align: center;
+  color: #aaaaaa;
+  font-size: 10px;
+  margin: 15px 0 0;
+}
+
+/* Registration Success */
+
+.freshmeal-register__success {
+  max-width: 520px;
+  padding: 42px 38px;
+  text-align: center;
+}
+
+.freshmeal-register__success-icon {
+  width: 66px;
+  height: 66px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 8px auto 20px;
+  border-radius: 50%;
+  background: var(--register-orange-light);
+  color: var(--register-orange);
+  font-size: 30px;
+}
+
+.freshmeal-register__verification-message {
+  padding: 18px;
+  margin-top: 23px;
+  border: 1px solid #ffdfcc;
+  border-radius: 12px;
+  background: #fff8f3;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.freshmeal-register__verification-message p {
+  margin: 0 0 8px;
+}
+
+.freshmeal-register__verification-message strong {
+  display: block;
+  color: var(--register-orange-dark);
+  margin: 8px 0 12px;
+  overflow-wrap: anywhere;
+}
+
+.freshmeal-register__success-note {
+  margin: 18px 0;
+  font-size: 12px;
+  color: var(--register-muted);
+  line-height: 1.6;
+}
+
+.freshmeal-register__secondary-button {
+  padding: 10px 20px;
+  border: 1px solid var(--register-orange);
+  border-radius: 8px;
+  background: #ffffff;
+  color: var(--register-orange-dark);
+  font-size: 13px;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.freshmeal-register__secondary-button:hover {
+  background: var(--register-orange);
+  color: #ffffff;
+}
+
+/* Responsive */
+
+@media (max-width: 640px) {
+  .freshmeal-register {
+    padding: 18px 12px;
+    align-items: flex-start;
+  }
+
+  .freshmeal-register__card {
+    padding: 27px 20px 23px;
+    border-radius: 16px;
+  }
+
+  .freshmeal-register__title {
+    font-size: 23px;
+  }
+
+  .freshmeal-register__grid {
+    grid-template-columns: 1fr;
+    row-gap: 13px;
+  }
+
+  .freshmeal-register__section {
+    margin-bottom: 20px;
+  }
+
+  .freshmeal-register__success {
+    padding: 32px 20px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .freshmeal-register *,
+  .freshmeal-register *::before,
+  .freshmeal-register *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
