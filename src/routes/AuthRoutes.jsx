@@ -21,6 +21,7 @@ import { Route, Routes } from "react-router-dom";
 import Login from "../features/authentication/pages/Login";
 
 import Register from "../features/authentication/pages/Register";
+import VerifyEmailOtp from "../features/authentication/pages/VerifyEmailOtp";
 import { ROUTES } from "../global/constants/RouteConstants";
 import { AuthLayout } from "../layouts/AuthLayout";
 
@@ -53,11 +54,11 @@ const AuthRoutes = () => {
       /> */}
 
         {/* OTP verification */}
+        <Route
+          path={ROUTES.VERIFY_EMAIL_OTP}
+          element={<VerifyEmailOtp />}
+        />
         {/* <Route
-        path={ROUTES.VERIFY_EMAIL_OTP}
-        element={<VerifyEmailOtp />}
-      />
-      <Route
         path={ROUTES.VERIFY_OTP}
         element={<VerifyOtp />}
       /> */}

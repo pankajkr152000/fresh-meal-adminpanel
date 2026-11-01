@@ -1,34 +1,33 @@
 /**
  * ============================================================================
- * Page : Register
+ * Page: Register
  * ============================================================================
  *
  * Provides the public FreshMeal account-registration experience.
  *
- * <p>
- * This page is responsible only for collecting the common account details
- * required to create a FreshMeal account. Role-specific onboarding is handled
- * separately after account registration and email verification.
- * </p>
+ * Responsibilities:
+ * - Collect common account-registration information.
+ * - Validate user input before submitting the request.
+ * - Submit the registration request through useRegister.
+ * - Navigate to email OTP verification after successful registration.
  *
- * <h3>Supported public registration roles</h3>
- * <ul>
- *   <li>USER</li>
- *   <li>RESTAURANT_OWNER</li>
- *   <li>DELIVERY_PARTNER</li>
- * </ul>
+ * Non-responsibilities:
+ * - Authentication and token management.
+ * - Role-specific onboarding.
+ * - Protected portal navigation.
  *
- * <p>
- * ADMIN registration is intentionally not exposed through this page.
- * Registration does not authenticate the user, persist tokens, or navigate
- * into a protected portal.
- * </p>
+ * Supported public registration roles:
+ * - USER
+ * - RESTAURANT_OWNER
+ * - DELIVERY_PARTNER
+ *
+ * ADMIN registration is intentionally excluded.
  *
  * ============================================================================
  */
 
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { assets } from "../../../assets/assets";
 import PrimaryButton from "../../../global/components/forms/buttons/PrimaryButton";
@@ -46,8 +45,7 @@ import "./register.css";
 /**
  * Public roles that can be requested through self-service registration.
  *
- * ADMIN is intentionally excluded. Administrative access must be provisioned
- * through a trusted administrative workflow.
+ * Administrative access must be provisioned through a trusted workflow.
  */
 const REGISTRATION_ROLES = Object.freeze([
   {
@@ -78,19 +76,32 @@ const INITIAL_FORM_DATA = Object.freeze({
   confirmPassword: "",
 });
 
+/**
+ * Registration validation constraints.
+ *
+ * Keep these constraints aligned with the backend registration contract.
+ */
+const REGISTRATION_CONSTRAINTS = Object.freeze({
+  FIRST_NAME_MAX_LENGTH: 100,
+  LAST_NAME_MAX_LENGTH: 100,
+  USERNAME_MIN_LENGTH: 3,
+  USERNAME_MAX_LENGTH: 100,
+  PASSWORD_MIN_LENGTH: 6,
+  PASSWORD_MAX_LENGTH: 16,
+});
+
 // ============================================================================
 // Validation
 // ============================================================================
 
 /**
- * Validates registration form values against the backend registration
- * contract.
+ * Validates registration form values.
  *
- * Client-side validation improves the user experience. The backend remains
- * the authoritative validation boundary.
+ * Client-side validation improves the user experience.
+ * The backend remains the authoritative validation boundary.
  *
- * @param {Object} formData registration form values.
- * @returns {Object} field-specific validation errors.
+ * @param {Object} formData Registration form values.
+ * @returns {Object} Field-specific validation errors.
  */
 const validateRegistrationForm = (formData) => {
   const errors = {};
@@ -101,31 +112,62 @@ const validateRegistrationForm = (formData) => {
   const email = formData.email.trim();
   const phoneNumber = formData.phoneNumber.trim();
 
+  // --------------------------------------------------------------------------
+  // First name
+  // --------------------------------------------------------------------------
+
   if (!firstName) {
     errors.firstName = "First name is required.";
-  } else if (firstName.length > 100) {
+  } else if (
+    firstName.length > REGISTRATION_CONSTRAINTS.FIRST_NAME_MAX_LENGTH
+  ) {
     errors.firstName = "First name cannot exceed 100 characters.";
   }
 
-  if (lastName.length > 100) {
+  // --------------------------------------------------------------------------
+  // Last name
+  // --------------------------------------------------------------------------
+
+  if (lastName.length > REGISTRATION_CONSTRAINTS.LAST_NAME_MAX_LENGTH) {
     errors.lastName = "Last name cannot exceed 100 characters.";
   }
 
+  // --------------------------------------------------------------------------
+  // Username
+  // --------------------------------------------------------------------------
+
   if (!username) {
     errors.username = "Username is required.";
-  } else if (username.length < 3 || username.length > 100) {
+  } else if (
+    username.length < REGISTRATION_CONSTRAINTS.USERNAME_MIN_LENGTH ||
+    username.length > REGISTRATION_CONSTRAINTS.USERNAME_MAX_LENGTH
+  ) {
     errors.username = "Username must be between 3 and 100 characters.";
   }
 
+  // --------------------------------------------------------------------------
+  // Email
+  // --------------------------------------------------------------------------
+
+  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
   if (!email) {
     errors.email = "Email address is required.";
-  } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+  } else if (!emailPattern.test(email)) {
     errors.email = "Please enter a valid email address.";
   }
+
+  // --------------------------------------------------------------------------
+  // Phone number
+  // --------------------------------------------------------------------------
 
   if (!phoneNumber) {
     errors.phoneNumber = "Phone number is required.";
   }
+
+  // --------------------------------------------------------------------------
+  // Requested role
+  // --------------------------------------------------------------------------
 
   const isSupportedRole = REGISTRATION_ROLES.some(
     (role) => role.value === formData.requestedRole,
@@ -135,11 +177,22 @@ const validateRegistrationForm = (formData) => {
     errors.requestedRole = "Please select a valid account type.";
   }
 
+  // --------------------------------------------------------------------------
+  // Password
+  // --------------------------------------------------------------------------
+
   if (!formData.password) {
     errors.password = "Password is required.";
-  } else if (formData.password.length < 6 || formData.password.length > 16) {
+  } else if (
+    formData.password.length < REGISTRATION_CONSTRAINTS.PASSWORD_MIN_LENGTH ||
+    formData.password.length > REGISTRATION_CONSTRAINTS.PASSWORD_MAX_LENGTH
+  ) {
     errors.password = "Password must be between 6 and 16 characters.";
   }
+
+  // --------------------------------------------------------------------------
+  // Confirm password
+  // --------------------------------------------------------------------------
 
   if (!formData.confirmPassword) {
     errors.confirmPassword = "Please confirm your password.";
@@ -150,26 +203,34 @@ const validateRegistrationForm = (formData) => {
   return errors;
 };
 
+// ============================================================================
+// Request Builder
+// ============================================================================
+
 /**
  * Creates the backend registration request.
  *
- * EmailAddress and PhoneNumber are backend value objects. Their JSON
- * representations therefore use the nested `value` property.
+ * EmailAddress and PhoneNumber are backend value objects.
+ * Their JSON representations use the nested `value` property.
  *
- * @param {Object} formData validated registration form values.
- * @returns {Object} backend RegisterRequest payload.
+ * @param {Object} formData Validated registration form values.
+ * @returns {Object} Backend registration request payload.
  */
 const buildRegistrationRequest = (formData) => ({
   firstName: formData.firstName.trim(),
   lastName: formData.lastName.trim(),
   username: formData.username.trim(),
+
   email: {
     value: formData.email.trim().toLowerCase(),
   },
+
   phoneNumber: {
     value: formData.phoneNumber.trim(),
   },
+
   requestedRole: formData.requestedRole,
+
   password: formData.password,
   confirmPassword: formData.confirmPassword,
 });
@@ -179,6 +240,8 @@ const buildRegistrationRequest = (formData) => ({
 // ============================================================================
 
 const Register = () => {
+  const navigate = useNavigate();
+
   const {
     register,
     error: registrationError,
@@ -186,29 +249,32 @@ const Register = () => {
     reset,
   } = useRegister();
 
-  const [formData, setFormData] = useState({ ...INITIAL_FORM_DATA });
-  const [fieldErrors, setFieldErrors] = useState({});
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [registeredEmail, setRegisteredEmail] = useState("");
+  // --------------------------------------------------------------------------
+  // Component State
+  // --------------------------------------------------------------------------
 
-  /**
-   * Handles changes to registration form fields.
-   *
-   * Clears the corresponding field validation error when the user edits
-   * that field. Existing API errors are cleared when the user starts
-   * correcting the form.
-   *
-   * @param {Event} event input change event.
-   */
+  const [formData, setFormData] = useState({
+    ...INITIAL_FORM_DATA,
+  });
+
+  const [fieldErrors, setFieldErrors] = useState({});
+
+  const [showPassword, setShowPassword] = useState(false);
+
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  // --------------------------------------------------------------------------
+  // Input Change Handler
+  // --------------------------------------------------------------------------
+
   /**
    * Handles changes emitted by the reusable CommonInput component.
    *
    * CommonInput provides the field name and updated value as separate
    * arguments rather than a native DOM event.
    *
-   * @param {string} name  input field name.
-   * @param {string} value updated field value.
+   * @param {string} name Input field name.
+   * @param {string} value Updated field value.
    */
   const handleInputChange = (name, value) => {
     setFormData((previousFormData) => ({
@@ -219,24 +285,55 @@ const Register = () => {
     setFieldErrors((previousErrors) => ({
       ...previousErrors,
       [name]: "",
+      ...(name === "password" && previousErrors.confirmPassword
+        ? {
+            confirmPassword: "",
+          }
+        : {}),
     }));
 
+    // Clear the previous API error when the user starts correcting the form.
     if (registrationError) {
       reset();
     }
   };
 
+  // --------------------------------------------------------------------------
+  // Account Type Change Handler
+  // --------------------------------------------------------------------------
+
   /**
-   * Submits the registration request.
+   * Handles the native HTML select change event.
    *
-   * On success, the page displays the email-verification next step.
-   * It deliberately does not authenticate the user or navigate to a
-   * protected portal.
+   * Unlike CommonInput, a native select emits a DOM event.
    *
-   * @param {Event} event form submit event.
+   * @param {Event} event Native select change event.
+   */
+  const handleRoleChange = (event) => {
+    const { name, value } = event.target;
+
+    handleInputChange(name, value);
+  };
+
+  // --------------------------------------------------------------------------
+  // Form Submission
+  // --------------------------------------------------------------------------
+
+  /**
+   * Validates and submits the registration request.
+   *
+   * After successful registration, the user is redirected to email OTP
+   * verification. Registration does not authenticate the user.
+   *
+   * @param {Event} event Form submission event.
    */
   const handleSubmit = async (event) => {
     event.preventDefault();
+
+    // Prevent duplicate submissions.
+    if (isLoading) {
+      return;
+    }
 
     const validationErrors = validateRegistrationForm(formData);
 
@@ -251,94 +348,28 @@ const Register = () => {
     try {
       await register(registrationRequest);
 
-      setRegisteredEmail(registrationRequest.email.value);
+      navigate(ROUTES.VERIFY_EMAIL_OTP, {
+        state: {
+          email: registrationRequest.email.value,
+        },
+      });
     } catch {
       /*
-       * The useRegister hook exposes the user-friendly API error
-       * through registrationError. No additional error state is
-       * required in this component.
+       * useRegister handles and exposes the user-friendly API error.
+       * The error is displayed through registrationError.
        */
     }
   };
 
-  /**
-   * Resets the registration page to its initial state.
-   */
-  const handleRegisterAnotherAccount = () => {
-    setFormData({ ...INITIAL_FORM_DATA });
-    setFieldErrors({});
-    setRegisteredEmail("");
-    setShowPassword(false);
-    setShowConfirmPassword(false);
-    reset();
-  };
-
-  // =========================================================================
-  // Registration Success
-  // =========================================================================
-
-  if (registeredEmail) {
-    return (
-      <main className="freshmeal-register">
-        <section className="freshmeal-register__card freshmeal-register__success">
-          <div className="freshmeal-register__brand">
-            <img
-              src={assets.brandLogo}
-              alt="FreshMeal"
-              className="freshmeal-register__logo"
-            />
-          </div>
-
-          <div className="freshmeal-register__success-icon">
-            <i
-              className="bi bi-envelope-check"
-              aria-hidden="true"
-            />
-          </div>
-
-          <h1 className="freshmeal-register__title">Registration successful</h1>
-
-          <p className="freshmeal-register__subtitle">
-            Your FreshMeal account has been created successfully.
-          </p>
-
-          <div className="freshmeal-register__verification-message">
-            <p>We have sent an email verification OTP to:</p>
-
-            <strong>{registeredEmail}</strong>
-
-            <p>
-              Verify your email address to continue with your FreshMeal account.
-            </p>
-          </div>
-
-          <p className="freshmeal-register__success-note">
-            You can proceed to email verification using the OTP sent to your
-            inbox.
-          </p>
-
-          <button
-            type="button"
-            className="freshmeal-register__secondary-button"
-            onClick={handleRegisterAnotherAccount}>
-            Register another account
-          </button>
-
-          <p className="freshmeal-register__footer">
-            Already have an account? <Link to={ROUTES.LOGIN}>Sign in</Link>
-          </p>
-        </section>
-      </main>
-    );
-  }
-
-  // =========================================================================
-  // Registration Form
-  // =========================================================================
+  // ==========================================================================
+  // Render
+  // ==========================================================================
 
   return (
     <main className="freshmeal-register">
       <section className="freshmeal-register__card">
+        {/* Brand */}
+
         <div className="freshmeal-register__brand">
           <img
             src={assets.brandLogo}
@@ -347,6 +378,8 @@ const Register = () => {
           />
         </div>
 
+        {/* Page Header */}
+
         <header className="freshmeal-register__header">
           <h1 className="freshmeal-register__title">Create your account</h1>
 
@@ -354,6 +387,8 @@ const Register = () => {
             Join FreshMeal and get started.
           </p>
         </header>
+
+        {/* API Error */}
 
         {registrationError && (
           <div
@@ -364,17 +399,20 @@ const Register = () => {
               className="bi bi-exclamation-circle"
               aria-hidden="true"
             />
+
             <span>{registrationError}</span>
           </div>
         )}
+
+        {/* Registration Form */}
 
         <form
           className="freshmeal-register__form"
           onSubmit={handleSubmit}
           noValidate>
-          {/* ----------------------------------------------------- */}
-          {/* Personal Information                                  */}
-          {/* ----------------------------------------------------- */}
+          {/* ================================================================
+              Personal Information
+          ================================================================= */}
 
           <div className="freshmeal-register__section">
             <h2 className="freshmeal-register__section-title">
@@ -438,6 +476,8 @@ const Register = () => {
                 error={fieldErrors.phoneNumber}
               />
 
+              {/* Account Type */}
+
               <div className="freshmeal-register__field">
                 <label
                   htmlFor="requestedRole"
@@ -450,13 +490,18 @@ const Register = () => {
                   id="requestedRole"
                   name="requestedRole"
                   value={formData.requestedRole}
-                  onChange={handleInputChange}
+                  onChange={handleRoleChange}
                   className={`freshmeal-register__select ${
                     fieldErrors.requestedRole ? "is-invalid" : ""
                   }`}
                   disabled={isLoading}
                   required
-                  aria-invalid={Boolean(fieldErrors.requestedRole)}>
+                  aria-invalid={Boolean(fieldErrors.requestedRole)}
+                  aria-describedby={
+                    fieldErrors.requestedRole
+                      ? "requestedRole-error"
+                      : undefined
+                  }>
                   {REGISTRATION_ROLES.map((role) => (
                     <option
                       key={role.value}
@@ -467,7 +512,9 @@ const Register = () => {
                 </select>
 
                 {fieldErrors.requestedRole && (
-                  <small className="freshmeal-register__field-error">
+                  <small
+                    id="requestedRole-error"
+                    className="freshmeal-register__field-error">
                     {fieldErrors.requestedRole}
                   </small>
                 )}
@@ -475,9 +522,9 @@ const Register = () => {
             </div>
           </div>
 
-          {/* ----------------------------------------------------- */}
-          {/* Account Security                                      */}
-          {/* ----------------------------------------------------- */}
+          {/* ================================================================
+              Account Security
+          ================================================================= */}
 
           <div className="freshmeal-register__section">
             <h2 className="freshmeal-register__section-title">
@@ -485,6 +532,8 @@ const Register = () => {
             </h2>
 
             <div className="freshmeal-register__grid">
+              {/* Password */}
+
               <div className="freshmeal-register__password-field">
                 <CommonInput
                   label="Password"
@@ -510,6 +559,8 @@ const Register = () => {
                   />
                 </button>
               </div>
+
+              {/* Confirm Password */}
 
               <div className="freshmeal-register__password-field">
                 <CommonInput
@@ -551,9 +602,9 @@ const Register = () => {
             </p>
           </div>
 
-          {/* ----------------------------------------------------- */}
-          {/* Submit                                                 */}
-          {/* ----------------------------------------------------- */}
+          {/* ================================================================
+              Submit
+          ================================================================= */}
 
           <div className="freshmeal-register__actions">
             <PrimaryButton
@@ -566,6 +617,8 @@ const Register = () => {
             </PrimaryButton>
           </div>
         </form>
+
+        {/* Footer */}
 
         <p className="freshmeal-register__footer">
           Already have an account? <Link to={ROUTES.LOGIN}>Sign in</Link>

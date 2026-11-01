@@ -1,0 +1,286 @@
+/* ==========================================================================
+   FreshMeal - Email OTP Verification
+   ========================================================================== */
+
+.freshmeal-otp {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 16px;
+  background:
+    radial-gradient(
+      circle at top left,
+      rgba(255, 100, 26, 0.1),
+      transparent 38%
+    ),
+    linear-gradient(135deg, #fff8f3 0%, #fff 55%, #fff1e8 100%);
+}
+
+/* ==========================================================================
+   Verification Card
+   ========================================================================== */
+
+.freshmeal-otp__card {
+  position: relative;
+  width: 100%;
+  max-width: 450px;
+  padding: 32px 34px;
+  overflow: hidden;
+  background-color: #fff;
+  border: 1px solid #f2e6df;
+  border-radius: 14px;
+  box-shadow: 0 12px 36px rgba(72, 42, 24, 0.09);
+}
+
+.freshmeal-otp__card::before {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  content: "";
+  background: linear-gradient(90deg, #ff641a, #ff9a45);
+}
+
+/* ==========================================================================
+   Brand
+   ========================================================================== */
+
+.freshmeal-otp__brand {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 26px;
+}
+
+.freshmeal-otp__logo {
+  display: block;
+  width: auto;
+  max-width: 155px;
+  max-height: 58px;
+  object-fit: contain;
+}
+
+/* ==========================================================================
+   Header
+   ========================================================================== */
+
+.freshmeal-otp__header {
+  margin-bottom: 25px;
+  text-align: center;
+}
+
+.freshmeal-otp__header h1,
+.freshmeal-otp__message h1 {
+  margin: 0 0 10px;
+  color: #292421;
+  font-size: 23px;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.freshmeal-otp__header p,
+.freshmeal-otp__message p {
+  margin: 0 0 7px;
+  color: #77716d;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.freshmeal-otp__email {
+  display: inline-block;
+  margin-top: 3px !important;
+  color: #e95716 !important;
+  font-size: 14px !important;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+/* ==========================================================================
+   OTP Form
+   ========================================================================== */
+
+.freshmeal-otp__form {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.freshmeal-otp__form label {
+  color: #39332f;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.freshmeal-otp__input {
+  width: 100%;
+}
+
+.freshmeal-otp__input input {
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 12px;
+  border: 1px solid #ded7d2;
+  border-radius: 7px;
+  outline: none;
+  color: #302a26;
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: 5px;
+  text-align: center;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.freshmeal-otp__input input:focus {
+  border-color: #ff641a;
+  box-shadow: 0 0 0 3px rgba(255, 100, 26, 0.12);
+}
+
+.freshmeal-otp__hint {
+  margin: 0 0 9px;
+  color: #8a817b;
+  font-size: 11px;
+}
+
+/* ==========================================================================
+   Submit Button
+   ========================================================================== */
+
+.freshmeal-otp__submit {
+  width: 100%;
+  margin-top: 5px;
+}
+
+/* ==========================================================================
+   Resend OTP
+   ========================================================================== */
+
+.freshmeal-otp__resend {
+  margin-top: 23px;
+  text-align: center;
+}
+
+.freshmeal-otp__resend p {
+  margin: 0 0 7px;
+  color: #77716d;
+  font-size: 12px;
+}
+
+.freshmeal-otp__resend-button {
+  padding: 4px 6px;
+  border: none;
+  background: transparent;
+  color: #ed5b18;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.freshmeal-otp__resend-button:hover:not(:disabled) {
+  color: #c9440b;
+  text-decoration: underline;
+}
+
+.freshmeal-otp__resend-button:disabled {
+  color: #aaa19b;
+  cursor: not-allowed;
+}
+
+/* ==========================================================================
+   Error States
+   ========================================================================== */
+
+.freshmeal-otp__error {
+  margin-top: 9px !important;
+  color: #dc3545 !important;
+  font-size: 12px !important;
+  line-height: 1.5;
+}
+
+.freshmeal-otp__message {
+  text-align: center;
+}
+
+.freshmeal-otp__message > p {
+  margin-bottom: 12px;
+}
+
+/* ==========================================================================
+   Verification Success
+   ========================================================================== */
+
+.freshmeal-otp__success-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 54px;
+  height: 54px;
+  margin: 0 auto 18px;
+  border-radius: 50%;
+  background-color: #e8f7ee;
+  color: #239653;
+  font-size: 27px;
+  font-weight: 700;
+}
+
+/* ==========================================================================
+   Navigation and Footer
+   ========================================================================== */
+
+.freshmeal-otp__footer {
+  margin-top: 25px;
+  padding-top: 16px;
+  border-top: 1px solid #f0ebe7;
+  text-align: center;
+}
+
+.freshmeal-otp__link {
+  color: #e95716;
+  font-size: 12px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.freshmeal-otp__link:hover {
+  color: #c9440b;
+  text-decoration: underline;
+}
+
+/* ==========================================================================
+   Responsive Layout
+   ========================================================================== */
+
+@media (max-width: 576px) {
+  .freshmeal-otp {
+    padding: 20px 14px;
+  }
+
+  .freshmeal-otp__card {
+    padding: 27px 21px;
+    border-radius: 12px;
+  }
+
+  .freshmeal-otp__brand {
+    margin-bottom: 22px;
+  }
+
+  .freshmeal-otp__header h1,
+  .freshmeal-otp__message h1 {
+    font-size: 21px;
+  }
+}
+
+@media (max-width: 360px) {
+  .freshmeal-otp__card {
+    padding: 24px 16px;
+  }
+
+  .freshmeal-otp__header h1,
+  .freshmeal-otp__message h1 {
+    font-size: 19px;
+  }
+}
