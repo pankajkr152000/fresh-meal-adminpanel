@@ -20,7 +20,9 @@ import { Route, Routes } from "react-router-dom";
 
 import Login from "../features/authentication/pages/Login";
 
+import ForgotPassword from "../features/authentication/pages/ForgotPassword";
 import Register from "../features/authentication/pages/Register";
+import ResetPassword from "../features/authentication/pages/ResetPassword";
 import VerifyEmailOtp from "../features/authentication/pages/VerifyEmailOtp";
 import { ROUTES } from "../global/constants/RouteConstants";
 import { AuthLayout } from "../layouts/AuthLayout";
@@ -44,14 +46,14 @@ const AuthRoutes = () => {
         />
 
         {/* Password recovery */}
-        {/* <Route
-        path={ROUTES.FORGOT_PASSWORD}
-        element={<ForgotPassword />}
-      />
-      <Route
-        path={ROUTES.RESET_PASSWORD}
-        element={<ResetPassword />}
-      /> */}
+        <Route
+          path={ROUTES.FORGOT_PASSWORD}
+          element={<ForgotPassword />}
+        />
+        <Route
+          path={ROUTES.RESET_PASSWORD}
+          element={<ResetPassword />}
+        />
 
         {/* OTP verification */}
         <Route
