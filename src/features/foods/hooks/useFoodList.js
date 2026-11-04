@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import useDebounce from "../../../global/hooks/useDebounce";
 import { containsDisplayOption } from "../../../global/utils/DisplayOptionUtils";
 import { useFoodListContext } from "../context";
-import FoodService from "../services/FoodService";
+import AdminFoodService from "../services/AdminFoodService";
 
 /**
  * =============================================================================
@@ -142,7 +142,7 @@ const useFoodList = () => {
       setLoading(true);
       setError("");
 
-      const response = await FoodService.getAllFoods(signal);
+      const response = await AdminFoodService.getAllFoods(signal);
 
       if (!response.success) {
         throw new Error(response.message);
@@ -599,7 +599,7 @@ const useFoodList = () => {
     );
 
     try {
-      const response = await FoodService.updateFoodStatus(
+      const response = await AdminFoodService.updateFoodStatus(
         selectedFood.id,
         selectedStatus,
       );
@@ -653,7 +653,7 @@ const useFoodList = () => {
         setActionLoading(true);
         setActionError("");
 
-        const response = await FoodService.archiveFood(foodId);
+        const response = await AdminFoodService.archiveFood(foodId);
 
         if (!response.success) {
           throw new Error(response.message || "Unable to archive food.");
@@ -693,7 +693,7 @@ const useFoodList = () => {
       setActionLoading(true);
       setActionError("");
 
-      const response = await FoodService.bulkArchiveFoods(foodIds);
+      const response = await AdminFoodService.bulkArchiveFoods(foodIds);
 
       if (!response.success) {
         throw new Error(
@@ -734,7 +734,7 @@ const useFoodList = () => {
         setActionLoading(true);
         setActionError("");
 
-        const response = await FoodService.deleteFood(foodId);
+        const response = await AdminFoodService.deleteFood(foodId);
 
         if (!response.success) {
           throw new Error(response.message || "Unable to delete food.");
@@ -774,7 +774,7 @@ const useFoodList = () => {
       setActionLoading(true);
       setActionError("");
 
-      const response = await FoodService.bulkDeleteFoods(foodIds);
+      const response = await AdminFoodService.bulkDeleteFoods(foodIds);
 
       if (!response.success) {
         throw new Error(response.message || "Unable to delete selected foods.");

@@ -29,7 +29,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 import { toast } from "react-toastify";
-import { FoodMetadataService, FoodService } from "../services";
+import { AdminFoodService, FoodMetadataService } from "../services";
 
 /**
  * ============================================================================
@@ -228,7 +228,7 @@ export default function useEditFood() {
    */
   const loadFood = useCallback(async () => {
     try {
-      const response = await FoodService.getFoodById(foodId);
+      const response = await AdminFoodService.getFoodById(foodId);
 
       const food = response?.data?.data;
 
@@ -531,7 +531,7 @@ export default function useEditFood() {
 
         const request = buildFormData();
         console.log(request);
-        const response = await FoodService.editFood(request);
+        const response = await AdminFoodService.editFood(request);
 
         console.log(response);
 

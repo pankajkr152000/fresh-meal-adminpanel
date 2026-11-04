@@ -28,6 +28,7 @@ import {
 } from "../features/foods";
 import Orders from "../features/orders/pages/Orders";
 import AdminLayout from "../layouts/AdminLayout";
+import AdminDashboard from "../portals/admin/pages/AdminDashboard";
 import { ADMIN_ROUTE_PATHS } from "./AdminRouteConstants";
 
 const AdminRoutes = () => {
@@ -38,7 +39,7 @@ const AdminRoutes = () => {
           {/* Admin landing page */}
           <Route
             index
-            element={<FoodList />}
+            element={<AdminDashboard />}
           />
 
           {/* Food management */}

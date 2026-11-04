@@ -1,2 +1,2 @@
+export { default as AdminFoodService } from "./AdminFoodService";
 export { default as FoodMetadataService } from "./FoodMetadataService";
-export { default as FoodService } from "./FoodService";

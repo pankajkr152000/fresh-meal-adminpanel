@@ -20,38 +20,53 @@ import { Route, Routes } from "react-router-dom";
 
 import Login from "../features/authentication/pages/Login";
 
+import ForgotPassword from "../features/authentication/pages/ForgotPassword";
+import Register from "../features/authentication/pages/Register";
+import ResetPassword from "../features/authentication/pages/ResetPassword";
+import VerifyEmailOtp from "../features/authentication/pages/VerifyEmailOtp";
 import { ROUTES } from "../global/constants/RouteConstants";
+import { AuthLayout } from "../layouts/AuthLayout";
 
 const AuthRoutes = () => {
   return (
     <Routes>
-      {/* Login */}
-      <Route
-        path={ROUTES.LOGIN}
-        element={<Login />}
-      />
+      <Route element={<AuthLayout />}>
+        {/* Keep all existing authentication routes here. */}
 
-      {/* Password recovery */}
-      {/* <Route
-        path={ROUTES.FORGOT_PASSWORD}
-        element={<ForgotPassword />}
-      />
-      <Route
-        path={ROUTES.RESET_PASSWORD}
-        element={<ResetPassword />}
-      /> */}
+        {/* Login */}
+        <Route
+          path={ROUTES.LOGIN}
+          element={<Login />}
+        />
 
-      {/* OTP verification */}
-      {/* <Route
-        path={ROUTES.VERIFY_EMAIL_OTP}
-        element={<VerifyEmailOtp />}
-      />
-      <Route
+        {/* Register */}
+        <Route
+          path={ROUTES.REGISTER}
+          element={<Register />}
+        />
+
+        {/* Password recovery */}
+        <Route
+          path={ROUTES.FORGOT_PASSWORD}
+          element={<ForgotPassword />}
+        />
+        <Route
+          path={ROUTES.RESET_PASSWORD}
+          element={<ResetPassword />}
+        />
+
+        {/* OTP verification */}
+        <Route
+          path={ROUTES.VERIFY_EMAIL_OTP}
+          element={<VerifyEmailOtp />}
+        />
+        {/* <Route
         path={ROUTES.VERIFY_OTP}
         element={<VerifyOtp />}
       /> */}
 
-      {/* Unknown paths handled by the parent application router. */}
+        {/* Unknown paths handled by the parent application router. */}
+      </Route>
     </Routes>
   );
 };

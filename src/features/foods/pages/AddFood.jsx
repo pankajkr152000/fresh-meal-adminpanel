@@ -4,7 +4,7 @@ import FoodForm from "../components/form/FoodForm";
 
 import useFoodForm from "../hooks/useFoodForm";
 
-import FoodService from "../services/FoodService";
+import AdminFoodService from "../services/AdminFoodService";
 
 import FoodFormDataUtil from "../utils/FoodFormDataUtil";
 
@@ -27,7 +27,7 @@ import FoodFormDataUtil from "../utils/FoodFormDataUtil";
  * -----
  * • Form state is managed by useFoodForm.
  * • UI is rendered by FoodForm.
- * • API interaction is delegated to FoodService.
+ * • API interaction is delegated to AdminFoodService.
  *
  * @author Pankaj Kumar
  * @since 1.0
@@ -63,7 +63,7 @@ const AddFood = () => {
     try {
       const formData = FoodFormDataUtil.buildFoodFormData(food, image);
 
-      await FoodService.addFood(formData);
+      await AdminFoodService.addFood(formData);
 
       toast.success("Food added successfully.");
 

@@ -1,0 +1,613 @@
+/* ==========================================================================
+   FreshMeal Registration
+   ========================================================================== */
+
+.freshmeal-register {
+  --register-orange: #ff641a;
+  --register-orange-dark: #e94e0b;
+  --register-orange-light: #fff0e5;
+
+  --register-text: #252525;
+  --register-muted: #777777;
+
+  --register-border: #e8e8e8;
+  --register-input-bg: #fafafa;
+
+  --register-error: #dc3545;
+  --register-error-bg: #fff1f2;
+  --register-error-border: #f5c2c7;
+
+  min-height: 100vh;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 36px 20px;
+
+  background:
+    radial-gradient(circle at 10% 15%, #ffe0ca 0, transparent 32%),
+    radial-gradient(circle at 90% 85%, #ffd9bd 0, transparent 30%), #fff5ed;
+
+  color: var(--register-text);
+}
+
+/* ==========================================================================
+   Registration Card
+   ========================================================================== */
+
+.freshmeal-register__card {
+  position: relative;
+
+  width: 100%;
+  max-width: 780px;
+
+  padding: 34px 42px 28px;
+
+  background: #ffffff;
+
+  border: 1px solid rgba(255, 100, 26, 0.1);
+  border-radius: 22px;
+
+  box-shadow:
+    0 22px 60px rgba(112, 54, 20, 0.1),
+    0 4px 14px rgba(112, 54, 20, 0.05);
+
+  overflow: hidden;
+}
+
+.freshmeal-register__card::before {
+  content: "";
+
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+
+  height: 5px;
+
+  background: linear-gradient(
+    90deg,
+    #ff8a42,
+    var(--register-orange),
+    var(--register-orange-dark)
+  );
+}
+
+/* ==========================================================================
+   Brand
+   ========================================================================== */
+
+.freshmeal-register__brand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 20px;
+}
+
+.freshmeal-register__logo {
+  display: block;
+
+  width: 142px;
+  max-height: 54px;
+
+  object-fit: contain;
+}
+
+/* ==========================================================================
+   Header
+   ========================================================================== */
+
+.freshmeal-register__header {
+  margin-bottom: 26px;
+
+  text-align: center;
+}
+
+.freshmeal-register__title {
+  margin: 0 0 8px;
+
+  color: #202020;
+
+  font-size: 27px;
+  font-weight: 750;
+  line-height: 1.25;
+
+  letter-spacing: -0.7px;
+}
+
+.freshmeal-register__subtitle {
+  margin: 0;
+
+  color: var(--register-muted);
+
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+/* ==========================================================================
+   Form Sections
+   ========================================================================== */
+
+.freshmeal-register__section {
+  margin-bottom: 23px;
+}
+
+.freshmeal-register__section-title {
+  position: relative;
+
+  margin: 0 0 15px;
+  padding-bottom: 9px;
+
+  border-bottom: 1px solid #f1e5dd;
+
+  color: #333333;
+
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.freshmeal-register__section-title::after {
+  content: "";
+
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+
+  width: 38px;
+  height: 2px;
+
+  border-radius: 5px;
+
+  background: var(--register-orange);
+}
+
+/* ==========================================================================
+   Form Grid
+   ========================================================================== */
+
+.freshmeal-register__grid {
+  display: grid;
+
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+
+  column-gap: 20px;
+  row-gap: 14px;
+}
+
+.freshmeal-register__field {
+  min-width: 0;
+}
+
+/* ==========================================================================
+   Labels
+   ========================================================================== */
+
+.freshmeal-register__label {
+  display: block;
+
+  margin-bottom: 6px;
+
+  color: #393939;
+
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.freshmeal-register__required {
+  margin-left: 3px;
+
+  color: var(--register-orange);
+}
+
+/* ==========================================================================
+   Account Type Select
+   ========================================================================== */
+
+.freshmeal-register__select {
+  display: block;
+
+  width: 100%;
+  min-height: 41px;
+
+  padding: 9px 12px;
+
+  border: 1px solid var(--register-border);
+  border-radius: 8px;
+
+  background-color: var(--register-input-bg);
+
+  color: #333333;
+
+  font-size: 13px;
+  line-height: 1.4;
+
+  outline: none;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.freshmeal-register__select:hover:not(:disabled) {
+  border-color: #d5d5d5;
+}
+
+.freshmeal-register__select:focus {
+  border-color: var(--register-orange);
+
+  background-color: #ffffff;
+
+  box-shadow: 0 0 0 3px rgba(255, 100, 26, 0.12);
+}
+
+.freshmeal-register__select.is-invalid {
+  border-color: var(--register-error);
+}
+
+.freshmeal-register__select:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+/* ==========================================================================
+   Field Validation
+   ========================================================================== */
+
+.freshmeal-register__field-error {
+  display: block;
+
+  margin-top: 5px;
+
+  color: var(--register-error);
+
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+/* ==========================================================================
+   CommonInput Styling
+   ========================================================================== */
+
+.freshmeal-register__card .form-control {
+  width: 100%;
+  min-height: 41px;
+
+  border: 1px solid var(--register-border);
+  border-radius: 8px;
+
+  background-color: var(--register-input-bg);
+
+  color: var(--register-text);
+
+  font-size: 13px;
+  line-height: 1.4;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.freshmeal-register__card .form-control:hover:not(:disabled) {
+  border-color: #d5d5d5;
+}
+
+.freshmeal-register__card .form-control:focus {
+  border-color: var(--register-orange);
+
+  background-color: #ffffff;
+
+  box-shadow: 0 0 0 3px rgba(255, 100, 26, 0.12);
+}
+
+.freshmeal-register__card .form-control::placeholder {
+  color: #aaaaaa;
+  font-size: 12px;
+}
+
+.freshmeal-register__card .form-control:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+/* ==========================================================================
+   Password Fields
+   ========================================================================== */
+
+.freshmeal-register__password-field {
+  position: relative;
+
+  min-width: 0;
+}
+
+.freshmeal-register__password-toggle {
+  position: absolute;
+  top: 34px;
+  right: 11px;
+  z-index: 2;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 28px;
+  height: 28px;
+
+  padding: 4px;
+
+  border: 0;
+  border-radius: 5px;
+
+  background: transparent;
+
+  color: #888888;
+
+  font-size: 15px;
+
+  cursor: pointer;
+
+  transition:
+    color 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.freshmeal-register__password-toggle:hover:not(:disabled) {
+  background-color: var(--register-orange-light);
+  color: var(--register-orange-dark);
+}
+
+.freshmeal-register__password-toggle:focus-visible {
+  outline: 2px solid var(--register-orange);
+  outline-offset: 2px;
+}
+
+.freshmeal-register__password-toggle:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+/* Reserve space for the password visibility icon. */
+.freshmeal-register__password-field .form-control {
+  padding-right: 42px;
+}
+
+.freshmeal-register__helper-text {
+  margin: 9px 0 0;
+
+  color: #999999;
+
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+/* ==========================================================================
+   API Error
+   ========================================================================== */
+
+.freshmeal-register__error {
+  display: flex;
+  align-items: flex-start;
+
+  gap: 9px;
+
+  margin-bottom: 18px;
+  padding: 11px 13px;
+
+  border: 1px solid var(--register-error-border);
+  border-radius: 8px;
+
+  background: var(--register-error-bg);
+
+  color: #b42332;
+
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.freshmeal-register__error i {
+  flex-shrink: 0;
+
+  margin-top: 1px;
+
+  font-size: 14px;
+}
+
+/* ==========================================================================
+   Submit Button
+   ========================================================================== */
+
+.freshmeal-register__actions {
+  margin-top: 23px;
+}
+
+.freshmeal-register__submit {
+  width: 100%;
+  min-height: 45px;
+
+  border: 1px solid var(--register-orange);
+  border-radius: 9px;
+
+  background: var(--register-orange);
+
+  color: #ffffff;
+
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+
+  box-shadow: 0 5px 13px rgba(255, 100, 26, 0.2);
+
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.freshmeal-register__submit:hover:not(:disabled) {
+  border-color: var(--register-orange-dark);
+
+  background: var(--register-orange-dark);
+
+  transform: translateY(-1px);
+
+  box-shadow: 0 7px 17px rgba(255, 100, 26, 0.27);
+}
+
+.freshmeal-register__submit:focus-visible {
+  outline: 3px solid rgba(255, 100, 26, 0.3);
+  outline-offset: 3px;
+}
+
+.freshmeal-register__submit:disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
+  transform: none;
+}
+
+/* ==========================================================================
+   Footer
+   ========================================================================== */
+
+.freshmeal-register__footer {
+  margin: 21px 0 0;
+
+  color: var(--register-muted);
+
+  font-size: 12px;
+  line-height: 1.5;
+
+  text-align: center;
+}
+
+.freshmeal-register__footer a {
+  color: var(--register-orange-dark);
+
+  font-weight: 700;
+  text-decoration: none;
+
+  transition: color 0.2s ease;
+}
+
+.freshmeal-register__footer a:hover {
+  color: var(--register-orange);
+  text-decoration: underline;
+}
+
+.freshmeal-register__footer a:focus-visible {
+  outline: 2px solid var(--register-orange);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+.freshmeal-register__terms {
+  margin: 15px 0 0;
+
+  color: #aaaaaa;
+
+  font-size: 10px;
+  line-height: 1.5;
+
+  text-align: center;
+}
+
+/* ==========================================================================
+   Responsive Design
+   ========================================================================== */
+
+@media (max-width: 768px) {
+  .freshmeal-register {
+    padding: 28px 16px;
+  }
+
+  .freshmeal-register__card {
+    max-width: 680px;
+    padding: 30px 28px 25px;
+  }
+
+  .freshmeal-register__grid {
+    column-gap: 16px;
+  }
+}
+
+@media (max-width: 640px) {
+  .freshmeal-register {
+    align-items: flex-start;
+
+    padding: 18px 12px;
+  }
+
+  .freshmeal-register__card {
+    padding: 27px 20px 23px;
+
+    border-radius: 16px;
+  }
+
+  .freshmeal-register__brand {
+    margin-bottom: 17px;
+  }
+
+  .freshmeal-register__logo {
+    width: 130px;
+    max-height: 48px;
+  }
+
+  .freshmeal-register__header {
+    margin-bottom: 23px;
+  }
+
+  .freshmeal-register__title {
+    font-size: 23px;
+  }
+
+  .freshmeal-register__grid {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 13px;
+  }
+
+  .freshmeal-register__section {
+    margin-bottom: 20px;
+  }
+
+  .freshmeal-register__actions {
+    margin-top: 20px;
+  }
+
+  .freshmeal-register__footer {
+    margin-top: 18px;
+  }
+}
+
+@media (max-width: 360px) {
+  .freshmeal-register {
+    padding: 12px 8px;
+  }
+
+  .freshmeal-register__card {
+    padding: 25px 15px 20px;
+  }
+
+  .freshmeal-register__title {
+    font-size: 21px;
+  }
+}
+
+/* ==========================================================================
+   Accessibility: Reduced Motion
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .freshmeal-register *,
+  .freshmeal-register *::before,
+  .freshmeal-register *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

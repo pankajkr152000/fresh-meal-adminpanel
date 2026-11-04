@@ -87,7 +87,7 @@
 import axios from "axios";
 
 import { API_BASE_URL } from "../../../config/ApiConfig";
-import { API } from "../../../global/constants/ApiConstants";
+import { API } from "../../../config/apiEndpoints";
 
 /**
  * Dedicated Axios instance for authentication-token lifecycle operations.

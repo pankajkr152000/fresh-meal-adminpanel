@@ -1,0 +1,128 @@
+/**
+ * FreshMeal - Restaurant Layout
+ * Restaurant Portal shell, sizing, and responsive sidebar behavior.
+ */
+
+#restaurant-wrapper {
+  --restaurant-sidebar-width: 232px;
+  --restaurant-navbar-height: 66px;
+
+  display: flex;
+  min-height: 100vh;
+  color: var(--fm-text-primary, var(--bs-body-color));
+  background: var(--fm-page-bg, var(--bs-body-bg));
+}
+
+/* Content follows the fixed sidebar on desktop. */
+
+#restaurant-page-content-wrapper {
+  flex: 1 1 auto;
+  width: calc(100% - var(--restaurant-sidebar-width));
+  min-width: 0;
+  min-height: 100vh;
+  margin-left: var(--restaurant-sidebar-width);
+  color: var(--fm-text-primary, var(--bs-body-color));
+  background: var(--fm-page-bg, var(--bs-body-bg));
+  transition:
+    margin-left 200ms ease,
+    width 200ms ease,
+    background-color 150ms ease;
+}
+
+/* Sidebar open / closed states */
+
+#restaurant-page-content-wrapper.restaurant-sidebar-open {
+  width: calc(100% - var(--restaurant-sidebar-width));
+  margin-left: var(--restaurant-sidebar-width);
+}
+
+#restaurant-page-content-wrapper.restaurant-sidebar-closed {
+  width: 100%;
+  margin-left: 0;
+}
+
+/* Header is fixed independently of the page content. */
+
+#restaurant-page-content-wrapper > header {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: var(--restaurant-sidebar-width);
+  z-index: 1030;
+  transition: left 200ms ease;
+}
+
+#restaurant-wrapper:has(.restaurant-sidebar-closed)
+  #restaurant-page-content-wrapper
+  > header {
+  left: 0;
+}
+
+/* Main content sits below the header. */
+
+.restaurant-app-content {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  min-height: calc(100vh - var(--restaurant-navbar-height));
+  margin-top: var(--restaurant-navbar-height);
+  padding: 14px;
+  color: var(--fm-text-primary, var(--bs-body-color));
+  background: var(--fm-page-bg, var(--bs-body-bg));
+  font-size: 0.875rem;
+  line-height: 1.4;
+}
+
+.restaurant-app-content > * {
+  max-width: 100%;
+}
+
+/* Compact typography for the restaurant workspace. */
+
+.restaurant-app-content h1 {
+  font-size: clamp(1.25rem, 1.8vw, 1.65rem);
+}
+
+.restaurant-app-content h2 {
+  font-size: 1.15rem;
+}
+
+.restaurant-app-content h3 {
+  font-size: 1rem;
+}
+
+/* Tablet */
+
+@media (max-width: 991.98px) {
+  .restaurant-app-content {
+    padding: 12px;
+  }
+}
+
+/* Mobile: sidebar becomes an overlay drawer. */
+
+@media (max-width: 767.98px) {
+  #restaurant-page-content-wrapper,
+  #restaurant-page-content-wrapper.restaurant-sidebar-open,
+  #restaurant-page-content-wrapper.restaurant-sidebar-closed {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  #restaurant-page-content-wrapper > header {
+    left: 0;
+  }
+
+  .restaurant-app-content {
+    padding: 10px;
+  }
+}
+
+/* Reduced motion */
+
+@media (prefers-reduced-motion: reduce) {
+  #restaurant-page-content-wrapper,
+  #restaurant-page-content-wrapper > header {
+    transition: none;
+  }
+}

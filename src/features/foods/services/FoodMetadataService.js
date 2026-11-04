@@ -1,5 +1,5 @@
 import apiClient from "../../../api/apiClient";
-import API from "../../../global/constants/ApiConstants";
+import API from "../../../config/apiEndpoints";
 
 /**
  * =============================================================================
@@ -37,6 +37,14 @@ const FoodMetadataService = {
    */
   async getMetadata(signal) {
     const response = await apiClient.get(API.FOOD.FOOD_METADATA, {
+      signal,
+    });
+
+    return response.data;
+  },
+
+  async getCuisineMetadata(signal) {
+    const response = await apiClient.get(API.FOOD.FOOD_CUISINE_METADATA, {
       signal,
     });
 

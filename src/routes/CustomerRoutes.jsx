@@ -18,8 +18,8 @@
 
 import { Route, Routes } from "react-router-dom";
 
-import CustomerHome from "../features/customer/pages/CustomerHome";
 import CustomerLayout from "../layouts/CustomerLayout";
+import CustomerHome from "../portals/customer/pages/CustomerHome";
 import RoleRoute from "./RoleRoute";
 
 const CustomerRoutes = () => {
